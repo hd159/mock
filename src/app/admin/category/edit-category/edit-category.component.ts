@@ -6,7 +6,6 @@ import { filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Category } from 'src/app/model/model';
 import { CategoryService } from 'src/app/service/category.service';
 import { SearchInputComponent } from 'src/app/shared/search-input/search-input.component';
-import { Store } from 'src/app/store';
 
 @Component({
   selector: 'app-edit-category',
@@ -16,10 +15,11 @@ import { Store } from 'src/app/store';
 export class EditCategoryComponent implements OnInit {
   categorys$: Observable<Category[]>;
   numPage$: Observable<number>;
-  skipPage = 1;
+  skipPage = 0;
   currentSearch: string;
   @ViewChild(SearchInputComponent, { static: true })
   search: SearchInputComponent;
+
   constructor(private categoryService: CategoryService) {
     this.getCategory();
     this.getPaginationPage();
@@ -46,8 +46,8 @@ export class EditCategoryComponent implements OnInit {
     this.numPage$ = this.categoryService.getTotalItem(null, key);
   }
 
-  changeCategory(pageClick: number) {
-    this.skipPage = pageClick;
+  changeCategory(event) {
+    this.skipPage = event.page;
     this.getCategory(this.currentSearch);
   }
 
@@ -58,7 +58,7 @@ export class EditCategoryComponent implements OnInit {
   }
 
   deleted() {
-    this.skipPage = 1;
+    this.skipPage = 0;
     this.getCategory();
     this.getPaginationPage(this.currentSearch);
     this.search.inputEle.nativeElement.value = '';

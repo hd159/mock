@@ -13,6 +13,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~10.0.5",
+    "@angular/cdk": "^11.2.6",
     "@angular/common": "~10.0.5",
     "@angular/compiler": "~10.0.5",
     "@angular/core": "~10.0.5",
@@ -31,6 +32,9 @@
     "multer": "^1.4.2",
     "ng2-charts": "^2.4.2",
     "placeholder-loading": "^0.3.0",
+    "primeflex": "^2.0.0",
+    "primeicons": "^4.1.0",
+    "primeng": "^11.3.1",
     "rxjs": "~6.5.5",
     "sweetalert2": "^10.14.0",
     "tslib": "^2.0.0",

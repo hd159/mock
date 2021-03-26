@@ -88,12 +88,11 @@ export class CommentComponent implements OnInit, OnDestroy {
     // create new comment
     newComment.id_comment = this.id_post;
     newComment.id_post = this.id_post;
-    this.sub = this.commentService.save(newComment).subscribe((val) => {
+    this.sub = this.commentService.create(newComment).subscribe((val) => {
       const payload = {
         key: this.id_post,
         value: [val],
       };
-
       this.commentService.updateState(this.sort, payload);
       this.swal.swalSuccess(null, 'Comment created');
       this.totalComment$ = this.totalComment$.pipe(map((val) => val + 1));
@@ -106,14 +105,12 @@ export class CommentComponent implements OnInit, OnDestroy {
     } else {
       this.skipNew++;
     }
-    const newComment$ = this.commentService
-      .getComments(
-        this.id_post,
-        this.sort,
-        5,
-        this.sort === 'commentsHot' ? this.skipHot : this.skipNew
-      )
-      .pipe(take(1));
+    const newComment$ = this.commentService.getComments(
+      this.id_post,
+      this.sort,
+      5,
+      this.sort === 'commentsHot' ? this.skipHot : this.skipNew
+    );
 
     newComment$.subscribe((val) => {
       const payload = { key: this.id_post, value: [...val] };

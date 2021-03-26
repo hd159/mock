@@ -14,6 +14,7 @@ export class CheckCategoryName implements AsyncValidator {
       'query',
       JSON.stringify({ title: name })
     );
+
     return this.categoryService.find(params).pipe(
       debounceTime(500),
 

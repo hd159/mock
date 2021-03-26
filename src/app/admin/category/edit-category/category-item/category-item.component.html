@@ -1,59 +1,49 @@
-<ng-container *ngIf="items">
-  <table class="table">
-    <thead>
+<ng-container *ngIf="categories; else loadCategory">
+  <p-table [value]="categories" [rowHover]="true" [rows]="10">
+    <ng-template pTemplate="header">
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Parent</th>
-        <th scope="col">Action</th>
+        <th>#</th>
+        <th>Name</th>
+        <th>Parent</th>
+        <th>Action</th>
       </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngIf="items.length > 0; else noCategory">
-        <tr *ngFor="let item of items; index as i">
-          <th>{{ currentPage * 10 + i + 1 }}</th>
-
-          <td>
-            {{ item.title }}
-          </td>
-
-          <td>
-            {{ item.group ? item.group : "I'm a boss" }}
-          </td>
-
-          <td>
-            <a
-              class="btn btn-icon btn-light btn-hover-danger btn-sm mx-2"
-              (click)="onEdit(item, i)"
-            >
-              <i class="fas fa-edit"></i>
-            </a>
-            <a
-              class="btn btn-icon btn-light btn-hover-danger btn-sm mx-2"
-              (click)="onDeleteById(item)"
-            >
-              <i class="fas fa-trash"></i>
-            </a>
-          </td>
-        </tr>
-      </ng-container>
-
-      <ng-template #noCategory>
-        <div class="no-post">
-          <div>
-            <i class="fas fa-search"></i>
-            <p class="mt-3">Category not found</p>
-          </div>
-        </div>
-      </ng-template>
-    </tbody>
-  </table>
-
-  <app-swal-alert></app-swal-alert>
-
-  <app-edit-modal
-    [(showModal)]="showModal"
-    [categoryEdit]="itemEdit"
-    (categoryEditChange)="editSuccess($event)"
-  ></app-edit-modal>
+    </ng-template>
+    <ng-template pTemplate="body" let-category let-i="rowIndex">
+      <tr>
+        <td>{{ currentPage * 10 + i + 1 }}</td>
+        <td>{{ category.title }}</td>
+        <td>{{ category.group ? category.group : "I'm a boss" }}</td>
+        <td>
+          <a
+            class="btn btn-icon btn-light btn-hover-danger btn-sm mx-2"
+            (click)="onEdit(category, i)"
+          >
+            <i class="pi pi-pencil"></i>
+          </a>
+          <a
+            class="btn btn-icon btn-light btn-hover-danger btn-sm mx-2"
+            (click)="onDeleteById(category)"
+          >
+            <i class="pi pi-trash"></i>
+          </a>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
 </ng-container>
+
+<ng-template #loadCategory>
+  <div class="p-field p-col-12">
+    <p-skeleton styleClass="p-mb-4" height="1.5rem"></p-skeleton>
+    <p-skeleton styleClass="p-mb-4" height="1.5rem"></p-skeleton>
+    <p-skeleton styleClass="p-mb-4" height="1.5rem"></p-skeleton>
+    <p-skeleton styleClass="p-mb-4" height="1.5rem"></p-skeleton>
+    <p-skeleton styleClass="p-mb-4" height="1.5rem"></p-skeleton>
+  </div>
+</ng-template>
+
+<app-edit-modal
+  [(showModal)]="showModal"
+  [categoryEdit]="itemEdit"
+  (categoryEditChange)="editSuccess($event)"
+></app-edit-modal>

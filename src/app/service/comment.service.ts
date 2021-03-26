@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataStoreService, DataStoreType, Query } from 'kinvey-angular-sdk';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -36,13 +36,20 @@ export class CommentService extends CollectionService<CommentState> {
   }
 
   getComments(id: string, sort?: string, limit = 5, skip = 0) {
-    const query = new Query();
-    query.equalTo('id_post', id);
-    query.limit = limit;
-    query.skip = skip * limit;
-    if (sort === 'commentsHot') query.descending('reply');
-    if (sort === 'commentsNew') query.descending('_kmd.ect');
-    return this.find<Comment>(query);
+    let params = new HttpParams()
+      .set('limit', limit.toString())
+      .set('skip', (skip * limit).toString())
+      .set('query', JSON.stringify({ id_post: id }));
+
+    if (sort === 'commentsHot') {
+      params = params.set('sort', '{"reply":-1}');
+    }
+
+    if (sort === 'commentsHot') {
+      params = params.set('sort', '{"_kmd.ect":-1}');
+    }
+
+    return this.find<Comment>(params);
   }
 
   getCommentsFromStore(

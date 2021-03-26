@@ -18,7 +18,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
   providers: [SwalAlertComponent],
 })
 export class CategoryItemComponent implements OnInit {
-  @Input() items: Category[];
+  @Input() categories: Category[];
   @Input() currentPage = 0;
   @Output() removed = new EventEmitter<string>();
   showModal: boolean = false;
@@ -42,7 +42,7 @@ export class CategoryItemComponent implements OnInit {
   }
 
   editSuccess(category: Category) {
-    this.items[this.idxEdit] = category;
+    this.categories[this.idxEdit] = category;
     this.idxEdit = null;
   }
 
