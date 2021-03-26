@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="mb-3">
+    <a [routerLink]="['../', 'add-user']">
+      <button class="btn btn-primary">Add user</button></a
+    >
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="card-title">User List</div>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Roles</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of userLists$ | async; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <span *ngFor="let role of user.roleId"
+                >{{ listRoles[role] }}
+              </span>
+            </td>
+            <td>
+              <a
+                class="btn btn-icon btn-light btn-hover-danger btn-sm mx-2"
+                (click)="showModal = !showModal"
+              >
+                <i class="fas fa-edit"></i>
+              </a>
+              <a
+                class="btn btn-icon btn-light btn-hover-danger btn-sm mx-2"
+                (click)="deleteUser(user._id)"
+              >
+                <i class="fas fa-trash"></i>
+              </a>
+            </td>
+            <app-user-modal [(showModal)]="showModal"></app-user-modal>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

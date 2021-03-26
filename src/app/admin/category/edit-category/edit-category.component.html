@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Edit Category</h5>
+      <app-search-input (query)="onSearch($event)"></app-search-input>
+      <app-category-item
+        [items]="categorys$ | async"
+        [currentPage]="[skipPage - 1]"
+        (removed)="deleted()"
+      >
+      </app-category-item>
+    </div>
+  </div>
+
+  <app-pagination
+    *ngIf="numPage$ | async as numPage"
+    [numPage]="numPage"
+    (pageClick)="changeCategory($event)"
+  >
+  </app-pagination>
+</div>

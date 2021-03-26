@@ -1,0 +1,36 @@
+<div class="mb-3 form-group">
+  <label class="form-label"> {{ label }} </label>
+  <input
+    *ngIf="inputType === 'input'"
+    class="form-control mb-2"
+    autocomplete="off"
+    [formControl]="control"
+    [type]="type"
+    [class]="type === 'file' ? 'p-0 border-0' : ''"
+  />
+
+  <textarea
+    *ngIf="inputType === 'textarea'"
+    class="form-control mb-2"
+    autocomplete="off"
+    [formControl]="control"
+  >
+  </textarea>
+
+  <ng-container *ngIf="control.invalid && control.touched && control.dirty">
+    <p *ngIf="control.errors.required" class="text-danger">
+      Field is required!
+    </p>
+
+    <p *ngIf="control.errors.minlength" class="alert alert-danger">
+      Password must contain at least
+      {{ control.errors.minlength.requiredLength }} characters
+    </p>
+
+    <p *ngIf="control.errors.categoryExist" class="text-danger">
+      Category is existed
+    </p>
+
+    <p *ngIf="control.errors.email" class="text-danger">Email not correct</p>
+  </ng-container>
+</div>

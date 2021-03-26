@@ -1,0 +1,29 @@
+<div class="container-fluid" id="header">
+  <div
+    class="container d-flex justify-content-between align-items-center"
+    id="inner"
+  >
+    <a routerLink="/"
+      ><img
+        src="https://freetuts.net/public/logo/logo.png?rand=5"
+        alt="freetuts"
+        style="max-width: 160px"
+    /></a>
+    <div class="d-flex justify-content-center align-items-center">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search..." />
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" id="button-addon2">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <div class="icon-container">
+        <a routerLink="admin/login"
+          ><i class="fas fa-user-astronaut"></i> <span>Login</span></a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<app-nav></app-nav>
