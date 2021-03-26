@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         }),
 
         tap(() => {
-          this.categoryService.pull();
+          // this.categoryService.pull();
           this.router.navigateByUrl('/admin');
         }),
         finalize(() => {

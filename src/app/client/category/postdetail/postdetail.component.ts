@@ -71,7 +71,6 @@ export class PostdetailComponent implements OnInit, OnDestroy {
           tap((val) => console.log(val, 222)),
           filter((val) => !!val),
           pluck('idcha'),
-          tap((val) => console.log(val, 'id')),
           tap((id) => (this.idParent = id)),
           switchMap((id) => this.lessonService.getRelatePostsFromStore(id))
         )

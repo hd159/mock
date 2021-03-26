@@ -63,11 +63,16 @@ export class CommentDetailComponent implements OnInit, OnChanges, OnDestroy {
     // create new comment
     newComment.id_comment = this.currentComment.id_comment;
     newComment.id_post = this.currentComment._id;
-    const newComment$ = this.commentService.save(newComment);
+    const newComment$ = this.commentService.create(newComment);
 
     // update currentComment
+    console.log(this.currentComment);
+
     this.currentComment.reply = this.currentComment.reply + 1;
-    const commentUpdated$ = this.commentService.save(this.currentComment);
+    const commentUpdated$ = this.commentService.update(
+      this.currentComment,
+      this.currentComment._id
+    );
 
     this.sub = combineLatest([newComment$, commentUpdated$]).subscribe(
       (val) => {
@@ -76,10 +81,10 @@ export class CommentDetailComponent implements OnInit, OnChanges, OnDestroy {
           value: [val[0]],
         };
         this.commentService.updateState(this.sort, payload);
+        this.currentComment = null;
       }
     );
     this.showTextEditor = false;
-    this.currentComment = null;
   }
 
   ngOnDestroy() {

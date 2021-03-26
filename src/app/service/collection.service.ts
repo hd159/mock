@@ -1,5 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Aggregation } from 'kinvey-angular-sdk';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, of, zip } from 'rxjs';
 import { from, Observable, throwError } from 'rxjs';
 import {
@@ -7,7 +6,6 @@ import {
   filter,
   map,
   mergeMap,
-  shareReplay,
   tap,
   toArray,
 } from 'rxjs/operators';
@@ -24,11 +22,6 @@ export interface Query {
 export class CollectionService<T> {
   url: string;
   collection: any;
-
-  headers = new HttpHeaders().set(
-    'Authorization',
-    'Basic a2lkX3JKdkRGbTg0dTozOTUyOGRkNDVkNGQ0OTFlYjdiZDFmOTVlYjJlZWI1Ng=='
-  );
 
   private subject: BehaviorSubject<T>;
   state$: Observable<T>;
@@ -55,27 +48,8 @@ export class CollectionService<T> {
     return this.state$.pipe(map((val) => val[prop]));
   }
 
-  // Pull data from the backend and save it locally on the device.
-  // pull(query?: Query): Observable<any> {
-  //   return from(this.collection.pull(query)).pipe(
-  //     catchError((err) => {
-  //       console.log({ ...err }, 'pull');
-  //       return throwError(err);
-  //     })
-  //   );
-  // }
-
-  // get data
-
-  // createQuery(query: Query) {
-  //   const {fields, limit, skip, descending} = query
-  //   if(fields) {
-
-  //   }
-  // }
-
   find<T>(params?): Observable<any> {
-    return this.http.get(this.url, { headers: this.headers, params }).pipe(
+    return this.http.get(this.url, { params }).pipe(
       catchError((err) => {
         console.log({ ...err }, 'find');
         return throwError(err);
@@ -84,8 +58,7 @@ export class CollectionService<T> {
   }
 
   findById<T>(id: string): Observable<any> {
-    return this.http.get(`${this.url}/${id}`, { headers: this.headers }).pipe(
-      tap((val) => console.log(val)),
+    return this.http.get(`${this.url}/${id}`).pipe(
       catchError((err) => {
         console.log({ ...err }, 'findById');
 
@@ -96,31 +69,26 @@ export class CollectionService<T> {
 
   // delete data
   removeById(id: string) {
-    return this.http
-      .delete(`${this.url}/${id}`, { headers: this.headers })
-      .pipe(
-        catchError((err) => {
-          console.log({ ...err }, 'removeById');
+    return this.http.delete(`${this.url}/${id}`).pipe(
+      catchError((err) => {
+        console.log({ ...err }, 'removeById');
 
-          return throwError(err);
-        })
-      );
+        return throwError(err);
+      })
+    );
   }
 
-  removeMultipleValue(query: any) {
-    return this.http
-      .delete(this.url, { headers: this.headers, params: query })
-      .pipe(
-        catchError((err) => {
-          console.log({ ...err }, 'removeMultipleValue');
-          return throwError(err);
-        })
-      );
+  removeMultipleValue(params: any) {
+    return this.http.delete(this.url, { params }).pipe(
+      catchError((err) => {
+        console.log({ ...err }, 'removeMultipleValue');
+        return throwError(err);
+      })
+    );
   }
 
-  // _id ? update data : create data
   create(entity: any): Observable<any> {
-    return this.http.post(this.url, entity, { headers: this.headers }).pipe(
+    return this.http.post(this.url, entity).pipe(
       catchError((err) => {
         console.log({ ...err }, 'insave');
         return throwError(err);
@@ -129,42 +97,17 @@ export class CollectionService<T> {
   }
 
   update(entity, id): Observable<any> {
-    return this.http
-      .put(`${this.url}/${id}`, entity, { headers: this.headers })
-      .pipe(
-        catchError((err) => {
-          console.log({ ...err }, 'insave');
-          return throwError(err);
-        })
-      );
+    return this.http.put(`${this.url}/${id}`, entity).pipe(
+      catchError((err) => {
+        console.log({ ...err }, 'insave');
+        return throwError(err);
+      })
+    );
   }
-
-  // use with category
-  // push() {
-  //   return from(this.collection.push()).pipe(
-  //     tap((val) => console.log(val, 'push')),
-  //     catchError((err) => {
-  //       console.log({ ...err }, 'inpush');
-  //       return throwError(err);
-  //     })
-  //   );
-  // }
 
   count(params): Observable<any> {
     const url = `${this.url}/_count`;
-    return this.http
-      .get(url, { headers: this.headers, params })
-      .pipe(map((val: any) => val.count));
-  }
-
-  // connect backend
-  async sync() {
-    try {
-      const result = await this.collection.sync();
-      console.log(result, 1);
-    } catch (error) {
-      console.log(error);
-    }
+    return this.http.get(url, { params }).pipe(map((val: any) => val.count));
   }
 
   // collect column
@@ -181,7 +124,7 @@ export class CollectionService<T> {
     };
 
     const url = `${this.url}/_group`;
-    return this.http.post(url, body, { headers: this.headers }).pipe(
+    return this.http.post(url, body).pipe(
       tap((val) => console.log(val)),
       filter((val) => val['count'] !== 0),
       mergeMap((val: []) => from(val)),
@@ -204,7 +147,7 @@ export class CollectionService<T> {
       condition: { ...query },
     };
 
-    return this.http.post(url, body, { headers: this.headers });
+    return this.http.post(url, body);
   }
 
   getTotalItem(name?: string, key?: string) {
@@ -238,18 +181,11 @@ export class CollectionService<T> {
         if (fields) {
           params.append('fields', fields);
         }
-
         const temp = this.find(params);
-
         return zip(of(val), temp);
       }),
       map(([val, temp]) => ({ [val]: temp })),
       toArray()
     );
   }
-}
-
-export interface Accumulator {
-  count: number;
-  month: (string | number)[];
 }

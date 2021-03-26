@@ -23,6 +23,11 @@ import { UserModalComponent } from './user/user-modal/user-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartsModule } from 'ng2-charts';
 
+import { TableModule } from 'primeng/table';
+import { CardModule } from 'primeng/card';
+import { PaginatorModule } from 'primeng/paginator';
+import { SkeletonModule } from 'primeng/skeleton';
+
 @NgModule({
   declarations: [
     AdminComponent,
@@ -49,6 +54,10 @@ import { ChartsModule } from 'ng2-charts';
     SharedModule,
     SweetAlert2Module.forChild(),
     ChartsModule,
+    TableModule,
+    CardModule,
+    PaginatorModule,
+    SkeletonModule,
   ],
   providers: [SweetAlert2Module],
 })

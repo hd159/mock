@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { KinveyModule } from 'kinvey-angular-sdk';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,7 @@ import { FooterComponent } from './client/footer/footer.component';
 import { LoginComponent } from './login/login.component';
 import { HomeClientComponent } from './client/home-client/home-client.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { RequestInterceptor } from './service/interceptor';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,9 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     }),
   ],
 
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
