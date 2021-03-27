@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -36,8 +37,7 @@ export class CommentComponent implements OnInit, OnDestroy {
   skipNew = 0;
   totalComment$: Observable<number>;
   sort = 'commentsHot';
-  sub: Subscription;
-  sub1: Subscription;
+  subscription: Subscription[] = [];
   constructor(
     private commentService: CommentService,
     private route: ActivatedRoute,
@@ -45,7 +45,6 @@ export class CommentComponent implements OnInit, OnDestroy {
     private swal: SwalAlertComponent,
     private handleErr: ErrorHandleService
   ) {
-    this.sub1 = this.commentService.state$.subscribe(console.log);
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
@@ -75,6 +74,10 @@ export class CommentComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngOnDestroy() {
+    this.subscription.forEach((sub) => sub.unsubscribe());
+  }
+
   filterComment(sort: string) {
     this.activeComment = !this.activeComment;
     this.sort = sort;
@@ -88,7 +91,7 @@ export class CommentComponent implements OnInit, OnDestroy {
     // create new comment
     newComment.id_comment = this.id_post;
     newComment.id_post = this.id_post;
-    this.sub = this.commentService.create(newComment).subscribe((val) => {
+    const sub = this.commentService.create(newComment).subscribe((val) => {
       const payload = {
         key: this.id_post,
         value: [val],
@@ -97,6 +100,8 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.swal.swalSuccess(null, 'Comment created');
       this.totalComment$ = this.totalComment$.pipe(map((val) => val + 1));
     });
+
+    this.subscription.push(sub);
   }
 
   loadMoreComment() {
@@ -112,20 +117,19 @@ export class CommentComponent implements OnInit, OnDestroy {
       this.sort === 'commentsHot' ? this.skipHot : this.skipNew
     );
 
-    newComment$.subscribe((val) => {
+    const sub = newComment$.subscribe((val) => {
       const payload = { key: this.id_post, value: [...val] };
       this.commentService.updateState(this.sort, payload);
     });
+
+    this.subscription.push(sub);
   }
 
   getTotalComment(id: string) {
-    const query = new Query();
-    query.equalTo('id_post', id);
-    return this.commentService.count(query).pipe(shareReplay());
-  }
-
-  ngOnDestroy() {
-    if (this.sub) this.sub.unsubscribe();
-    this.sub1.unsubscribe();
+    const params = new HttpParams().set(
+      'query',
+      JSON.stringify({ id_post: id })
+    );
+    return this.commentService.count(params);
   }
 }

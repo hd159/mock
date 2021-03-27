@@ -53,10 +53,10 @@ export class LessonCategoryComponent implements OnInit {
       switchMap((id) => this.lessonService.getRelatePostsFromStore(id))
     );
 
-    // this.reviews$ = this.category$.pipe(
-    //   filter((val) => !!val),
-    //   mergeMap(() => this.lessonService.getHotPostFromStore())
-    // );
+    this.reviews$ = this.category$.pipe(
+      filter((val) => !!val),
+      mergeMap(() => this.lessonService.getHotPostFromStore())
+    );
   }
 
   ngOnInit(): void {}

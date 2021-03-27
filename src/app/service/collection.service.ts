@@ -48,17 +48,19 @@ export class CollectionService<T> {
     return this.state$.pipe(map((val) => val[prop]));
   }
 
-  find<T>(params?): Observable<any> {
-    return this.http.get(this.url, { params }).pipe(
-      catchError((err) => {
-        console.log({ ...err }, 'find');
-        return throwError(err);
-      })
-    );
+  find<T>(params?): Observable<T[]> {
+    return this.http
+      .get<T[]>(this.url, { params })
+      .pipe(
+        catchError((err) => {
+          console.log({ ...err }, 'find');
+          return throwError(err);
+        })
+      );
   }
 
-  findById<T>(id: string): Observable<any> {
-    return this.http.get(`${this.url}/${id}`).pipe(
+  findById<T>(id: string): Observable<T> {
+    return this.http.get<T>(`${this.url}/${id}`).pipe(
       catchError((err) => {
         console.log({ ...err }, 'findById');
 
@@ -112,19 +114,7 @@ export class CollectionService<T> {
 
   // collect column
   group(columnName: string, query?: any): Observable<string[]> {
-    const body = {
-      key: {
-        [columnName]: true,
-      },
-      initial: {
-        count: 0,
-      },
-      reduce: 'function(doc,out){ out.count++;}',
-      condition: { ...query },
-    };
-
-    const url = `${this.url}/_group`;
-    return this.http.post(url, body).pipe(
+    return this.groupDefault(columnName, query).pipe(
       tap((val) => console.log(val)),
       filter((val) => val['count'] !== 0),
       mergeMap((val: []) => from(val)),
@@ -153,12 +143,15 @@ export class CollectionService<T> {
   getTotalItem(name?: string, key?: string) {
     let params = new HttpParams();
     if (name) {
-      params.append('query', JSON.stringify({ content: name }));
+      params = params.set('query', JSON.stringify({ content: name }));
     }
-    // if (key) {
-    //   const re = new RegExp(`^${key}`, 'g');
-    //   query.matches('title', re);
-    // }
+
+    if (key) {
+      params = params.set(
+        'query',
+        JSON.stringify({ title: { $regex: `^${key}` } })
+      );
+    }
     return this.count(params).pipe(
       filter((val) => !!val),
       map((val) => Math.ceil(val / 10))

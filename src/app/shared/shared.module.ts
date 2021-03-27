@@ -19,6 +19,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { SwalAlertComponent } from './swal-alert/swal-alert.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { LoadingPlaceholderComponent } from './loading-placeholder/loading-placeholder.component';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { LoadingPlaceholderComponent } from './loading-placeholder/loading-place
     EditorModule,
     ReactiveFormsModule,
     SweetAlert2Module.forChild(),
+    InputTextModule,
   ],
   exports: [
     SafeHtmlPipe,

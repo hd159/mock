@@ -88,10 +88,14 @@ export class EditPostComponent implements OnInit, OnDestroy {
     };
 
     if (key) {
-      const re = new RegExp(`^${key}`, 'g');
-      // query.matches('title', re);
-      // params = params.set('query', JSON.stringify({ content: content }));
-      this.posts$ = this.lessonService.find(query);
+      let params = new HttpParams()
+        .set('sort', '{"_kmd.lmt":-1}')
+        .set('limit', '10')
+        .set('skip', (10 * (this.skipPage - 1)).toString())
+        .set('fields', 'title')
+        .set('query', JSON.stringify({ title: { $regex: `^${key}` } }));
+
+      this.posts$ = this.lessonService.find(params);
     } else {
       this.posts$ = this.lessonService.getPostsEdit(query);
     }

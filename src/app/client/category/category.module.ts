@@ -12,6 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommentDetailComponent } from './comment/comment-detail/comment-detail.component';
 import { CommentFormComponent } from './comment/comment-form/comment-form.component';
 import { PathCategoryComponent } from './path-category/path-category.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { CoursesComponent } from '../courses/courses.component';
 
 @NgModule({
   declarations: [
@@ -23,12 +25,14 @@ import { PathCategoryComponent } from './path-category/path-category.component';
     CommentDetailComponent,
     CommentFormComponent,
     PathCategoryComponent,
+    CoursesComponent,
   ],
   imports: [
     CommonModule,
     CategoryRoutingModule,
     SharedModule,
     ReactiveFormsModule,
+    FileUploadModule,
   ],
   providers: [],
 })

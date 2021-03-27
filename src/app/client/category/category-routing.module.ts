@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
+import { CoursesComponent } from '../courses/courses.component';
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
 import { HostCategoryComponent } from './host-category/host-category.component';
 import { LessonCategoryComponent } from './lesson-category/lesson-category.component';
@@ -10,6 +11,7 @@ const routes: Routes = [
   {
     path: '',
     children: [
+      { path: 'courses/111', component: CoursesComponent },
       {
         path: ':name',
         component: HostCategoryComponent,
