@@ -27,6 +27,7 @@ import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { PaginatorModule } from 'primeng/paginator';
 import { SkeletonModule } from 'primeng/skeleton';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     CardModule,
     PaginatorModule,
     SkeletonModule,
+    InputTextModule,
   ],
   providers: [SweetAlert2Module],
 })

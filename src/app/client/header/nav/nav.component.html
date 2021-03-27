@@ -5,7 +5,7 @@
         <a routerLink="/"><i class="fas fa-home"></i></a>
       </li>
       <li class="dropdown">
-        <a>Lập trình</a>
+        <a>{{ Main_block }}</a>
         <div class="dropdown-page">
           <div class="row" *ngIf="laptrinh$ | async as laptrinh">
             <div class="col" *ngFor="let child of laptrinh.childs">

@@ -1,6 +1,4 @@
-import { LessonService } from 'src/app/service/lesson.service';
 import { Injectable } from '@angular/core';
-import { DataStoreService, DataStoreType, Query } from 'kinvey-angular-sdk';
 import {
   BehaviorSubject,
   combineLatest,
@@ -11,9 +9,9 @@ import {
 } from 'rxjs';
 import {
   catchError,
+  filter,
   map,
   mergeMap,
-  share,
   shareReplay,
   switchAll,
   switchMapTo,
@@ -23,7 +21,6 @@ import {
 import { Category, NavCategory } from '../model/model';
 import { CategoryName, Store } from '../store';
 import { CollectionService } from './collection.service';
-import { AuthService } from './auth.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 export interface CategoryState {
@@ -45,12 +42,8 @@ export class CategoryService extends CollectionService<CategoryState> {
 
   constructor(http: HttpClient) {
     super(initialCategoryState, 'category', http);
-
-    this.categories$ = this.find().pipe(shareReplay());
-  }
-
-  getAllCategories() {
-    return this.find().pipe(shareReplay());
+    const params = new HttpParams().set('sort', '{"_kmd.lmt":-1}');
+    this.categories$ = this.find(params).pipe(shareReplay());
   }
 
   getGroup(idparent: string): Observable<any[]> {
@@ -77,38 +70,6 @@ export class CategoryService extends CollectionService<CategoryState> {
     );
   }
 
-  setCategory(): Observable<CategoryName> {
-    return this.getGroup('').pipe(
-      map((val) => {
-        let laptrinh: NavCategory;
-        let anothers: NavCategory[];
-        val.forEach((item, index) => {
-          if (item.parent.title === 'Lập trình') {
-            laptrinh = item;
-            const another = [...val];
-            another.splice(index, 1);
-            anothers = another;
-          } else {
-            anothers = [...val];
-          }
-        });
-        const categoryName: CategoryName = {
-          'Lập trình': laptrinh,
-          anothers: anothers,
-        };
-
-        return categoryName;
-      })
-    );
-  }
-
-  setCategoryToStore() {
-    return this.setCategory().pipe(
-      switchMapTo(this.setCategory()),
-      tap((categoryName) => this.setState({ categoryName }))
-    );
-  }
-
   getCategoryForEdit(): Observable<Partial<Category>[]> {
     return this.find<Category>().pipe(
       mergeMap((val) => from(val)),
@@ -123,10 +84,10 @@ export class CategoryService extends CollectionService<CategoryState> {
   }
 
   findPath(idparent: string, arr: Category[]): Observable<any> {
-    console.log(idparent);
-    return this.findById<Category>(idparent).pipe(
-      tap((val) => arr.unshift(val)),
-      mergeMap((val) => {
+    return this.categories$.pipe(
+      map((val: any) => val.find((item) => item._id === idparent)),
+      tap((val: any) => arr.unshift(val)),
+      mergeMap((val: any) => {
         if (!val.idparent) {
           return of(null);
         } else {

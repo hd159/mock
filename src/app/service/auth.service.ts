@@ -77,62 +77,6 @@ export class AuthService {
     return this.setAuthState({ [prop]: { ...currentValue, ...newValue } });
   }
 
-  // checkCredential() {
-  //   console.log(this.activeUser1, 'incheck');
-  //   if (this.activeUser1) {
-  //     return from(this.activeUser1.me()).pipe(
-  //       map((user) => {
-  //         console.log(user);
-  //         if (user) {
-  //           return this.mapUser(user);
-  //         } else {
-  //           return null;
-  //         }
-  //       }),
-  //       catchError((err) => {
-  //         console.log({ ...err }, 'asdasd');
-
-  //         return this.loginDefault();
-  //       })
-  //     );
-  //   } else {
-  //     return this.loginDefault();
-  //   }
-  // }
-
-  // get activeUser(): Observable<User> {
-  //   return of(this.userService.getActiveUser()).pipe(
-  //     map((user) => {
-  //       console.log(user);
-  //       if (user) {
-  //         return this.mapUser(user);
-  //       } else {
-  //         return null;
-  //       }
-  //     }),
-  //     catchError((err) => {
-  //       console.log({ ...err }, 1);
-  //       return throwError(err);
-  //     })
-  //   );
-  // }
-
-  checkCredential() {
-    return of(this.activeUser1).pipe(
-      mergeMap((user) => {
-        if (user) {
-          return from(this.activeUser1.me());
-        } else {
-          return this.loginDefault();
-        }
-      }),
-      catchError((err) => {
-        console.log({ ...err }, 'err in me');
-        return this.loginDefault();
-      })
-    );
-  }
-
   get activeUser(): Observable<User> {
     return of(this.userService.getActiveUser()).pipe(
       map((user) => {
@@ -216,19 +160,15 @@ export class AuthService {
     document.body.style.overflow = 'hidden';
     this.loading.loadingOn();
     return this.activeUser.pipe(
-      tap(() => {}),
-      switchMap((user) => {
+      map((user) => {
         if (user) {
           this.setAuthState({ canLoadPost: true });
           console.log(user, 'inset');
           this.setRoleAdmin(user);
-
-          return this.categoryService.setCategoryToStore();
         } else {
           this.setAuthState({ canLoadPost: false });
           return this.loginDefault().pipe(
-            tap((user) => this.setAuthState({ canLoadPost: true })),
-            mergeMap((val) => this.categoryService.setCategoryToStore())
+            tap((user) => this.setAuthState({ canLoadPost: true }))
           );
         }
       }),

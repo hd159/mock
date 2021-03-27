@@ -1,10 +1,12 @@
 import { HttpParams } from '@angular/common/http';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Query } from 'kinvey-angular-sdk';
 import { combineLatest, from, Observable, of } from 'rxjs';
 import { filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Category } from 'src/app/model/model';
 import { CategoryService } from 'src/app/service/category.service';
+import { DataStoreComponent } from 'src/app/service/test.service';
 import { SearchInputComponent } from 'src/app/shared/search-input/search-input.component';
 
 @Component({
@@ -34,9 +36,11 @@ export class EditCategoryComponent implements OnInit {
       .set('skip', (10 * (this.skipPage - 1)).toString());
 
     if (key) {
-      // params = params.set('query', JSON.stringify({ content: content }));
-      // const re = new RegExp(`${key}`, 'gi');
-      // query.contains('title', re);
+      const re = new RegExp(`${key}`, 'gi');
+      params = params.set(
+        'query',
+        JSON.stringify({ title: { $regex: `^${key}` } })
+      );
     }
 
     this.categorys$ = this.categoryService.find<Category>(params);

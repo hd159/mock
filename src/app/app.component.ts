@@ -21,13 +21,8 @@ import { Store } from './store';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnDestroy {
-  constructor(
-    private authService: AuthService,
-    private category: CategoryService
-  ) {
+  constructor(private authService: AuthService) {
     this.authService.setUser().subscribe();
-    // this.category.push();
-    // this.category.getGroup('').subscribe((val) => console.log(val));
   }
 
   ngOnDestroy() {}

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { filter, pluck, shareReplay } from 'rxjs/operators';
-import { CategoryName, Store } from 'src/app/store';
+import { map, shareReplay } from 'rxjs/operators';
 import { NavCategory } from 'src/app/model/model';
 import { CategoryService } from 'src/app/service/category.service';
 
@@ -11,21 +10,25 @@ import { CategoryService } from 'src/app/service/category.service';
   styleUrls: ['./nav.component.scss'],
 })
 export class NavComponent implements OnInit {
+  Main_block = 'Lập trình';
   laptrinh$: Observable<NavCategory>;
   anothers$: Observable<NavCategory[]>;
+  categories$: Observable<NavCategory[]>;
+  constructor(private categoryService: CategoryService) {}
 
-  constructor(private store: Store, private categoryService: CategoryService) {
-    const category$ = this.categoryService
-      .selectData<CategoryName>('categoryName')
-      .pipe(
-        filter((val) => !!val),
-        shareReplay()
-      );
-    this.laptrinh$ = category$.pipe(pluck('Lập trình'));
-    this.anothers$ = category$.pipe(pluck('anothers'));
+  ngOnInit(): void {
+    this.categories$ = this.categoryService.getGroup('').pipe(shareReplay());
 
-    // this.categoryService.state$.subscribe(console.log);
+    this.laptrinh$ = this.categories$.pipe(
+      map((categories) =>
+        categories.find((item) => item.parent.title === this.Main_block)
+      )
+    );
+
+    this.anothers$ = this.categories$.pipe(
+      map((categories) =>
+        categories.filter((item) => item.parent.title !== this.Main_block)
+      )
+    );
   }
-
-  ngOnInit(): void {}
 }
