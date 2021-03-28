@@ -35,7 +35,7 @@ export class AuthService {
     '200557a4-d086-4fce-8c22-6af8b27d2da7': 'user',
   };
 
-  private userUrl = 'https://baas.kinvey.com/user/kid_Syuc3AOgO';
+  private userUrl = 'https://baas.kinvey.com/user/kid_rJvDFm84u';
 
   private key =
     'Basic a2lkX1N5dWMzQU9nTzphZGZjYjhkY2ZlMjU0M2FlYTEyOTM5N2MyYmM2Yzg4MQ==';
@@ -53,7 +53,7 @@ export class AuthService {
     private http: HttpClient,
     private loading: LoadingService,
     private categoryService: CategoryService
-  ) {}
+  ) { }
 
   get valueAuthState() {
     return this.authSubject.getValue();
@@ -180,16 +180,10 @@ export class AuthService {
   }
 
   registerUser(data: any) {
-    const key =
-      'Basic ' +
-      btoa('kid_r1x-mZeCw' + ':' + 'c43aec5e8ffa4221a1ae126a87d30465');
 
-    const headers = new HttpHeaders()
-      .set('Authorization', key)
-      .set('Content-Type', 'application/json');
 
     return this.http
-      .post(this.userUrl, data, { headers })
+      .post(this.userUrl, data)
       .pipe(catchError((err) => throwError(err)));
   }
 
