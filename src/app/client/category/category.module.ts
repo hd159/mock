@@ -14,6 +14,10 @@ import { CommentFormComponent } from './comment/comment-form/comment-form.compon
 import { PathCategoryComponent } from './path-category/path-category.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CoursesComponent } from '../courses/courses.component';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+
+
 
 @NgModule({
   declarations: [
@@ -33,7 +37,9 @@ import { CoursesComponent } from '../courses/courses.component';
     SharedModule,
     ReactiveFormsModule,
     FileUploadModule,
+    CardModule,
+    ButtonModule
   ],
   providers: [],
 })
-export class CategoryModule {}
+export class CategoryModule { }

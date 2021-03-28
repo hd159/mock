@@ -27,7 +27,7 @@ export class EditCategoryComponent implements OnInit {
     this.getPaginationPage();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   getCategory(key?: string) {
     let params = new HttpParams()
@@ -36,7 +36,6 @@ export class EditCategoryComponent implements OnInit {
       .set('skip', (10 * (this.skipPage - 1)).toString());
 
     if (key) {
-      const re = new RegExp(`${key}`, 'gi');
       params = params.set(
         'query',
         JSON.stringify({ title: { $regex: `^${key}` } })
@@ -59,6 +58,7 @@ export class EditCategoryComponent implements OnInit {
     this.getCategory(key);
     this.getPaginationPage(key);
     this.currentSearch = key;
+    this.skipPage = 0
   }
 
   deleted() {

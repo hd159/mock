@@ -1,7 +1,8 @@
 import { HttpParams } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges, ViewChild } from '@angular/core';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { Query, Errors } from 'kinvey-angular-sdk';
+import { Table } from 'primeng/table';
 import { combineLatest, forkJoin, from, Observable, of } from 'rxjs';
 import { finalize, map, mergeMap, tap } from 'rxjs/operators';
 import { Category } from 'src/app/model/model';
@@ -17,7 +18,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
   styleUrls: ['./category-item.component.scss'],
   providers: [SwalAlertComponent],
 })
-export class CategoryItemComponent implements OnInit {
+export class CategoryItemComponent implements OnInit, OnChanges {
   @Input() categories: Category[];
   @Input() currentPage = 0;
   @Output() removed = new EventEmitter<string>();
@@ -25,15 +26,25 @@ export class CategoryItemComponent implements OnInit {
   itemEdit: Category;
   itemDelete: Category;
   idxEdit: number;
+  first
 
   constructor(
     private categoryService: CategoryService,
     private lessonService: LessonService,
     private loading: LoadingService,
     private swal: SwalAlertComponent
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  @ViewChild('table') table: Table
+
+  ngOnChanges() {
+    if (this.table) {
+      this.table.first = 0;
+      this.table.reset()
+    }
+  }
+
+  ngOnInit(): void { }
 
   onEdit(item: Category, index: number) {
     this.showModal = !this.showModal;

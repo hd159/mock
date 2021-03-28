@@ -1,23 +1,27 @@
-<div class="card">
-  <h5>Advanced</h5>
-  <p-fileUpload
-    name="demo[]"
-    (onUpload)="onUpload($event)"
-    (onSelect)="onBeforeUpload($event)"
-    multiple="multiple"
-    accept="image/*"
-    maxFileSize="10000000000000"
-  >
-    <ng-template pTemplate="content">
-      <ul *ngIf="uploadedFiles.length">
-        <li *ngFor="let file of uploadedFiles">
-          {{ file.name }} - {{ file.size }} bytes
-        </li>
-      </ul>
-    </ng-template>
-  </p-fileUpload>
-</div>
+<div class="container">
+  <div class="p-grid">
+    <div class="p-col-3" *ngFor="let course of courses">
+      <a>
+        <p-card styleClass="course-card">
+          <ng-template pTemplate="header">
+            <img alt="Card" [src]="course.img" />
+          </ng-template>
+          <p class="card-title">{{ course.title }}</p>
+          <span class="author">{{ course.author }}</span>
+          <div>{{ course.rating }}</div>
+          <div>{{ course.price }}</div>
 
-<a *ngIf="file" [href]="file._downloadURL" target="blank">{{
-  file._filename
-}}</a>
+          <ng-template pTemplate="footer">
+            <p-button label="Buy now" icon="pi pi-shopping-cart"></p-button>
+            <p-button
+              label="Cancel"
+              icon="pi pi-times"
+              styleClass="p-button-secondary"
+              [style]="{ 'margin-left': '.5em' }"
+            ></p-button>
+          </ng-template>
+        </p-card>
+      </a>
+    </div>
+  </div>
+</div>

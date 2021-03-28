@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+
 import { Component, OnInit } from '@angular/core';
-import { FileUpload } from 'primeng/fileupload';
+import { CoursesService } from 'src/app/service/courses.service';
 
 @Component({
   selector: 'app-courses',
@@ -8,32 +8,15 @@ import { FileUpload } from 'primeng/fileupload';
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-  url = 'https://baas.kinvey.com/blob/kid_rJvDFm84u';
-  uploadedFiles = [];
-  file;
-  p: FileUpload;
-  constructor(private http: HttpClient) {}
+
+  courses: any
+  constructor(private coursesService: CoursesService) { }
 
   ngOnInit(): void {
-    // this.getFile().subscribe((val: any) => {
-    //   console.log(val);
-    //   this.file = val;
-    // });
-    const headers = new HttpHeaders().set('Authorization', '111');
-    this.http
-      .get(`${this.url}/a6270052-bd59-4340-8226-934a0bc0e3ca`, { headers })
-      .subscribe(console.log);
+    this.coursesService.find().subscribe(val => {
+      this.courses = val
+    })
   }
 
-  onUpload(event) {
-    console.log(event);
-  }
 
-  onBeforeUpload(event) {
-    console.log(event);
-  }
-
-  getFile() {
-    return this.http.get(`${this.url}/a6270052-bd59-4340-8226-934a0bc0e3ca`);
-  }
 }
