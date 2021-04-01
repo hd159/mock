@@ -19,7 +19,7 @@ export class AdminComponent implements OnInit {
     this.user$ = this.authService.selectAuthData('currentUser');
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   toggleUserDropdown() {
     this.userDropdown = !this.userDropdown;
@@ -39,11 +39,6 @@ export class AdminComponent implements OnInit {
   }
 
   onLogout() {
-    this.authService
-      .logout()
-      .pipe(switchMap(() => this.authService.setUser()))
-      .subscribe(() => {
-        this.router.navigateByUrl('/');
-      });
+
   }
 }

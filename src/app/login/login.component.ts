@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import {
   catchError,
   finalize,
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private categoryService: CategoryService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -51,32 +51,26 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     this.loading = true;
-    const user = this.form.value;
+
+    const user = {
+      username: this.form.get('username').value,
+      password: this.form.get('password').value
+    };
 
     // send request to server here
+    this.authService.login(user.password, user.password).subscribe((data) => {
+      if (data != null) {
+        if (localStorage.getItem('typeUser') === 'admin')
+          this.router.navigateByUrl('/admin')
+        else {
+          localStorage.setItem('logged', 'true')
+          this.router.navigateByUrl('/')
 
-    this.sub = this.authService
-      .logout()
-      .pipe(
-        switchMap((val) => {
-          return this.authService.login(user.username, user.password);
-        }),
-        catchError((err) => {
-          this.loading = false;
-          alert('invalid credential');
+        }
 
-          return this.authService.loginDefault();
-        }),
+      }
+    })
 
-        tap(() => {
-          // this.categoryService.pull();
-          this.router.navigateByUrl('/admin');
-        }),
-        finalize(() => {
-          this.loading = false;
-        })
-      )
-      .subscribe();
 
     //
   }

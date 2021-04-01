@@ -1,3 +1,4 @@
+import { UserInfoComponent } from './pageUser/user-info/user-info.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 import { HomeComponent } from './client/home/home.component';
@@ -21,6 +22,7 @@ export const routes: Routes = [
             (m) => m.CategoryModule
           ),
       },
+      { path: 'user-info', component: UserInfoComponent },
     ],
   },
 
@@ -50,4 +52,4 @@ const routerOptions: ExtraOptions = {
   imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

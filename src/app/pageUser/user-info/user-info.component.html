@@ -1,0 +1,96 @@
+<div class="p-grid">
+  <div class="p-col-2 menu-left">
+    <div class="card card-profile shadow">
+      <div class="" style="height: 300px">
+        <div class="col-lg-3 order-lg-2">
+          <div class="card-profile-image">
+            <a>
+              <img src="../assets/image/avata.jpeg" class="rounded-circle" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="card-body pt-4 pt-md-4">
+        <div class="text-center">
+          <h3>name</h3>
+          <div class="h5 font-weight-300">
+            <i class="ni location_pin mr-2"></i>address
+          </div>
+          <div class="h5 mt-4">
+            <i class="ni business_briefcase-24 mr-2"></i>country
+          </div>
+          <div><i class="ni education_hat mr-2"></i>university</div>
+          <hr class="my-4" />
+          <p>description</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p-col-8" style="padding-bottom: 0">
+    <div class="p-grid">
+      <div class="p-col-12 content">
+        <h3>Public profile</h3>
+        <p>Add information about yourself</p>
+      </div>
+      <div class="p-col-12 content content-info">
+        <input type="text" pInputText placeholder="first name" />
+        <input type="text" pInputText placeholder="last name" />
+        <input type="text" pInputText placeholder="headline" />
+        <p-dropdown [options]="cities" optionLabel="name"></p-dropdown>
+      </div>
+      <div class="p-col-12 content">
+        <div class="p-field p-col-12">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon"> Website </span>
+            <span class="p-float-label">
+              <input type="text" id="inputgroup" pInputText />
+              <label for="inputgroup">Website (http(s)://..)</label>
+            </span>
+          </div>
+        </div>
+        <div class="p-field p-col-12">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-facebook"></i>
+            </span>
+            <span class="p-float-label">
+              <input type="text" id="inputgroup" pInputText />
+              <label for="inputgroup">Facebook Profile</label>
+            </span>
+          </div>
+        </div>
+        <div class="p-field p-col-12">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-twitter"></i>
+            </span>
+            <span class="p-float-label">
+              <input type="text" id="inputgroup" pInputText />
+              <label for="inputgroup">Twitter Profile</label>
+            </span>
+          </div>
+        </div>
+        <div class="p-field p-col-12">
+          <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+              <i class="pi pi-youtube"></i>
+            </span>
+            <span class="p-float-label">
+              <input type="text" id="inputgroup" pInputText />
+              <label for="inputgroup">Youtube Profile</label>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="p-col-12 content">
+        <button
+          pButton
+          pRipple
+          type="button"
+          label="Save"
+          class="p-button-danger"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
