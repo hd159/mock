@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit {
     },
     {
       icon: 'pi pi-shopping-cart',
+      command: () => this.showCart()
     },
     {
       icon: 'pi pi-user',
@@ -40,6 +41,9 @@ export class HeaderComponent implements OnInit {
   ];
   showUser() {
     this._router.navigateByUrl('/user-info')
+  }
+  showCart() {
+    this._router.navigateByUrl('/cart')
   }
   ngOnInit(): void {
     if (localStorage.getItem('logged') == 'true')

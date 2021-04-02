@@ -1,3 +1,4 @@
+import { CartComponent } from './pageUser/cart/cart.component';
 import { UserInfoComponent } from './pageUser/user-info/user-info.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
@@ -23,6 +24,7 @@ export const routes: Routes = [
           ),
       },
       { path: 'user-info', component: UserInfoComponent },
+      { path: 'cart', component: CartComponent }
     ],
   },
 
