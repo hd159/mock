@@ -22,7 +22,7 @@ export interface AuthState {
 
 const initialAuthState: AuthState = {
   currentUser: null,
-  canLoadPost: false,
+  canLoadPost: true,
 };
 
 @Injectable({
@@ -107,8 +107,7 @@ export class AuthService {
 
         return data
       })
-    );
-
+    )
   }
 
   // logout() {
@@ -131,11 +130,7 @@ export class AuthService {
   //   }
   // }
 
-
-
   registerUser(data: any) {
-
-
     return this.http
       .post(this.userUrl, data)
       .pipe(catchError((err) => throwError(err)));
@@ -149,5 +144,4 @@ export class AuthService {
         catchError((err) => throwError(err))
       );
   }
-
 }

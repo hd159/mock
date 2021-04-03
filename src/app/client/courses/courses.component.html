@@ -1,7 +1,7 @@
 <div class="container">
   <div class="p-grid">
-    <div class="p-col-3" *ngFor="let course of courses">
-      <a>
+    <div class="p-col-3" *ngFor="let course of courses; index as i">
+      <a (mouseover)="showBasicDialog(i)">
         <p-card styleClass="course-card">
           <ng-template pTemplate="header">
             <img alt="Card" [src]="course.img" />
@@ -14,7 +14,8 @@
           <ng-template pTemplate="footer">
             <p-button label="Buy now" icon="pi pi-shopping-cart"></p-button>
             <p-button
-              label="Cancel"
+              (click)="onNavigate(course._id)"
+              label="Detail"
               icon="pi pi-times"
               styleClass="p-button-secondary"
               [style]="{ 'margin-left': '.5em' }"
@@ -22,6 +23,31 @@
           </ng-template>
         </p-card>
       </a>
+
+      <!-- <p-dialog
+        header="Header"
+        [visible]="displayBasic && currentIndex === i"
+        [style]="{ width: '50vw' }"
+        [baseZIndex]="10000"
+      >
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <ng-template pTemplate="footer">
+          <p-button
+            icon="pi pi-check"
+            (click)="displayBasic = false"
+            label="Ok"
+            styleClass="p-button-text"
+          ></p-button>
+        </ng-template>
+      </p-dialog> -->
     </div>
   </div>
 </div>

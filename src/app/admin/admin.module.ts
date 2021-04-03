@@ -28,6 +28,14 @@ import { CardModule } from 'primeng/card';
 import { PaginatorModule } from 'primeng/paginator';
 import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextModule } from 'primeng/inputtext';
+import { CoursesComponent } from './courses/courses.component';
+import { ButtonModule } from 'primeng/button';
+import { CoursesFormTargetComponent } from './courses/courses-form-target/courses-form-target.component';
+import { CoursesCurriculumComponent } from './courses/courses-curriculum/courses-curriculum.component';
+import { CurriculumItemComponent } from './courses/courses-curriculum/curriculum-item/curriculum-item.component';
+import { CoursesLandingpageComponent } from './courses/courses-landingpage/courses-landingpage.component';
+import { DividerModule } from 'primeng/divider';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -47,6 +55,11 @@ import { InputTextModule } from 'primeng/inputtext';
     FormPostComponent,
     UserModalComponent,
     DashboardComponent,
+    CoursesComponent,
+    CoursesFormTargetComponent,
+    CoursesCurriculumComponent,
+    CurriculumItemComponent,
+    CoursesLandingpageComponent,
   ],
   imports: [
     CommonModule,
@@ -60,6 +73,9 @@ import { InputTextModule } from 'primeng/inputtext';
     PaginatorModule,
     SkeletonModule,
     InputTextModule,
+    ButtonModule,
+    DividerModule,
+    DropdownModule,
   ],
   providers: [SweetAlert2Module],
 })

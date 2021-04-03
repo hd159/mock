@@ -54,7 +54,5 @@ export class HomeComponent implements OnInit {
     this.reviews$ = canLoadPost$.pipe(
       switchMap(() => this.lessonService.getHotPostFromStore())
     );
-
-    this.lessonService.state$.subscribe(console.log);
   }
 }

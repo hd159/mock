@@ -8,6 +8,9 @@ import { AdminComponent } from './home-admin/admin.component';
 import { AddUserComponent } from './user/add-user/add-user.component';
 import { UserComponent } from './user/user.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CoursesComponent } from './courses/courses.component';
+import { CoursesCurriculumComponent } from './courses/courses-curriculum/courses-curriculum.component';
+import { CoursesLandingpageComponent } from './courses/courses-landingpage/courses-landingpage.component';
 
 const routes: Routes = [
   {
@@ -22,6 +25,12 @@ const routes: Routes = [
       { path: 'edit-post/:id', component: AddPostComponent },
       { path: 'users', component: UserComponent },
       { path: 'add-user', component: AddUserComponent },
+      {
+        path: 'courses',
+        component: CoursesComponent,
+      },
+      { path: 'courses/curriculum', component: CoursesCurriculumComponent },
+      { path: 'courses/landing-page', component: CoursesLandingpageComponent },
     ],
   },
 ];
