@@ -1,0 +1,102 @@
+<div class="p-field p-col-12">
+  <p-card header="Course landing page">
+    <p-divider></p-divider>
+    <div class="page" [formGroup]="formLandingPage">
+      <form [formGroup]="formLandingPage" (ngSubmit)="onSubmit()">
+        <div class="p-grid p-fluid">
+          <div class="p-col-12">
+            <div class="p-inputgroup p-grid">
+              <span class="p-col-12" for="">Course title </span>
+              <input
+                type="text"
+                class="p-col-12"
+                pInputText
+                placeholder="Insert your course title"
+                formControlName="title"
+              />
+            </div>
+          </div>
+
+          <div class="p-col-12">
+            <div class="p-inputgroup p-grid">
+              <span class="p-col-12" for="">Course subtitle </span>
+              <input
+                type="text"
+                class="p-col-12"
+                pInputText
+                placeholder="Insert your course subtitle"
+                formControlName="subtitle"
+              />
+            </div>
+          </div>
+
+          <div class="p-col-12">
+            <div class="p-inputgroup p-grid">
+              <span class="p-col-12" for="">Course description</span>
+              <app-text-editor [parentForm]="formLandingPage"></app-text-editor>
+            </div>
+          </div>
+
+          <div class="p-col-12">
+            <div class="p-grid">
+              <div class="p-col-4">
+                <p-dropdown
+                  [options]="cities"
+                  formControlName="selectedCity"
+                  optionLabel="name"
+                  optionValue="code"
+                ></p-dropdown>
+              </div>
+              <div class="p-col-4">
+                <p-dropdown
+                  [options]="levels"
+                  formControlName="selectedLevel"
+                  optionLabel="name"
+                  optionValue="code"
+                ></p-dropdown>
+              </div>
+              <div class="p-col-4">
+                <p-dropdown
+                  [options]="categories"
+                  formControlName="selectedCategory"
+                  optionLabel="name"
+                  optionValue="code"
+                ></p-dropdown>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-col-12">
+            <div class="p-inputgroup p-grid">
+              <span class="p-col-12" for="">Course image </span>
+              <input
+                type="text"
+                pInputText
+                placeholder="Insert your course imgage"
+                formControlName="img"
+              />
+            </div>
+          </div>
+
+          <div class="p-col-12">
+            <div class="p-inputgroup p-grid">
+              <span class="p-col-12" for="">Course image </span>
+              <input
+                type="text"
+                pInputText
+                placeholder="Insert your course preview video"
+                formControlName="preview_video"
+              />
+            </div>
+          </div>
+        </div>
+        <p-button
+          label="Save"
+          icon="pi pi-check"
+          type="submit"
+          disabled="true"
+        ></p-button>
+      </form>
+    </div>
+  </p-card>
+</div>

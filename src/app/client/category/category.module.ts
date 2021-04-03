@@ -16,8 +16,13 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { CoursesComponent } from '../courses/courses.component';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-
-
+import { DialogModule } from 'primeng/dialog';
+import { AccordionModule } from 'primeng/accordion';
+import { CoursesDetailComponent } from '../courses/courses-detail/courses-detail.component';
+import { CoursesPaymentComponent } from '../courses/courses-payment/courses-payment.component';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -30,6 +35,8 @@ import { ButtonModule } from 'primeng/button';
     CommentFormComponent,
     PathCategoryComponent,
     CoursesComponent,
+    CoursesDetailComponent,
+    CoursesPaymentComponent,
   ],
   imports: [
     CommonModule,
@@ -38,8 +45,13 @@ import { ButtonModule } from 'primeng/button';
     ReactiveFormsModule,
     FileUploadModule,
     CardModule,
-    ButtonModule
+    ButtonModule,
+    DialogModule,
+    AccordionModule,
+    AutoCompleteModule,
+    RadioButtonModule,
+    InputTextModule,
   ],
   providers: [],
 })
-export class CategoryModule { }
+export class CategoryModule {}

@@ -1,0 +1,63 @@
+<div class="p-field p-col-12">
+  <form [formGroup]="parentForm">
+    <p-card
+      styleClass="curriculum-lists"
+      *ngFor="let item of formLists.controls; index as i"
+    >
+      <ng-template pTemplate="header">
+        <div class="section-info">
+          <span class="section-number">{{
+            "Section" + " " + (i + 1) + " " + ":"
+          }}</span>
+          <i class="pi pi-book"></i>
+          <input
+            class="section-title"
+            type="text"
+            pInputText
+            [formControl]="item.get('title')"
+            style="width: 450px"
+          />
+
+          <span class="section-action">
+            <i class="pi pi-pencil" (click)="onEditSection(i)"></i>
+            <i class="pi pi-trash"></i>
+          </span>
+        </div>
+
+        <p-divider></p-divider>
+      </ng-template>
+
+      <p-card
+        styleClass="chapter-editor"
+        *ngFor="let itemChapter of getChapter(item); index as j"
+      >
+        <div class="edit-chapter">
+          <i class="pi pi-check"></i>
+
+          <span class="lecture-number">
+            {{ "Lecture" + " " + (j + 1) + " " + ":" }}</span
+          >
+          <i class="pi pi-book"></i>
+          <input
+            class="lecture-title"
+            type="text"
+            pInputText
+            [formControl]="itemChapter.get('title')"
+            style="width: 450px"
+          />
+          <span class="lecture-action">
+            <i class="pi pi-pencil"></i>
+            <i class="pi pi-trash"></i>
+          </span>
+        </div>
+
+        <div class="add-content">
+          <button>+ Content</button>
+        </div>
+      </p-card>
+      <div class="add-lecture">
+        <button (click)="onAddLecture(item)">Add lecture</button>
+      </div>
+    </p-card>
+  </form>
+</div>

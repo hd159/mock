@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
+import { CoursesDetailComponent } from '../courses/courses-detail/courses-detail.component';
+import { CoursesPaymentComponent } from '../courses/courses-payment/courses-payment.component';
 import { CoursesComponent } from '../courses/courses.component';
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
 import { HostCategoryComponent } from './host-category/host-category.component';
@@ -11,7 +13,9 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: 'courses/111', component: CoursesComponent },
+      { path: 'courses', component: CoursesComponent },
+      { path: 'courses/:id', component: CoursesDetailComponent },
+      { path: 'checkout', component: CoursesPaymentComponent },
       {
         path: ':name',
         component: HostCategoryComponent,

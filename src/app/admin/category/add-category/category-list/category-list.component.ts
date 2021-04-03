@@ -20,9 +20,7 @@ export class CategoryListComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {}
 
-  ngOnChanges() {
-    console.log(this.parentForm.value);
-  }
+  ngOnChanges() {}
 
   get categoryLists() {
     return (this.parentForm.get('list') as FormArray).controls;

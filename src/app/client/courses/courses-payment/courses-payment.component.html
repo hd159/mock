@@ -1,0 +1,128 @@
+<div class="container">
+  <div class="p-grid">
+    <div class="p-col-7">
+      <div class="checkout-info">
+        <h2 class="title">Checkout</h2>
+
+        <div class="checkout-address">
+          <h3>Billing Address</h3>
+          <p-autoComplete
+            [suggestions]="filteredCountries"
+            field="name"
+            [dropdown]="true"
+          >
+            <ng-template let-country pTemplate="item">
+              <div class="country-item">
+                <div>{{ country.name }}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
+        </div>
+
+        <div class="checkout-billing-options">
+          <div class="options-method">
+            <p-radioButton
+              name="groupname"
+              value="New payment card"
+            ></p-radioButton>
+            <p-radioButton name="groupname" value="Paypal"></p-radioButton>
+          </div>
+
+          <div class="payment-method-info">
+            <div class="for-card">
+              <p-card class="p-grid">
+                <input
+                  type="text"
+                  pInputText
+                  placeholder="Name on Card"
+                  class="p-col-12"
+                />
+                <input
+                  type="text"
+                  pInputText
+                  placeholder="Card Number"
+                  class="p-col-12"
+                />
+                <input
+                  type="text"
+                  pInputText
+                  placeholder="MM/YY"
+                  class="p-col-6"
+                />
+                <span class="p-col-1" style="display: inline-block"></span>
+                <input
+                  type="text"
+                  pInputText
+                  placeholder="Security Code"
+                  class="p-col-5"
+                />
+                <input
+                  type="text"
+                  pInputText
+                  placeholder="Zip/Postal Code"
+                  class="p-col-6"
+                />
+              </p-card>
+            </div>
+
+            <div class="for-paypal">
+              <p-card>
+                <p class="title">
+                  In order to complete your transaction, we will transfer you
+                  over to PayPal's secure servers.
+                </p>
+              </p-card>
+            </div>
+          </div>
+
+          <div class="payment-detail">
+            <h2 class="title">Order Details</h2>
+            <ul class="list-items">
+              <li>
+                <div class="item">
+                  <img
+                    src="https://img-a.udemycdn.com/course/100x100/567828_67d0.jpg?skVFv9mg848kPNsXblT2qUcWnvdzMY5PC7ezpYocIav4oVJ17A1uWBKi3qw7urEI0fSlHZwUN_8rlzOMok6EwCZpkU6sEjBTV0q2lLVtT6b0bInCROuRANDMQQLu"
+                    alt=""
+                  />
+                  <p class="name">
+                    2021 Complete Python Bootcamp From Zero to Hero in Python
+                  </p>
+                  <span class="price">$11.99</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-col-5">
+      <p-card class="checkout-panel">
+        <div class="complete-checkout">
+          <h2 class="title">Summary</h2>
+          <div class="original-price">
+            <span>Original price:</span>
+            <span>$259.98</span>
+          </div>
+          <div class="discounts">
+            <span>Coupon discounts:</span>
+            <span>-$236.00</span>
+          </div>
+          <div class="total">
+            <span>Total:</span>
+            <span>$23.98</span>
+          </div>
+        </div>
+
+        <p class="legal">
+          By completing your purchase you agree to these Terms of Service.
+        </p>
+        <p-button
+          label="Complete Payment"
+          (click)="onPayment()"
+          id="paypal"
+        ></p-button>
+      </p-card>
+    </div>
+  </div>
+</div>
