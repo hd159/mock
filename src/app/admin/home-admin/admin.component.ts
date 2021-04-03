@@ -14,9 +14,11 @@ export class AdminComponent implements OnInit {
   userDropdown: boolean = false;
   sidebarToggle: boolean = true;
   wasInside: boolean = false;
-  user$: Observable<User>;
+  user$: User
   constructor(private authService: AuthService, private router: Router) {
-    this.user$ = this.authService.selectAuthData('currentUser');
+    this.authService.isAdminSubject$.subscribe((data) => {
+      this.user$ = data
+    })
   }
 
   ngOnInit(): void { }

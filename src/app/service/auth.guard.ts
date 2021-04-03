@@ -17,21 +17,21 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanLoad, CanActivate {
-  constructor(private router: Router, private authService: AuthService) {}
-  canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> {
-    return this.authService.isAdmin$.pipe(
+  constructor(private router: Router, private authService: AuthService) { }
+  canLoad(route: Route, segments: UrlSegment[]): Observable<any> {
+    return this.authService.isAdminSubject$.pipe(
       tap((val) => {
-        if (!val) {
+        if (val === null) {
           this.router.navigateByUrl('admin/login');
         }
       })
     );
   }
 
-  canActivate(): Observable<boolean> {
-    return this.authService.isAdmin$.pipe(
+  canActivate(): Observable<any> {
+    return this.authService.isAdminSubject$.pipe(
       tap((val) => {
-        if (!val) {
+        if (val === null) {
           this.router.navigateByUrl('admin/login');
         }
       })

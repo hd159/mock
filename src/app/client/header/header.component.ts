@@ -34,7 +34,10 @@ export class HeaderComponent implements OnInit {
         },
         { label: 'My learning' },
         { label: 'My cart' },
-        { label: 'Log out' }
+        {
+          label: 'Log out',
+          command: () => this.logoutUser()
+        }
       ],
 
     }
@@ -44,6 +47,12 @@ export class HeaderComponent implements OnInit {
   }
   showCart() {
     this._router.navigateByUrl('/cart')
+  }
+  logoutUser() {
+    localStorage.setItem('logged', 'false')
+    localStorage.setItem('typeUser', '')
+    this.isLogin = false
+    this._router.navigateByUrl('/')
   }
   ngOnInit(): void {
     if (localStorage.getItem('logged') == 'true')

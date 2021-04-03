@@ -29,7 +29,7 @@ const initialAuthState: AuthState = {
   providedIn: 'root',
 })
 export class AuthService {
-  private roleAdmin = 'c0010439-58dc-4ed2-a498-841e69ed082e';
+  private roleIdAdmin = 'c0010439-58dc-4ed2-a498-841e69ed082e';
   listRoles = {
     'c0010439-58dc-4ed2-a498-841e69ed082e': 'admin',
     '200557a4-d086-4fce-8c22-6af8b27d2da7': 'user',
@@ -42,12 +42,10 @@ export class AuthService {
 
   private headers = new HttpHeaders().set('Authorization', this.key);
 
-  private isAdminSubject = new BehaviorSubject<boolean>(null);
-  isAdmin$ = this.isAdminSubject.asObservable().pipe(distinctUntilChanged());
+  isAdminSubject$ = new BehaviorSubject<User>(null);
 
   private authSubject = new BehaviorSubject<AuthState>(initialAuthState);
   authState$: Observable<AuthState> = this.authSubject.asObservable();
-  roleIdAdmin = 'c0010439-58dc-4ed2-a498-841e69ed082e';
 
   constructor(
     private http: HttpClient,
@@ -55,30 +53,27 @@ export class AuthService {
     private categoryService: CategoryService
   ) { }
 
-  get valueAuthState() {
-    return this.authSubject.getValue();
-  }
+  // get valueAuthState() {
+  //   return this.authSubject.getValue();
+  // }
 
-  setAuthState(val: Partial<AuthState>) {
-    this.authSubject.next({ ...this.valueAuthState, ...val });
-  }
+  // setAuthState(val: Partial<AuthState>) {
+  //   this.authSubject.next({ ...this.valueAuthState, ...val });
+  // }
 
   selectAuthData<T>(prop: string): Observable<T> {
     return this.authState$.pipe(map((val) => val[prop]));
   }
 
-  updateAuthState<T>(prop: string, payload: { key: string; value: T[] }) {
-    const currentValue = this.valueAuthState[prop];
+  // updateAuthState<T>(prop: string, payload: { key: string; value: T[] }) {
+  //   const currentValue = this.valueAuthState[prop];
 
-    const fieldUpdate = currentValue[payload.key];
+  //   const fieldUpdate = currentValue[payload.key];
 
-    const newValue = { [payload.key]: [...fieldUpdate, ...payload.value] };
+  //   const newValue = { [payload.key]: [...fieldUpdate, ...payload.value] };
 
-    return this.setAuthState({ [prop]: { ...currentValue, ...newValue } });
-  }
-
-
-
+  //   return this.setAuthState({ [prop]: { ...currentValue, ...newValue } });
+  // }
 
   mapUser(user: any, mode?: string) {
     let userInfo: User;
@@ -104,6 +99,7 @@ export class AuthService {
         if (data._kmd.roles !== undefined) {
           if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
             localStorage.setItem('typeUser', 'admin')
+            this.isAdminSubject$.next(data)
           }
         }
         else
@@ -126,14 +122,14 @@ export class AuthService {
   // }
 
 
-  setRoleAdmin(user: User) {
-    if (user.roleId.includes(this.roleAdmin)) {
-      this.isAdminSubject.next(true);
-      this.setAuthState({ currentUser: user });
-    } else {
-      this.isAdminSubject.next(false);
-    }
-  }
+  // setRoleAdmin(user: User) {
+  //   if (user.roleId.includes(this.roleIdAdmin)) {
+  //     this.isAdminSubject.next(true);
+  //     this.setAuthState({ currentUser: user });
+  //   } else {
+  //     this.isAdminSubject.next(false);
+  //   }
+  // }
 
 
 
@@ -147,7 +143,7 @@ export class AuthService {
 
   getAllUser(): Observable<User[]> {
     return this.http
-      .get<any[]>(this.userUrl, { headers: this.headers })
+      .get<any[]>(this.userUrl)
       .pipe(
         map((users) => users.map((user) => this.mapUser(user, 'http'))),
         catchError((err) => throwError(err))
