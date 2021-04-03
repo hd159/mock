@@ -1,0 +1,23 @@
+<div class="container">
+  <p-card header="Curriculum">
+    <p class="title">
+      If you’re intending to offer your course for free, the total length of
+      video content must be less than 2 hours.
+    </p>
+
+    <form [formGroup]="formCurriculum">
+      <app-curriculum-item
+        [parentForm]="formCurriculum"
+        (addLecture)="addLecture($event)"
+      ></app-curriculum-item>
+    </form>
+
+    <div class="add-content">
+      <button (click)="addSection()">Add section</button>
+    </div>
+
+    <!-- <div class="add-content">
+      <button (click)="onSubmit()">Submit</button>
+    </div> -->
+  </p-card>
+</div>

@@ -1,0 +1,43 @@
+<div class="p-field p-col-12">
+  <p-card header="Target your students">
+    <p class="title">
+      The descriptions you write here will help students decide if your course
+      is the one for them.
+    </p>
+
+    <form [formGroup]="targetForm" (ngSubmit)="onSubmit()">
+      <app-courses-form-target
+        [parentForm]="targetForm"
+        field="goal"
+        [label]="label_target"
+        [placeholder]="placeholder_target"
+      ></app-courses-form-target>
+
+      <app-courses-form-target
+        [parentForm]="targetForm"
+        field="require"
+        [label]="label_require"
+        [placeholder]="label_require"
+      ></app-courses-form-target>
+
+      <app-courses-form-target
+        [parentForm]="targetForm"
+        field="target_student"
+        [label]="label_target_student"
+        [placeholder]="placeholder_target_student"
+      ></app-courses-form-target>
+
+      <p-button
+        label="Save"
+        icon="pi pi-check"
+        type="submit"
+        disabled="true"
+      ></p-button>
+    </form>
+  </p-card>
+
+  <app-courses-landingpage #landing></app-courses-landingpage>
+  <app-courses-curriculum #curriculum></app-courses-curriculum>
+
+  <p-button label="Add new Course" (click)="onSubmit()"></p-button>
+</div>

@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from './shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { SubCategoryComponent } from './client/home/home-post-item/home-post-item';
@@ -44,6 +45,7 @@ import { RequestInterceptor } from './service/interceptor';
     SharedModule,
     IvyCarouselModule,
     SweetAlert2Module.forRoot(),
+    BrowserAnimationsModule,
     KinveyModule.init({
       appKey: 'kid_rJvDFm84u',
       appSecret: 'a3c84d5e164d416ba042ee073fa826e6',
