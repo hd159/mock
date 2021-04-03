@@ -20,6 +20,8 @@ import { LoginComponent } from './login/login.component';
 import { HomeClientComponent } from './client/home-client/home-client.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { RequestInterceptor } from './service/interceptor';
+import { UserInfoComponent } from './pageUser/user-info/user-info.component';
+import { CartComponent } from './pageUser/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { RequestInterceptor } from './service/interceptor';
     LoginComponent,
     RegisterComponent,
     HomeClientComponent,
+    UserInfoComponent,
+    CartComponent,
   ],
   imports: [
     CommonModule,

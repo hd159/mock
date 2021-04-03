@@ -19,9 +19,23 @@
         </div>
       </div>
       <div class="icon-container">
-        <a routerLink="admin/login"
-          ><i class="fas fa-user-astronaut"></i> <span>Login</span></a
-        >
+        <ng-container *ngIf="!isLogin; else showinfo">
+          <button
+            routerLink="admin/login"
+            pButton
+            pRipple
+            type="button"
+            label="Login"
+            class="p-button-raised p-button-text"
+          ></button>
+          <p-button routerLink="admin/register" label="Sign Up"></p-button>
+        </ng-container>
+
+        <ng-template #showinfo>
+          <div class="icon-user">
+            <p-menubar [model]="items"></p-menubar>
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>

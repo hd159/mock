@@ -20,7 +20,11 @@ import { SwalAlertComponent } from './swal-alert/swal-alert.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { LoadingPlaceholderComponent } from './loading-placeholder/loading-placeholder.component';
 import { InputTextModule } from 'primeng/inputtext';
-
+import { ButtonModule } from 'primeng/button';
+import { MenubarModule } from 'primeng/menubar';
+import { MenuItem } from 'primeng/api';
+import { AvatarModule } from 'primeng/avatar';
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
   declarations: [
     SafeHtmlPipe,
@@ -45,6 +49,10 @@ import { InputTextModule } from 'primeng/inputtext';
     ReactiveFormsModule,
     SweetAlert2Module.forChild(),
     InputTextModule,
+    ButtonModule,
+    MenubarModule,
+    AvatarModule,
+    DropdownModule
   ],
   exports: [
     SafeHtmlPipe,
@@ -61,6 +69,11 @@ import { InputTextModule } from 'primeng/inputtext';
     ErrorNetworkComponent,
     SwalAlertComponent,
     LoadingPlaceholderComponent,
+    ButtonModule,
+    MenubarModule,
+    AvatarModule,
+    DropdownModule,
+    InputTextModule
   ],
 })
-export class SharedModule {}
+export class SharedModule { }

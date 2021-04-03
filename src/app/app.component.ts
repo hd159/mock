@@ -22,8 +22,8 @@ import { Store } from './store';
 })
 export class AppComponent implements OnDestroy {
   constructor(private authService: AuthService) {
-    this.authService.setUser().subscribe();
+
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 }

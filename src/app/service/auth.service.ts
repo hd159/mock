@@ -22,7 +22,7 @@ export interface AuthState {
 
 const initialAuthState: AuthState = {
   currentUser: null,
-  canLoadPost: false,
+  canLoadPost: true,
 };
 
 @Injectable({
@@ -47,13 +47,13 @@ export class AuthService {
 
   private authSubject = new BehaviorSubject<AuthState>(initialAuthState);
   authState$: Observable<AuthState> = this.authSubject.asObservable();
+  roleIdAdmin = 'c0010439-58dc-4ed2-a498-841e69ed082e';
 
   constructor(
-    private userService: UserService,
     private http: HttpClient,
     private loading: LoadingService,
     private categoryService: CategoryService
-  ) { }
+  ) {}
 
   get valueAuthState() {
     return this.authSubject.getValue();
@@ -77,33 +77,6 @@ export class AuthService {
     return this.setAuthState({ [prop]: { ...currentValue, ...newValue } });
   }
 
-  get activeUser(): Observable<User> {
-    return of(this.userService.getActiveUser()).pipe(
-      map((user) => {
-        console.log(user);
-        if (user) {
-          return this.mapUser(user);
-        } else {
-          return null;
-        }
-      }),
-      catchError((err) => {
-        console.log({ ...err }, 1);
-        return throwError(err);
-      })
-    );
-  }
-
-  get activeUser1() {
-    return this.userService.getActiveUser();
-  }
-
-  signup(data: any) {
-    return from(this.userService.signup(data)).pipe(
-      catchError((err) => throwError(err))
-    );
-  }
-
   mapUser(user: any, mode?: string) {
     let userInfo: User;
     let roleId: string[];
@@ -123,29 +96,33 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<User> {
-    return from(this.userService.login(username, password)).pipe(
-      map((user) => this.mapUser(user)),
-      tap((user) => {
-        this.setRoleAdmin(user);
-      }),
-      catchError((err) => throwError(err))
-    );
-  }
-
-  logout() {
-    return from(this.userService.logout()).pipe(
-      tap((val) => console.log(val, 'logout')),
-      catchError((err) => {
-        console.log({ ...err }, 'logout');
-        return throwError(err);
+    return this.http
+      .post<any>(`${this.userUrl}/login`, {
+        username: username,
+        password: password,
       })
-    );
+      .pipe(
+        map((data: any) => {
+          if (data._kmd.roles !== undefined) {
+            if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
+              localStorage.setItem('typeUser', 'admin');
+            }
+          } else localStorage.setItem('typeUser', 'user');
+
+          return data;
+        })
+      );
   }
 
-  loginDefault() {
-    this.setAuthState({ canLoadPost: false });
-    return this.logout().pipe(switchMap(() => this.login('test', '123456')));
-  }
+  // logout() {
+  //   return from(this.userService.logout()).pipe(
+  //     tap((val) => console.log(val, 'logout')),
+  //     catchError((err) => {
+  //       console.log({ ...err }, 'logout');
+  //       return throwError(err);
+  //     })
+  //   );
+  // }
 
   setRoleAdmin(user: User) {
     if (user.roleId.includes(this.roleAdmin)) {
@@ -156,32 +133,7 @@ export class AuthService {
     }
   }
 
-  setUser() {
-    document.body.style.overflow = 'hidden';
-    this.loading.loadingOn();
-    return this.activeUser.pipe(
-      map((user) => {
-        if (user) {
-          this.setAuthState({ canLoadPost: true });
-          console.log(user, 'inset');
-          this.setRoleAdmin(user);
-        } else {
-          this.setAuthState({ canLoadPost: false });
-          return this.loginDefault().pipe(
-            tap((user) => this.setAuthState({ canLoadPost: true }))
-          );
-        }
-      }),
-      finalize(() => {
-        this.loading.loadingOff();
-        document.body.style.overflow = 'visible';
-      })
-    );
-  }
-
   registerUser(data: any) {
-
-
     return this.http
       .post(this.userUrl, data)
       .pipe(catchError((err) => throwError(err)));
@@ -194,11 +146,5 @@ export class AuthService {
         map((users) => users.map((user) => this.mapUser(user, 'http'))),
         catchError((err) => throwError(err))
       );
-  }
-
-  remove(userId: string) {
-    return from(this.userService.remove(userId, { hard: true })).pipe(
-      catchError((err) => throwError(err))
-    );
   }
 }

@@ -16,13 +16,13 @@ export class UserComponent implements OnInit {
   };
 
   showModal = false;
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.userLists$ = this.authService.getAllUser();
   }
 
   deleteUser(id: string) {
-    this.authService.remove(id).subscribe(console.log);
+
   }
 }

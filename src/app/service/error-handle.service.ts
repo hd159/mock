@@ -6,13 +6,13 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class ErrorHandleService {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   handleError(error: any) {
     console.log(error, 2323232);
     switch (error.name) {
       case 'InvalidCredentialsError':
-        this.authService.setUser().subscribe();
+        // this.authService.setUser().subscribe();
         break;
       case 'NotFoundError':
         this.router.navigateByUrl('not-found');
