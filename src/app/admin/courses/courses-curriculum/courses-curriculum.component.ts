@@ -8,7 +8,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class CoursesCurriculumComponent implements OnInit {
   formCurriculum: FormGroup;
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.formCurriculum = this.initForm();
@@ -45,6 +45,8 @@ export class CoursesCurriculumComponent implements OnInit {
     const sections = this.formCurriculum.get('section') as FormArray;
     sections.push(this.detailSection());
   }
+
+
 
   onSubmit() {
     console.log(this.formCurriculum.value);

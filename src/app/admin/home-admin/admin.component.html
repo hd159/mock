@@ -12,7 +12,7 @@
       (click)="toggleUserDropdown()"
     >
       <p class="text-light"><i class="fas fa-user-circle"></i></p>
-      <p class="text-light ml-2">{{ user$.username }}</p>
+      <p class="text-light ml-2">{{ user?.username }}</p>
     </div>
   </div>
   <div class="dropdown-user" *ngIf="userDropdown">

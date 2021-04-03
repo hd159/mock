@@ -5,7 +5,7 @@ import { KinveyModule } from 'kinvey-angular-sdk';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from './shared/shared.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
@@ -47,6 +47,7 @@ import { CartComponent } from './pageUser/cart/cart.component';
     HttpClientModule,
     ReactiveFormsModule,
     SharedModule,
+    FormsModule,
     IvyCarouselModule,
     SweetAlert2Module.forRoot(),
     BrowserAnimationsModule,
@@ -61,4 +62,4 @@ import { CartComponent } from './pageUser/cart/cart.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

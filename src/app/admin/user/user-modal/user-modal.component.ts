@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-modal',
@@ -9,28 +9,33 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class UserModalComponent implements OnInit {
   @Input() showModal: boolean;
   @Output() showModalChange = new EventEmitter<boolean>();
+  @Input() user: any
+  form: FormGroup
+  submitted = false;
 
-  formEdit: FormGroup = this.fb.group({
-    title: '',
-    img: '',
-    group: '',
-    desc: '',
-  });
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
-  ngOnChanges() {}
+  ngOnChanges() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      username: [this.user.username, Validators.required],
+      firstName: [this.user.firstName, Validators.required],
+      lastName: [this.user.lastName, Validators.required],
+      email: [this.user.email, Validators.required],
+      password: [this.user.password, Validators.required],
+    });
+  }
 
   onClose() {
     this.showModalChange.emit(!this.showModal);
   }
 
   onSubmit() {
-    const { value } = this.formEdit;
+
 
     this.onClose();
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 }

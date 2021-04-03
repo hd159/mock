@@ -20,7 +20,7 @@
 
           <span class="section-action">
             <i class="pi pi-pencil" (click)="onEditSection(i)"></i>
-            <i class="pi pi-trash"></i>
+            <i class="pi pi-trash" (click)="onDeleteSection(i)"></i>
           </span>
         </div>
 
@@ -31,29 +31,43 @@
         styleClass="chapter-editor"
         *ngFor="let itemChapter of getChapter(item); index as j"
       >
-        <div class="edit-chapter">
-          <i class="pi pi-check"></i>
-
-          <span class="lecture-number">
-            {{ "Lecture" + " " + (j + 1) + " " + ":" }}</span
-          >
-          <i class="pi pi-book"></i>
-          <input
-            class="lecture-title"
-            type="text"
-            pInputText
-            [formControl]="itemChapter.get('title')"
-            style="width: 450px"
-          />
-          <span class="lecture-action">
-            <i class="pi pi-pencil"></i>
-            <i class="pi pi-trash"></i>
-          </span>
-        </div>
-
-        <div class="add-content">
+        <!-- <div class="add-content">
           <button>+ Content</button>
-        </div>
+        </div> -->
+
+        <p-panel [toggleable]="true" [collapsed]="true" style="width: 100%">
+          <ng-template pTemplate="header"
+            ><div class="edit-chapter">
+              <i class="pi pi-check"></i>
+
+              <span class="lecture-number">
+                {{ "Lecture" + " " + (j + 1) + " " + ":" }}</span
+              >
+              <i class="pi pi-book"></i>
+              <input
+                class="lecture-title"
+                type="text"
+                pInputText
+                [formControl]="itemChapter.get('title')"
+                style="width: 450px"
+              />
+              <span class="lecture-action">
+                <i class="pi pi-pencil"></i>
+                <i class="pi pi-trash" (click)="onDeleteChapter(item, j)"></i>
+              </span>
+            </div>
+          </ng-template>
+
+          <!-- <ng-template pTemplate="icons">
+            <span class="add-content">
+              <button>Content</button>
+            </span>
+          </ng-template> -->
+          <div class="lecture-desc">
+            <label for="">Lecture description</label>
+            <app-text-editor [height]="200"></app-text-editor>
+          </div>
+        </p-panel>
       </p-card>
       <div class="add-lecture">
         <button (click)="onAddLecture(item)">Add lecture</button>
@@ -61,3 +75,9 @@
     </p-card>
   </form>
 </div>
+
+<p-confirmDialog
+  [style]="{ width: '50vw', top: '-150px' }"
+  [baseZIndex]="100000"
+></p-confirmDialog>
+<p-toast [baseZIndex]="100000"></p-toast>
