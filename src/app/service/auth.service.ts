@@ -22,7 +22,7 @@ export interface AuthState {
 
 const initialAuthState: AuthState = {
   currentUser: null,
-  canLoadPost: false,
+  canLoadPost: true,
 };
 
 @Injectable({
@@ -53,7 +53,7 @@ export class AuthService {
     private http: HttpClient,
     private loading: LoadingService,
     private categoryService: CategoryService
-  ) { }
+  ) {}
 
   get valueAuthState() {
     return this.authSubject.getValue();
@@ -77,9 +77,6 @@ export class AuthService {
     return this.setAuthState({ [prop]: { ...currentValue, ...newValue } });
   }
 
-
-
-
   mapUser(user: any, mode?: string) {
     let userInfo: User;
     let roleId: string[];
@@ -99,20 +96,22 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<User> {
-    return this.http.post<any>(`${this.userUrl}/login`, { username: username, password: password }).pipe(
-      map((data: any) => {
-        if (data._kmd.roles !== undefined) {
-          if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
-            localStorage.setItem('typeUser', 'admin')
-          }
-        }
-        else
-          localStorage.setItem('typeUser', 'user')
-
-        return data
+    return this.http
+      .post<any>(`${this.userUrl}/login`, {
+        username: username,
+        password: password,
       })
-    );
+      .pipe(
+        map((data: any) => {
+          if (data._kmd.roles !== undefined) {
+            if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
+              localStorage.setItem('typeUser', 'admin');
+            }
+          } else localStorage.setItem('typeUser', 'user');
 
+          return data;
+        })
+      );
   }
 
   // logout() {
@@ -125,7 +124,6 @@ export class AuthService {
   //   );
   // }
 
-
   setRoleAdmin(user: User) {
     if (user.roleId.includes(this.roleAdmin)) {
       this.isAdminSubject.next(true);
@@ -135,11 +133,7 @@ export class AuthService {
     }
   }
 
-
-
   registerUser(data: any) {
-
-
     return this.http
       .post(this.userUrl, data)
       .pipe(catchError((err) => throwError(err)));
@@ -153,5 +147,4 @@ export class AuthService {
         catchError((err) => throwError(err))
       );
   }
-
 }
