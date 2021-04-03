@@ -22,12 +22,16 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private categoryService: CategoryService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
     });
   }
 
@@ -43,7 +47,9 @@ export class RegisterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-
+    if (this.form.get('password').value !== this.form.get('confirmPassword').value) {
+      return;
+    }
     this.loading = true;
 
     // send request to server here

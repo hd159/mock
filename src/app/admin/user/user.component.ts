@@ -20,6 +20,9 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.userLists$ = this.authService.getAllUser();
+    this.userLists$.subscribe((data) => {
+      console.log(data)
+    })
   }
 
   deleteUser(id: string) {

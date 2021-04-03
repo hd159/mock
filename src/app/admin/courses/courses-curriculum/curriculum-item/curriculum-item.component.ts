@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-curriculum-item',
@@ -13,9 +14,9 @@ export class CurriculumItemComponent implements OnInit {
 
   isEditSection = false;
   currentIndexSection: number = 0;
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private confirmationService: ConfirmationService, private messageService: MessageService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   get formLists() {
     return this.parentForm.get('section') as FormArray;
@@ -53,4 +54,51 @@ export class CurriculumItemComponent implements OnInit {
     this.isEditSection = true;
     this.currentIndexSection = index;
   }
+
+  onDeleteSection(index) {
+
+    this.confirmationService.confirm({
+      message: 'You are about to remove a curriculum item. Are you sure you want to continue?',
+      header: 'Please confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Section deleted' });
+        this.formLists.removeAt(index)
+      },
+      reject: (type) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
+            break;
+        }
+      }
+    });
+  }
+
+  onDeleteChapter(sectionItem, index) {
+    this.confirmationService.confirm({
+      message: 'You are about to remove a curriculum item. Are you sure you want to continue?',
+      header: 'Please confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Lecture deleted' });
+        sectionItem.get('chapter').removeAt(index);
+      },
+      reject: (type) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
+            break;
+        }
+      }
+    });
+  }
+
+
 }

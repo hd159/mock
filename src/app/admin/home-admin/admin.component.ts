@@ -1,6 +1,6 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { Store, User } from 'src/app/store';
@@ -10,16 +10,25 @@ import { Store, User } from 'src/app/store';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
   userDropdown: boolean = false;
   sidebarToggle: boolean = true;
   wasInside: boolean = false;
-  user$: Observable<User>;
-  constructor(private authService: AuthService, private router: Router) {
-    this.user$ = this.authService.selectAuthData('currentUser');
+  user: User
+  subscription: Subscription[] = []
+  constructor(private authService: AuthService, private _router: Router) {
+    const sub = this.authService.isAdminSubject$.subscribe((data) => {
+      this.user = data
+    })
+
+    this.subscription.push(sub)
   }
 
   ngOnInit(): void { }
+
+  ngOnDestroy() {
+    this.subscription.forEach(sub => sub.unsubscribe())
+  }
 
   toggleUserDropdown() {
     this.userDropdown = !this.userDropdown;
@@ -39,6 +48,8 @@ export class AdminComponent implements OnInit {
   }
 
   onLogout() {
-
+    localStorage.setItem('logged', 'false')
+    localStorage.setItem('typeUser', '')
+    this._router.navigateByUrl('/')
   }
 }

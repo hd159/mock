@@ -36,6 +36,13 @@ import { CurriculumItemComponent } from './courses/courses-curriculum/curriculum
 import { CoursesLandingpageComponent } from './courses/courses-landingpage/courses-landingpage.component';
 import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
+import { ToastModule } from 'primeng/toast';
+import { PanelModule } from 'primeng/panel';
+
+
 
 @NgModule({
   declarations: [
@@ -76,7 +83,11 @@ import { DropdownModule } from 'primeng/dropdown';
     ButtonModule,
     DividerModule,
     DropdownModule,
+    ConfirmDialogModule,
+    MessagesModule,
+    ToastModule,
+    PanelModule
   ],
-  providers: [SweetAlert2Module],
+  providers: [SweetAlert2Module, ConfirmationService, MessageService],
 })
-export class AdminModule {}
+export class AdminModule { }
