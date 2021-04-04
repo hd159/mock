@@ -35,7 +35,7 @@
           <button>+ Content</button>
         </div> -->
 
-        <p-panel [toggleable]="true" [collapsed]="true" style="width: 100%">
+        <p-panel [toggleable]="true" [collapsed]="true">
           <ng-template pTemplate="header"
             ><div class="edit-chapter">
               <i class="pi pi-check"></i>
@@ -58,14 +58,56 @@
             </div>
           </ng-template>
 
-          <!-- <ng-template pTemplate="icons">
-            <span class="add-content">
-              <button>Content</button>
-            </span>
-          </ng-template> -->
           <div class="lecture-desc">
             <label for="">Lecture description</label>
-            <app-text-editor [height]="200"></app-text-editor>
+            <app-text-editor
+              [height]="200"
+              [parentForm]="itemChapter"
+            ></app-text-editor>
+          </div>
+
+          <div class="lecture-content-type">
+            <p-tabView>
+              <p-tabPanel header="Video">
+                <div class="video-upload p-d-flex p-flex-column">
+                  <label>Upload video</label>
+                  <input
+                    type="text"
+                    pInputText
+                    [formControl]="itemChapter.get('videoUrl')"
+                    style="width: 450px"
+                  />
+                </div>
+              </p-tabPanel>
+              <p-tabPanel header="Video & Slide Mashup">
+                <div class="video-upload p-d-flex p-flex-column">
+                  <label>Upload video</label>
+                  <input
+                    type="text"
+                    pInputText
+                    [formControl]="itemChapter.get('videoUrl')"
+                    style="width: 450px"
+                  />
+                </div>
+
+                <div class="pdf-upload p-d-flex p-flex-column">
+                  <label>Upload Pdf</label>
+                  <input
+                    type="text"
+                    pInputText
+                    [formControl]="itemChapter.get('pdfUrl')"
+                    style="width: 450px"
+                  />
+                </div>
+              </p-tabPanel>
+              <!-- <p-tabPanel header="Article">
+                <label for="">Text</label>
+                <app-text-editor
+                  [height]="200"
+                  formControlName="article_lecture"
+                ></app-text-editor>
+              </p-tabPanel> -->
+            </p-tabView>
           </div>
         </p-panel>
       </p-card>

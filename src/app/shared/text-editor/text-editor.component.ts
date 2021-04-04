@@ -9,7 +9,8 @@ import { FormGroup } from '@angular/forms';
 export class TextEditorComponent implements OnInit, OnChanges {
   @Input() parentForm: FormGroup;
   @Input() mode = 'admin';
-  @Input() height = 500
+  @Input() height = 500;
+  @Input() formControlName = 'html'
   plugins = [
     'advlist autolink lists link image charmap print preview anchor',
     'searchreplace visualblocks code fullscreen',

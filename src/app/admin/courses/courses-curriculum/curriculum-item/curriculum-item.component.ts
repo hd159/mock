@@ -53,6 +53,7 @@ export class CurriculumItemComponent implements OnInit {
   onEditSection(index) {
     this.isEditSection = true;
     this.currentIndexSection = index;
+
   }
 
   onDeleteSection(index) {

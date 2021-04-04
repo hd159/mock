@@ -31,8 +31,10 @@ export class CoursesCurriculumComponent implements OnInit {
   detailChapter() {
     return this.fb.group({
       title: 'Introduction',
-      desctiption: '',
+      html: '',
       videoUrl: '',
+      pdfUrl: '',
+      article_lecture: ''
     });
   }
 

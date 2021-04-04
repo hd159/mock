@@ -41,6 +41,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { ToastModule } from 'primeng/toast';
 import { PanelModule } from 'primeng/panel';
+import { TabViewModule } from 'primeng/tabview';
+
 
 
 
@@ -86,7 +88,8 @@ import { PanelModule } from 'primeng/panel';
     ConfirmDialogModule,
     MessagesModule,
     ToastModule,
-    PanelModule
+    PanelModule,
+    TabViewModule
   ],
   providers: [SweetAlert2Module, ConfirmationService, MessageService],
 })
