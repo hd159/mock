@@ -1,4 +1,4 @@
-<div class="container">
+<div class="p-field p-col-12">
   <p-card header="Curriculum">
     <p class="title">
       If you’re intending to offer your course for free, the total length of
@@ -16,8 +16,20 @@
       <button (click)="addSection()">Add section</button>
     </div>
 
-    <!-- <div class="add-content">
-      <button (click)="onSubmit()">Submit</button>
-    </div> -->
+    <ng-template pTemplate="footer">
+      <div class="p-grid p-nogutter p-justify-between p-col-8">
+        <p-button
+          label="Back"
+          (onClick)="prevPage()"
+          icon="pi pi-angle-left"
+        ></p-button>
+        <p-button
+          label="Next"
+          (onClick)="nextPage()"
+          icon="pi pi-angle-right"
+          iconPos="right"
+        ></p-button>
+      </div>
+    </ng-template>
   </p-card>
 </div>

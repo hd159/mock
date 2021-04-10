@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CoursesService } from 'src/app/service/courses.service';
 
 @Component({
   selector: 'app-courses-landingpage',
@@ -12,10 +14,17 @@ export class CoursesLandingpageComponent implements OnInit {
   levels: any[];
   categories: any[];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private coursesService: CoursesService
+  ) {}
 
   ngOnInit(): void {
     this.formLandingPage = this.initForm();
+    const valueCourse = this.coursesService.newCourseData;
+    this.formLandingPage.patchValue({ ...valueCourse });
+
     this.cities = [
       { name: 'New York', code: 'NY' },
       { name: 'Rome', code: 'RM' },
@@ -42,10 +51,20 @@ export class CoursesLandingpageComponent implements OnInit {
       selectedCategory: '',
       img: '',
       preview_video: '',
+      price: '',
     });
   }
 
   onSubmit() {
     console.log(this.formLandingPage.value);
+  }
+
+  nextPage() {
+    const landingPageData = this.formLandingPage.value;
+    this.coursesService.newCourse.next({
+      ...this.coursesService.newCourseData,
+      ...landingPageData,
+    });
+    this.router.navigate(['admin/courses/add/curriculum']);
   }
 }

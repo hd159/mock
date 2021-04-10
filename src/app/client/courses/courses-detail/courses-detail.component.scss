@@ -376,3 +376,7 @@
     }
   }
 }
+
+:host ::ng-deep .p-progress-spinner {
+  height: 500px;
+}

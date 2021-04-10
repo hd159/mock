@@ -1,0 +1,51 @@
+<div class="p-field p-col-12">
+  <p-card>
+    <p class="title">
+      The descriptions you write here will help students decide if your course
+      is the one for them.
+    </p>
+
+    <form [formGroup]="targetForm" (ngSubmit)="onSubmit()">
+      <app-courses-form-target
+        [parentForm]="targetForm"
+        field="goal"
+        [label]="label_target"
+        [placeholder]="placeholder_target"
+      ></app-courses-form-target>
+
+      <app-courses-form-target
+        [parentForm]="targetForm"
+        field="require"
+        [label]="label_require"
+        [placeholder]="label_require"
+      ></app-courses-form-target>
+
+      <app-courses-form-target
+        [parentForm]="targetForm"
+        field="target_student"
+        [label]="label_target_student"
+        [placeholder]="placeholder_target_student"
+      ></app-courses-form-target>
+
+      <p-button label="Save" icon="pi pi-check" type="submit"></p-button>
+    </form>
+
+    <ng-template pTemplate="footer">
+      <div class="p-grid p-nogutter p-justify-between">
+        <p-button
+          label="Back"
+          (onClick)="prevPage()"
+          icon="pi pi-angle-left"
+        ></p-button>
+        <!-- <p-button
+          label="Next"
+          (onClick)="nextPage()"
+          icon="pi pi-angle-right"
+          iconPos="right"
+        ></p-button> -->
+      </div>
+    </ng-template>
+  </p-card>
+</div>
+
+<p-toast [baseZIndex]="100000"></p-toast>
