@@ -30,7 +30,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { InputTextModule } from 'primeng/inputtext';
 import { CoursesComponent } from './courses/courses.component';
 import { ButtonModule } from 'primeng/button';
-import { CoursesFormTargetComponent } from './courses/courses-form-target/courses-form-target.component';
+import { CoursesFormTargetComponent } from './courses/goals-course/courses-form-target/courses-form-target.component';
 import { CoursesCurriculumComponent } from './courses/courses-curriculum/courses-curriculum.component';
 import { CurriculumItemComponent } from './courses/courses-curriculum/curriculum-item/curriculum-item.component';
 import { CoursesLandingpageComponent } from './courses/courses-landingpage/courses-landingpage.component';
@@ -42,9 +42,13 @@ import { MessagesModule } from 'primeng/messages';
 import { ToastModule } from 'primeng/toast';
 import { PanelModule } from 'primeng/panel';
 import { TabViewModule } from 'primeng/tabview';
-
-
-
+import { ToolbarModule } from 'primeng/toolbar';
+import { RatingModule } from 'primeng/rating';
+import { AddCourseComponent } from './courses/add-course/add-course.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { StepsModule } from 'primeng/steps';
+import { MenuModule } from 'primeng/menu';
+import { GoalsCourseComponent } from './courses/goals-course/goals-course.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +73,8 @@ import { TabViewModule } from 'primeng/tabview';
     CoursesCurriculumComponent,
     CurriculumItemComponent,
     CoursesLandingpageComponent,
+    AddCourseComponent,
+    GoalsCourseComponent,
   ],
   imports: [
     CommonModule,
@@ -89,8 +95,13 @@ import { TabViewModule } from 'primeng/tabview';
     MessagesModule,
     ToastModule,
     PanelModule,
-    TabViewModule
+    TabViewModule,
+    ToolbarModule,
+    RatingModule,
+    ProgressSpinnerModule,
+    StepsModule,
+    MenuModule,
   ],
   providers: [SweetAlert2Module, ConfirmationService, MessageService],
 })
-export class AdminModule { }
+export class AdminModule {}

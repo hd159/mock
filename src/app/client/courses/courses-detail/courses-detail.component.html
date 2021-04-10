@@ -1,9 +1,9 @@
 <div class="container">
-  <div class="p-grid" *ngIf="course$ | async as course">
+  <div class="p-grid" *ngIf="course$ | async as course; else loadCourse">
     <div class="p-col-8">
       <div class="course-header">
         <h1>{{ course.title }}</h1>
-        <p>{{ course.description }}</p>
+        <p>{{ course.subtitle }}</p>
         <div class="rating">
           <span class="star-rating">
             {{ course.rating }}
@@ -109,7 +109,7 @@
             </p>
 
             <iframe
-              [src]="course.preview_video"
+              [src]="course.preview_video | safeUrl"
               width="640"
               height="480"
             ></iframe>
@@ -144,7 +144,12 @@
               <i class="pi pi-clock"></i>
               <span>1 day left at this price!</span>
             </div>
-            <button class="btn btn-add">Add to cart</button>
+            <button
+              class="btn btn-add"
+              [routerLink]="['/category/learn', course._id]"
+            >
+              Add to cart
+            </button>
             <button class="btn btn-buy" routerLink="/category/checkout">
               Buy now
             </button>
@@ -158,4 +163,10 @@
       </div>
     </div>
   </div>
+
+  <ng-template #loadCourse>
+    <div style="display: flex; justify-content: center">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </ng-template>
 </div>

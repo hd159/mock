@@ -25,6 +25,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { MenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { DropdownModule } from 'primeng/dropdown';
+import { SafeUrlPipe } from './safe-url.pipe';
 @NgModule({
   declarations: [
     SafeHtmlPipe,
@@ -42,6 +43,7 @@ import { DropdownModule } from 'primeng/dropdown';
     NotFoundComponent,
     SwalAlertComponent,
     LoadingPlaceholderComponent,
+    SafeUrlPipe,
   ],
   imports: [
     CommonModule,
@@ -52,7 +54,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ButtonModule,
     MenubarModule,
     AvatarModule,
-    DropdownModule
+    DropdownModule,
   ],
   exports: [
     SafeHtmlPipe,
@@ -73,7 +75,8 @@ import { DropdownModule } from 'primeng/dropdown';
     MenubarModule,
     AvatarModule,
     DropdownModule,
-    InputTextModule
+    InputTextModule,
+    SafeUrlPipe,
   ],
 })
-export class SharedModule { }
+export class SharedModule {}

@@ -25,9 +25,7 @@ export class CoursesDetailComponent implements OnInit {
       switchMap(({ id }) => this.coursesService.findById(id))
     );
 
-    this.http.get('/assets/fakedata.json').subscribe((val) => {
-      this.fakecourse = val;
-    });
+    this.course$.subscribe(console.log);
   }
 
   showBasicDialog() {

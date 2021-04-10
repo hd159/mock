@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CoursesService } from 'src/app/service/courses.service';
 
 @Component({
   selector: 'app-courses-curriculum',
@@ -8,7 +10,11 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 })
 export class CoursesCurriculumComponent implements OnInit {
   formCurriculum: FormGroup;
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private coursesService: CoursesService
+  ) {}
 
   ngOnInit(): void {
     this.formCurriculum = this.initForm();
@@ -34,7 +40,7 @@ export class CoursesCurriculumComponent implements OnInit {
       html: '',
       videoUrl: '',
       pdfUrl: '',
-      article_lecture: ''
+      article_lecture: '',
     });
   }
 
@@ -48,9 +54,20 @@ export class CoursesCurriculumComponent implements OnInit {
     sections.push(this.detailSection());
   }
 
-
-
   onSubmit() {
     console.log(this.formCurriculum.value);
+  }
+
+  prevPage() {
+    this.router.navigate(['admin/courses/add/landing-page']);
+  }
+
+  nextPage() {
+    const curriculumData = this.formCurriculum.value;
+    this.coursesService.newCourse.next({
+      ...this.coursesService.newCourseData,
+      ...curriculumData,
+    });
+    this.router.navigate(['admin/courses/add/goals']);
   }
 }
