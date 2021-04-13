@@ -12,7 +12,6 @@ import { AppComponent } from './app.component';
 import { SubCategoryComponent } from './client/home/home-post-item/home-post-item';
 import { HomeComponent } from './client/home/home.component';
 import { CarouselComponent } from './client/home/carousel/carousel.component';
-import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { RegisterComponent } from './register/register.component';
 import { NavComponent } from './client/header/nav/nav.component';
 import { HeaderComponent } from './client/header/header.component';
@@ -23,6 +22,10 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { RequestInterceptor } from './service/interceptor';
 import { UserInfoComponent } from './pageUser/user-info/user-info.component';
 import { CartComponent } from './pageUser/cart/cart.component';
+import { BadgeModule } from 'primeng/badge';
+import { CardModule } from 'primeng/card';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   declarations: [
@@ -48,9 +51,12 @@ import { CartComponent } from './pageUser/cart/cart.component';
     ReactiveFormsModule,
     SharedModule,
     FormsModule,
-    IvyCarouselModule,
     SweetAlert2Module.forRoot(),
     BrowserAnimationsModule,
+    BadgeModule,
+    CardModule,
+    ProgressSpinnerModule,
+    CarouselModule,
   ],
 
   providers: [

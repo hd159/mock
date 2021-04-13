@@ -11,8 +11,7 @@ import { LessonService } from 'src/app/service/lesson.service';
   styleUrls: ['./carousel.component.scss'],
 })
 export class CarouselComponent implements OnInit {
-  postCoupon$: Observable<Post[]>;
-
+  posts$: Observable<Post[]>;
   constructor(private lessonService: LessonService) {}
 
   ngOnInit(): void {
@@ -27,6 +26,6 @@ export class CarouselComponent implements OnInit {
       .set('limit', '10')
       .set('fields', 'title,img')
       .set('query', JSON.stringify({ content: 'Mã giảm giá' }));
-    this.postCoupon$ = this.lessonService.find<Post>(params);
+    this.posts$ = this.lessonService.find<Post>(params);
   }
 }

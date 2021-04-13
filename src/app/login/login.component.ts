@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private categoryService: CategoryService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -54,23 +54,25 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     const user = {
       username: this.form.get('username').value,
-      password: this.form.get('password').value
+      password: this.form.get('password').value,
     };
 
     // send request to server here
-    this.authService.login(user.password, user.password).subscribe((data) => {
-      if (data != null) {
+    this.authService.login(user.password, user.password).subscribe(
+      (data: any) => {
+        console.log(data);
+
         if (localStorage.getItem('typeUser') === 'admin')
-          this.router.navigateByUrl('/admin')
+          this.router.navigateByUrl('/admin');
         else {
-          localStorage.setItem('logged', 'true')
-          this.router.navigateByUrl('/')
-
+          localStorage.setItem('logged', 'true');
+          this.router.navigateByUrl('/');
         }
-
+      },
+      (err) => {
+        this.loading = false;
       }
-    })
-
+    );
 
     //
   }

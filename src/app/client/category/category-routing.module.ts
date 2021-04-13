@@ -8,6 +8,7 @@ import { HostCategoryComponent } from './host-category/host-category.component';
 import { LessonCategoryComponent } from './lesson-category/lesson-category.component';
 import { PostdetailComponent } from './postdetail/postdetail.component';
 import { CourseLearnComponent } from '../courses/course-learn/course-learn.component';
+import { LearningComponent } from '../courses/learning/learning.component';
 
 const routes: Routes = [
   { path: 'post/:id', component: PostdetailComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
       { path: 'courses/:id', component: CoursesDetailComponent },
       { path: 'learn/:id', component: CourseLearnComponent },
       { path: 'checkout', component: CoursesPaymentComponent },
+      { path: 'learning', component: LearningComponent },
       {
         path: ':name',
         component: HostCategoryComponent,
