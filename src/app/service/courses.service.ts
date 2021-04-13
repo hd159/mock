@@ -14,9 +14,11 @@ interface Course {
 })
 export class CoursesService extends CollectionService<any> {
   newCourse: BehaviorSubject<any>;
+  courseInCart: BehaviorSubject<any[]>;
   constructor(http: HttpClient) {
     super(initalCoursesState, 'courses', http);
     this.newCourse = new BehaviorSubject(null);
+    this.courseInCart = new BehaviorSubject([]);
   }
 
   get newCourseData() {

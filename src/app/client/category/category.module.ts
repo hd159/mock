@@ -8,7 +8,7 @@ import { PostdetailComponent } from './postdetail/postdetail.component';
 import { HostCategoryComponent } from './host-category/host-category.component';
 import { LessonCategoryComponent } from './lesson-category/lesson-category.component';
 import { CommentComponent } from './comment/comment.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommentDetailComponent } from './comment/comment-detail/comment-detail.component';
 import { CommentFormComponent } from './comment/comment-form/comment-form.component';
 import { PathCategoryComponent } from './path-category/path-category.component';
@@ -24,10 +24,15 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputTextModule } from 'primeng/inputtext';
 import { CourseLearnComponent } from '../courses/course-learn/course-learn.component';
+import { LearningComponent } from '../courses/learning/learning.component';
 import { DividerModule } from 'primeng/divider';
 import { DataViewModule } from 'primeng/dataview';
 import { RatingModule } from 'primeng/rating';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DropdownModule } from 'primeng/dropdown';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -41,8 +46,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     PathCategoryComponent,
     CoursesComponent,
     CoursesDetailComponent,
-    CoursesPaymentComponent,
     CourseLearnComponent,
+    CoursesPaymentComponent,
+    LearningComponent,
   ],
   imports: [
     CommonModule,
@@ -61,7 +67,11 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     DataViewModule,
     RatingModule,
     ProgressSpinnerModule,
+    DropdownModule,
+    FormsModule,
+    ProgressBarModule,
+    ToastModule,
   ],
-  providers: [],
+  providers: [MessageService],
 })
 export class CategoryModule {}

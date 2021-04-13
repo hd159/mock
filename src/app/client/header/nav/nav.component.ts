@@ -11,6 +11,8 @@ import { CategoryService } from 'src/app/service/category.service';
 })
 export class NavComponent implements OnInit {
   Main_block = 'Lập trình';
+  Course_block = 'Khóa học';
+  Assign_block = 'Bài tập';
   laptrinh$: Observable<NavCategory>;
   anothers$: Observable<NavCategory[]>;
   categories$: Observable<NavCategory[]>;
