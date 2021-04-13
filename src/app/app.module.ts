@@ -51,10 +51,6 @@ import { CartComponent } from './pageUser/cart/cart.component';
     IvyCarouselModule,
     SweetAlert2Module.forRoot(),
     BrowserAnimationsModule,
-    KinveyModule.init({
-      appKey: 'kid_rJvDFm84u',
-      appSecret: 'a3c84d5e164d416ba042ee073fa826e6',
-    }),
   ],
 
   providers: [
@@ -62,4 +58,4 @@ import { CartComponent } from './pageUser/cart/cart.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

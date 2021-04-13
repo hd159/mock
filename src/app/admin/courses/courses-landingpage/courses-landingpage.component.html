@@ -1,6 +1,5 @@
 <div class="p-field p-col-12">
-  <p-card header="Course landing page">
-    <p-divider></p-divider>
+  <p-card>
     <div class="page" [formGroup]="formLandingPage">
       <form [formGroup]="formLandingPage" (ngSubmit)="onSubmit()">
         <div class="p-grid p-fluid">
@@ -33,12 +32,16 @@
           <div class="p-col-12">
             <div class="p-inputgroup p-grid">
               <span class="p-col-12" for="">Course description</span>
-              <app-text-editor [parentForm]="formLandingPage"></app-text-editor>
+              <app-text-editor
+                [parentForm]="formLandingPage"
+                style="width: 100%"
+              ></app-text-editor>
             </div>
           </div>
 
           <div class="p-col-12">
-            <div class="p-grid">
+            <div class="p-grid p-inputgroup">
+              <span class="p-col-12" for="">Basic Info</span>
               <div class="p-col-4">
                 <p-dropdown
                   [options]="cities"
@@ -72,7 +75,7 @@
               <input
                 type="text"
                 pInputText
-                placeholder="Insert your course imgage"
+                placeholder="Insert your course image"
                 formControlName="img"
               />
             </div>
@@ -80,12 +83,24 @@
 
           <div class="p-col-12">
             <div class="p-inputgroup p-grid">
-              <span class="p-col-12" for="">Course image </span>
+              <span class="p-col-12" for="">Course Video Preview </span>
               <input
                 type="text"
                 pInputText
                 placeholder="Insert your course preview video"
                 formControlName="preview_video"
+              />
+            </div>
+          </div>
+
+          <div class="p-col-4">
+            <div class="p-inputgroup p-grid">
+              <span class="p-col-12" for="">Price</span>
+              <input
+                type="text"
+                pInputText
+                placeholder="Price"
+                formControlName="price"
               />
             </div>
           </div>
@@ -98,5 +113,16 @@
         ></p-button>
       </form>
     </div>
+
+    <ng-template pTemplate="footer">
+      <div class="p-grid p-nogutter p-justify-end">
+        <p-button
+          label="Next"
+          (onClick)="nextPage()"
+          icon="pi pi-angle-right"
+          iconPos="right"
+        ></p-button>
+      </div>
+    </ng-template>
   </p-card>
 </div>

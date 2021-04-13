@@ -11,6 +11,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { CoursesComponent } from './courses/courses.component';
 import { CoursesCurriculumComponent } from './courses/courses-curriculum/courses-curriculum.component';
 import { CoursesLandingpageComponent } from './courses/courses-landingpage/courses-landingpage.component';
+import { AddCourseComponent } from './courses/add-course/add-course.component';
+import { GoalsCourseComponent } from './courses/goals-course/goals-course.component';
 
 const routes: Routes = [
   {
@@ -25,12 +27,17 @@ const routes: Routes = [
       { path: 'edit-post/:id', component: AddPostComponent },
       { path: 'users', component: UserComponent },
       { path: 'add-user', component: AddUserComponent },
+      { path: 'courses', component: CoursesComponent },
       {
-        path: 'courses',
-        component: CoursesComponent,
+        path: 'courses/add',
+        component: AddCourseComponent,
+        children: [
+          { path: '', redirectTo: 'landing-page', pathMatch: 'full' },
+          { path: 'landing-page', component: CoursesLandingpageComponent },
+          { path: 'curriculum', component: CoursesCurriculumComponent },
+          { path: 'goals', component: GoalsCourseComponent },
+        ],
       },
-      { path: 'courses/curriculum', component: CoursesCurriculumComponent },
-      { path: 'courses/landing-page', component: CoursesLandingpageComponent },
     ],
   },
 ];

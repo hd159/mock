@@ -1,53 +1,98 @@
 <div class="container">
-  <div class="p-grid">
-    <div class="p-col-3" *ngFor="let course of courses; index as i">
-      <a (mouseover)="showBasicDialog(i)">
-        <p-card styleClass="course-card">
-          <ng-template pTemplate="header">
-            <img alt="Card" [src]="course.img" />
-          </ng-template>
-          <p class="card-title">{{ course.title }}</p>
-          <span class="author">{{ course.author }}</span>
-          <div>{{ course.rating }}</div>
-          <div>{{ course.price }}</div>
+  <div class="p-grid" *ngIf="courses.length; else loadCourse">
+    <p-dataView
+      #dv
+      [value]="courses"
+      [paginator]="true"
+      [rows]="8"
+      filterBy="title"
+      layout="grid"
+      [sortField]="sortField"
+      [sortOrder]="sortOrder"
+      class="data-view"
+    >
+      <ng-template pTemplate="header">
+        <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+          <p-dropdown
+            [options]="sortPriceOptions"
+            placeholder="Sort By Price"
+            (onChange)="onSortChange($event)"
+            styleClass="p-mb-2 p-mb-md-0"
+          ></p-dropdown>
+          <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+            <i class="pi pi-search"></i>
+            <input
+              type="search"
+              pInputText
+              placeholder="Search by Name"
+              (input)="dv.filter($event.target.value)"
+            />
+          </span>
+          <p-dropdown
+            [options]="sortCategoriesOptions"
+            placeholder="Sort By Category"
+            styleClass="p-mb-2 p-mb-md-0"
+          ></p-dropdown>
+          <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+        </div>
+      </ng-template>
+      <ng-template let-course pTemplate="listItem">
+        <div class="p-col-12">
+          <div class="course-list-item">
+            <img [src]="course.img" />
+            <div class="course-list-detail">
+              <div class="course-name">{{ course.title }}</div>
+              <!-- <p-rating
+                [ngModel]="course.rating"
+                [readonly]="true"
+                [cancel]="false"
+              ></p-rating> -->
 
-          <ng-template pTemplate="footer">
-            <p-button label="Buy now" icon="pi pi-shopping-cart"></p-button>
-            <p-button
-              (click)="onNavigate(course._id)"
-              label="Detail"
-              icon="pi pi-times"
-              styleClass="p-button-secondary"
-              [style]="{ 'margin-left': '.5em' }"
-            ></p-button>
-          </ng-template>
-        </p-card>
-      </a>
+              <span class="course-category"
+                >{{ course.category }} Category</span
+              >
+            </div>
+            <div class="course-list-action">
+              <span class="course-price">${{ course.price }}</span>
+              <p-button
+                icon="pi pi-shopping-cart"
+                label="Add to Cart"
+                [disabled]="course.inventoryStatus === 'OUTOFSTOCK'"
+              ></p-button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template let-course pTemplate="gridItem">
+        <div class="p-col-3 my-4">
+          <p-card styleClass="course-card">
+            <ng-template pTemplate="header">
+              <img alt="Card" [src]="course.img" />
+            </ng-template>
+            <p class="card-title">{{ course.title }}</p>
+            <span class="author">{{ course.author }}</span>
+            <div>{{ course.rating }}</div>
+            <div>{{ course.price }}</div>
 
-      <!-- <p-dialog
-        header="Header"
-        [visible]="displayBasic && currentIndex === i"
-        [style]="{ width: '50vw' }"
-        [baseZIndex]="10000"
-      >
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-        <ng-template pTemplate="footer">
-          <p-button
-            icon="pi pi-check"
-            (click)="displayBasic = false"
-            label="Ok"
-            styleClass="p-button-text"
-          ></p-button>
-        </ng-template>
-      </p-dialog> -->
-    </div>
+            <ng-template pTemplate="footer">
+              <p-button label="Buy now" icon="pi pi-shopping-cart"></p-button>
+              <p-button
+                (click)="onNavigate(course._id)"
+                label="Detail"
+                icon="pi pi-times"
+                styleClass="p-button-secondary"
+                [style]="{ 'margin-left': '.5em' }"
+              ></p-button>
+            </ng-template>
+          </p-card>
+        </div>
+      </ng-template>
+    </p-dataView>
   </div>
+
+  <ng-template #loadCourse>
+    <div style="display: flex; justify-content: center">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </ng-template>
 </div>

@@ -1,43 +1,151 @@
 <div class="p-field p-col-12">
-  <p-card header="Target your students">
-    <p class="title">
-      The descriptions you write here will help students decide if your course
-      is the one for them.
-    </p>
+  <p-card *ngIf="courses; else loadCourse">
+    <p-toolbar styleClass="p-mb-4">
+      <ng-template pTemplate="left">
+        <button
+          pButton
+          pRipple
+          label="New"
+          icon="pi pi-plus"
+          class="p-button-success p-mr-2"
+          (click)="createCourse()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          [label]="Delete"
+          icon="pi pi-trash"
+          class="p-button-danger"
+          (click)="deleteSelectedCourses()"
+          [disabled]="!selectedCourses || !selectedCourses.length"
+        ></button>
+      </ng-template>
 
-    <form [formGroup]="targetForm" (ngSubmit)="onSubmit()">
-      <app-courses-form-target
-        [parentForm]="targetForm"
-        field="goal"
-        [label]="label_target"
-        [placeholder]="placeholder_target"
-      ></app-courses-form-target>
+      <ng-template pTemplate="right">
+        <p-fileUpload
+          mode="basic"
+          accept="image/*"
+          [maxFileSize]="1000000"
+          label="Import"
+          chooseLabel="Import"
+          class="p-mr-2 p-d-inline-block"
+        ></p-fileUpload>
+        <button
+          pButton
+          pRipple
+          label="Export"
+          icon="pi pi-upload"
+          class="p-button-help"
+        ></button>
+      </ng-template>
+    </p-toolbar>
 
-      <app-courses-form-target
-        [parentForm]="targetForm"
-        field="require"
-        [label]="label_require"
-        [placeholder]="label_require"
-      ></app-courses-form-target>
-
-      <app-courses-form-target
-        [parentForm]="targetForm"
-        field="target_student"
-        [label]="label_target_student"
-        [placeholder]="placeholder_target_student"
-      ></app-courses-form-target>
-
-      <p-button
-        label="Save"
-        icon="pi pi-check"
-        type="submit"
-        disabled="true"
-      ></p-button>
-    </form>
+    <p-table
+      #dt
+      [value]="courses"
+      [rows]="10"
+      [paginator]="true"
+      [globalFilterFields]="['title', 'price', 'category', 'status']"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+      [(selection)]="selectedCourses"
+    >
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          <h5 class="p-m-0">Manage Courses</h5>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search..."
+            />
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <!-- <th style="width: 3rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th> -->
+          <th pSortableColumn="title" style="width: 20%">
+            Title <p-sortIcon field="title"></p-sortIcon>
+          </th>
+          <th>Image</th>
+          <th pSortableColumn="price">
+            Price <p-sortIcon field="price"></p-sortIcon>
+          </th>
+          <th pSortableColumn="category">
+            Category <p-sortIcon field="category"></p-sortIcon>
+          </th>
+          <th pSortableColumn="rating">
+            Reviews <p-sortIcon field="rating"></p-sortIcon>
+          </th>
+          <th pSortableColumn="inventoryStatus">
+            Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-course>
+        <tr>
+          <!-- <td>
+            <p-tableCheckbox [value]="course"></p-tableCheckbox>
+          </td> -->
+          <td>{{ course.title }}</td>
+          <td>
+            <img
+              [src]="course.img"
+              [alt]="course.name"
+              width="100"
+              class="p-shadow-4"
+            />
+          </td>
+          <td>{{ course.price | currency: "USD" }}</td>
+          <td>{{ course.category }}</td>
+          <td>
+            <p-rating
+              [ngModel]="course.rating"
+              [readonly]="true"
+              [cancel]="false"
+            ></p-rating>
+          </td>
+          <td><span>Status</span></td>
+          <td>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-success p-mr-2"
+              (click)="editCourse(course)"
+            ></button>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-warning"
+              (click)="deleteCourse(course)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          In total there are {{ courses ? courses.length : 0 }} courses.
+        </div>
+      </ng-template>
+    </p-table>
   </p-card>
 
-  <app-courses-landingpage #landing></app-courses-landingpage>
-  <app-courses-curriculum #curriculum></app-courses-curriculum>
-
-  <p-button label="Add new Course" (click)="onSubmit()"></p-button>
+  <ng-template #loadCourse>
+    <div class="p-d-flex p-jc-center p-ai-center" style="height: 600px">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+  </ng-template>
 </div>
+
+<p-toast [baseZIndex]="100000"></p-toast>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

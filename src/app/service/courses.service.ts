@@ -1,16 +1,25 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { CollectionService } from './collection.service';
 
-const initalCoursesState = {}
-
+const initalCoursesState = {};
+interface Course {
+  landingPageData: any;
+  curriculumData: any;
+  goalsData: any;
+}
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class CoursesService extends CollectionService<any>{
-
+export class CoursesService extends CollectionService<any> {
+  newCourse: BehaviorSubject<any>;
   constructor(http: HttpClient) {
     super(initalCoursesState, 'courses', http);
+    this.newCourse = new BehaviorSubject(null);
   }
 
+  get newCourseData() {
+    return this.newCourse.value;
+  }
 }

@@ -23,6 +23,11 @@ import { CoursesPaymentComponent } from '../courses/courses-payment/courses-paym
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputTextModule } from 'primeng/inputtext';
+import { CourseLearnComponent } from '../courses/course-learn/course-learn.component';
+import { DividerModule } from 'primeng/divider';
+import { DataViewModule } from 'primeng/dataview';
+import { RatingModule } from 'primeng/rating';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -37,6 +42,7 @@ import { InputTextModule } from 'primeng/inputtext';
     CoursesComponent,
     CoursesDetailComponent,
     CoursesPaymentComponent,
+    CourseLearnComponent,
   ],
   imports: [
     CommonModule,
@@ -51,6 +57,10 @@ import { InputTextModule } from 'primeng/inputtext';
     AutoCompleteModule,
     RadioButtonModule,
     InputTextModule,
+    DividerModule,
+    DataViewModule,
+    RatingModule,
+    ProgressSpinnerModule,
   ],
   providers: [],
 })

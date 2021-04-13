@@ -1,5 +1,5 @@
 #header {
-  background-color: #2f6e91;
+  background-color: #dcf0fc;
 }
 
 #inner {
@@ -21,7 +21,7 @@ button.p-button-raised{
   display: flex;
   justify-content: space-around;
   align-items: center;
-  color: #fff;
+  color: #000;
 }
 .icon-user i{
   font-size: 1.5rem;
@@ -70,14 +70,16 @@ form button {
     margin: 0;
   }
 }
-
+img{
+  width: 100px;
+}
 :host ::ng-deep button.p-button-raised{
     background-color: #fff;
 }
 :host ::ng-deep div.p-menubar{
-  background-color: #2f6e91;
+  background-color: #dcf0fc;
   border: none;
 }
 :host ::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-icon{
-  color: #fff;
+  color: #000;
 }
