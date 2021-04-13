@@ -1,7 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { from, of, Subscription } from 'rxjs';
-import { mergeMap, switchAll, tap, toArray } from 'rxjs/operators';
+import { from, Observable, of, Subscription } from 'rxjs';
+import {
+  filter,
+  mergeMap,
+  switchAll,
+  switchMap,
+  tap,
+  toArray,
+} from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { CoursesService } from 'src/app/service/courses.service';
 
@@ -18,6 +25,7 @@ export class LearningComponent implements OnInit, OnDestroy {
   listCourses: string[];
 
   subscription: Subscription[] = [];
+  id: Observable<string>;
   constructor(
     private coursesService: CoursesService,
     private authService: AuthService
@@ -31,12 +39,9 @@ export class LearningComponent implements OnInit, OnDestroy {
       { label: 'Design', value: 'design' },
     ];
 
-    const id = this.authService.userInfo;
-
-    const sub = this.authService
-      .getUserLearning(id)
+    const sub = of(this.authService.userInfo.value)
       .pipe(
-        tap(console.log),
+        switchMap((id) => this.authService.getUserLearning(id)),
         switchAll(),
         mergeMap((id: string) => {
           return this.coursesService.findById(id);
@@ -45,6 +50,8 @@ export class LearningComponent implements OnInit, OnDestroy {
       )
       .subscribe((val) => {
         this.courses = val;
+        console.log(val);
+
         val.forEach((item: any) => {
           const { author } = item;
           if (!this.authorOptions.includes(author)) {

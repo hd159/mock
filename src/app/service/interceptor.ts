@@ -23,9 +23,9 @@ export class RequestInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (request.url.includes('/user') && request.method !== 'GET') {
+    if (request.url.includes('/user') && request.method === 'POST') {
       request = request.clone({
-        headers: request.headers.set('Authorization', this.keyMaster),
+        headers: request.headers.set('Authorization', this.keyRegister),
       });
     } else {
       request = request.clone({
