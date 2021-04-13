@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
 import { DataView } from 'primeng/dataview';
-import { combineLatest, Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { combineLatest, Observable, of, Subject, Subscription } from 'rxjs';
+import { map, mergeMap, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { CoursesService } from 'src/app/service/courses.service';
 
@@ -23,6 +23,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   sortField: string;
 
   subscription: Subscription[] = [];
+  unsubscription = new Subject();
   constructor(
     private coursesService: CoursesService,
     private router: Router,
@@ -49,8 +50,14 @@ export class CoursesComponent implements OnInit, OnDestroy {
     > = this.coursesService.courseInCart.asObservable();
     const totalCourses: Observable<any[]> = this.coursesService.find();
 
-    const coursesHasBuy: Observable<any[]> = this.authService.getUserLearning(
-      this.authService.userInfo
+    const coursesHasBuy: Observable<any[]> = this.authService.userInfo.pipe(
+      mergeMap((id) => {
+        if (id) {
+          return this.authService.getUserLearning(id);
+        } else {
+          return of([]);
+        }
+      })
     );
 
     const sub = combineLatest([totalCourses, courseInCart, coursesHasBuy])
@@ -79,6 +86,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.forEach((item) => item.unsubscribe());
+    this.unsubscription.next();
+    this.unsubscription.unsubscribe();
   }
 
   showBasicDialog(index?) {
@@ -110,10 +119,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
     if (course.inCart) {
       this.router.navigateByUrl('/cart');
     } else {
-      const itemInCart = this.coursesService.courseInCart.value;
-      itemInCart.push(course);
-      this.coursesService.courseInCart.next(itemInCart);
       course.inCart = true;
+      this.coursesService.setCourseInCart(course);
     }
   }
 }

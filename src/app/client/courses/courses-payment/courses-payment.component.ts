@@ -93,7 +93,7 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
               detail: 'Payment success',
             });
 
-            this.coursesService.courseInCart.next([]);
+            this.coursesService.resetCourseInCart();
           });
       },
     });

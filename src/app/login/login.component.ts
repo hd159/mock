@@ -11,6 +11,7 @@ import {
 } from 'rxjs/operators';
 import { AuthService } from '../service/auth.service';
 import { CategoryService } from '../service/category.service';
+import { CoursesService } from '../service/courses.service';
 
 @Component({
   selector: 'app-login',
@@ -24,10 +25,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   sub: Subscription;
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private categoryService: CategoryService
+    private coursesService: CoursesService
   ) {}
 
   ngOnInit() {
@@ -60,12 +60,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     // send request to server here
     this.authService.login(user.password, user.password).subscribe(
       (data: any) => {
-        console.log(data);
-
         if (localStorage.getItem('typeUser') === 'admin')
           this.router.navigateByUrl('/admin');
         else {
           localStorage.setItem('logged', 'true');
+          this.coursesService.getCoursesLocal();
           this.router.navigateByUrl('/');
         }
       },

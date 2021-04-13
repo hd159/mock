@@ -26,8 +26,6 @@ export class CartComponent implements OnInit {
   }
 
   removeCourse(course) {
-    const value = this.coursesService.courseInCart.value;
-    const newValue = value.filter((item) => item._id !== course._id);
-    this.coursesService.courseInCart.next(newValue);
+    this.coursesService.removeCourseInCart(course);
   }
 }

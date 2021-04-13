@@ -55,7 +55,7 @@ export class HeaderComponent implements OnInit {
           routerLink: ['/user-info'],
         },
         { label: 'My learning', routerLink: ['/category/learning'] },
-        { label: 'My cart' },
+        { label: 'My cart', routerLink: ['/cart'] },
         {
           label: 'Log out',
           command: () => this.logoutUser(),

@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
-import { catchError, map, pluck, shareReplay } from 'rxjs/operators';
+import { catchError, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 import { User } from '../store';
 
 export interface AuthState {
@@ -26,7 +27,7 @@ export class AuthService {
 
   private userUrl = 'https://baas.kinvey.com/user/kid_rJvDFm84u';
 
-  userInfo: any;
+  userInfo: BehaviorSubject<any> = new BehaviorSubject(null);
   userDetail$: Observable<any>;
 
   isAdminSubject$ = new BehaviorSubject<User>(null);
@@ -35,8 +36,12 @@ export class AuthService {
   authState$: Observable<AuthState> = this.authSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    this.userDetail$ = this.getUser(this.userInfo).pipe(shareReplay());
+    this.getUserId();
+
+    this.userDetail$ = this.userInfo.pipe(
+      switchMap((id) => this.getUser(id)),
+      shareReplay()
+    );
   }
 
   selectAuthData<T>(prop: string): Observable<T> {
@@ -71,18 +76,29 @@ export class AuthService {
         map((data: any) => {
           if (data._kmd.roles !== undefined) {
             if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
-              localStorage.setItem('typeUser', 'admin');
+              localStorage.setItem('typeUser', 'user');
               this.isAdminSubject$.next(data);
-              localStorage.setItem('userInfo', JSON.stringify(data._id));
+              this.setUserId(data._id);
             }
           } else {
             localStorage.setItem('typeUser', 'user');
             localStorage.setItem('userInfo', JSON.stringify(data._id));
+            this.setUserId(data._id);
           }
 
           return data;
         })
       );
+  }
+
+  setUserId(id) {
+    localStorage.setItem('userInfo', JSON.stringify(id));
+    this.userInfo.next(id);
+  }
+
+  getUserId() {
+    const id = JSON.parse(localStorage.getItem('userInfo'));
+    this.userInfo.next(id);
   }
 
   registerUser(data: any) {
