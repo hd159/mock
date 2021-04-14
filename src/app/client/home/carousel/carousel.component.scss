@@ -11,14 +11,36 @@
     margin: 0;
     line-height: 40px;
   }
+}
 
-  .img {
-    height: 250px;
+.post-item {
+  .post-item-content {
+    border-radius: 3px;
+    margin: 0.5rem;
+    text-align: center;
 
-    img {
-      width: 100%;
-      object-fit: cover;
-      margin: 0 auto;
+    .img {
+      height: 250px;
+
+      img {
+        width: 100%;
+        object-fit: cover;
+        margin: 0 auto;
+        height: 100%;
+      }
+    }
+
+    h5 {
+      text-align: left;
     }
   }
+}
+
+:host ::ng-deep .p-carousel-prev,
+:host ::ng-deep .p-carousel-next {
+  display: none;
+}
+
+:host ::ng-deep .p-carousel-items-container {
+  margin: 0 -0.5rem;
 }

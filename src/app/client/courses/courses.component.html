@@ -5,7 +5,7 @@
       [value]="courses"
       [paginator]="true"
       [rows]="8"
-      filterBy="title"
+      filterBy="selectedCategory,title"
       layout="grid"
       [sortField]="sortField"
       [sortOrder]="sortOrder"
@@ -32,6 +32,7 @@
             [options]="sortCategoriesOptions"
             placeholder="Sort By Category"
             styleClass="p-mb-2 p-mb-md-0"
+            (onChange)="dv.filter($event.value)"
           ></p-dropdown>
           <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
         </div>
@@ -42,40 +43,49 @@
             <img [src]="course.img" />
             <div class="course-list-detail">
               <div class="course-name">{{ course.title }}</div>
-              <!-- <p-rating
-                [ngModel]="course.rating"
+              <p-rating
                 [readonly]="true"
                 [cancel]="false"
-              ></p-rating> -->
+                [ngModel]="course.rating"
+              ></p-rating>
 
-              <span class="course-category"
-                >{{ course.category }} Category</span
-              >
+              <span class="course-category">{{ course.selectedCategory }}</span>
             </div>
             <div class="course-list-action">
               <span class="course-price">${{ course.price }}</span>
               <p-button
                 icon="pi pi-shopping-cart"
-                label="Add to Cart"
-                [disabled]="course.inventoryStatus === 'OUTOFSTOCK'"
+                label="Add to cart"
               ></p-button>
             </div>
           </div>
         </div>
       </ng-template>
       <ng-template let-course pTemplate="gridItem">
-        <div class="p-col-3 my-4">
+        <div class="p-col-3 my-4 px-1">
           <p-card styleClass="course-card">
             <ng-template pTemplate="header">
               <img alt="Card" [src]="course.img" />
             </ng-template>
             <p class="card-title">{{ course.title }}</p>
             <span class="author">{{ course.author }}</span>
-            <div>{{ course.rating }}</div>
-            <div>{{ course.price }}</div>
+
+            <p-rating
+              [readonly]="true"
+              [cancel]="false"
+              [ngModel]="course.rating"
+            >
+            </p-rating>
+
+            <div>{{ course.price | currency }}</div>
 
             <ng-template pTemplate="footer">
-              <p-button label="Buy now" icon="pi pi-shopping-cart"></p-button>
+              <p-button
+                [label]="course.inCart ? 'Go to cart' : 'Add to cart'"
+                icon="pi pi-shopping-cart"
+                [style]="{ 'padding-left': '.5em' }"
+                (click)="addToCart(course)"
+              ></p-button>
               <p-button
                 (click)="onNavigate(course._id)"
                 label="Detail"

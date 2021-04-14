@@ -14,14 +14,18 @@
         font-size: 16px;
       }
 
-      .p-autocomplete {
-        width: 50%;
+      .p-dropdown {
+        width: 60%;
       }
     }
 
     .checkout-billing-options {
       .options-method {
         margin: 20px 0;
+
+        label {
+          margin-bottom: 0;
+        }
       }
       .payment-method-info {
         .for-card {
@@ -57,10 +61,24 @@
         list-style: none;
         padding: 0;
         margin-top: 20px;
+
+        li {
+          margin-bottom: 20px;
+        }
         .item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
+          justify-content: center;
+          .name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            margin-bottom: 0;
+            max-height: 40px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.43em;
+            color: #1c1d1f;
+            font-weight: 700;
+          }
         }
       }
     }

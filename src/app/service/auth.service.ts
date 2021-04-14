@@ -1,19 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserService } from 'kinvey-angular-sdk';
 import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
-import {
-  catchError,
-  distinctUntilChanged,
-  finalize,
-  map,
-  mergeMap,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
-import { Store, User } from '../store';
-import { CategoryService } from './category.service';
-import { LoadingService } from './loading.service';
+import { catchError, map, pluck, shareReplay } from 'rxjs/operators';
+import { User } from '../store';
 
 export interface AuthState {
   currentUser: User;
@@ -37,43 +26,22 @@ export class AuthService {
 
   private userUrl = 'https://baas.kinvey.com/user/kid_rJvDFm84u';
 
-  private key =
-    'Basic a2lkX1N5dWMzQU9nTzphZGZjYjhkY2ZlMjU0M2FlYTEyOTM5N2MyYmM2Yzg4MQ==';
-
-  private headers = new HttpHeaders().set('Authorization', this.key);
+  userInfo: any;
+  userDetail$: Observable<any>;
 
   isAdminSubject$ = new BehaviorSubject<User>(null);
 
   private authSubject = new BehaviorSubject<AuthState>(initialAuthState);
   authState$: Observable<AuthState> = this.authSubject.asObservable();
 
-  constructor(
-    private http: HttpClient,
-    private loading: LoadingService,
-    private categoryService: CategoryService
-  ) { }
-
-  // get valueAuthState() {
-  //   return this.authSubject.getValue();
-  // }
-
-  // setAuthState(val: Partial<AuthState>) {
-  //   this.authSubject.next({ ...this.valueAuthState, ...val });
-  // }
+  constructor(private http: HttpClient) {
+    this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    this.userDetail$ = this.getUser(this.userInfo).pipe(shareReplay());
+  }
 
   selectAuthData<T>(prop: string): Observable<T> {
     return this.authState$.pipe(map((val) => val[prop]));
   }
-
-  // updateAuthState<T>(prop: string, payload: { key: string; value: T[] }) {
-  //   const currentValue = this.valueAuthState[prop];
-
-  //   const fieldUpdate = currentValue[payload.key];
-
-  //   const newValue = { [payload.key]: [...fieldUpdate, ...payload.value] };
-
-  //   return this.setAuthState({ [prop]: { ...currentValue, ...newValue } });
-  // }
 
   mapUser(user: any, mode?: string) {
     let userInfo: User;
@@ -94,41 +62,28 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<User> {
-    return this.http.post<any>(`${this.userUrl}/login`, { username: username, password: password }).pipe(
-      map((data: any) => {
-        if (data._kmd.roles !== undefined) {
-          if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
-            localStorage.setItem('typeUser', 'admin')
-            this.isAdminSubject$.next(data)
-          }
-        }
-        else
-          localStorage.setItem('typeUser', 'user')
-
-        return data
+    return this.http
+      .post<any>(`${this.userUrl}/login`, {
+        username: username,
+        password: password,
       })
-    )
+      .pipe(
+        map((data: any) => {
+          if (data._kmd.roles !== undefined) {
+            if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
+              localStorage.setItem('typeUser', 'admin');
+              this.isAdminSubject$.next(data);
+              localStorage.setItem('userInfo', JSON.stringify(data._id));
+            }
+          } else {
+            localStorage.setItem('typeUser', 'user');
+            localStorage.setItem('userInfo', JSON.stringify(data._id));
+          }
+
+          return data;
+        })
+      );
   }
-
-  // logout() {
-  //   return from(this.userService.logout()).pipe(
-  //     tap((val) => console.log(val, 'logout')),
-  //     catchError((err) => {
-  //       console.log({ ...err }, 'logout');
-  //       return throwError(err);
-  //     })
-  //   );
-  // }
-
-
-  // setRoleAdmin(user: User) {
-  //   if (user.roleId.includes(this.roleIdAdmin)) {
-  //     this.isAdminSubject.next(true);
-  //     this.setAuthState({ currentUser: user });
-  //   } else {
-  //     this.isAdminSubject.next(false);
-  //   }
-  // }
 
   registerUser(data: any) {
     return this.http
@@ -137,11 +92,34 @@ export class AuthService {
   }
 
   getAllUser(): Observable<User[]> {
+    return this.http.get<any[]>(this.userUrl).pipe(
+      map((users) => users.map((user) => this.mapUser(user, 'http'))),
+      catchError((err) => throwError(err))
+    );
+  }
+
+  getUser(id: string) {
+    return this.http.get<any>(`${this.userUrl}/${id}`);
+  }
+
+  getUserLearning(id: string): Observable<any[]> {
+    const params = new HttpParams().set('fields', 'learning');
     return this.http
-      .get<any[]>(this.userUrl)
+      .get<any[]>(`${this.userUrl}/${id}`, { params })
       .pipe(
-        map((users) => users.map((user) => this.mapUser(user, 'http'))),
-        catchError((err) => throwError(err))
+        map((value: any) => {
+          let learning;
+          if (!value.learning) {
+            learning = [];
+          } else {
+            learning = [...value.learning];
+          }
+          return learning;
+        })
       );
+  }
+
+  updateLearning(userId, body) {
+    return this.http.put(`${this.userUrl}/${userId}`, body);
   }
 }

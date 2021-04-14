@@ -1,42 +1,70 @@
-<div class="cart">
-  <div class="title-cart">
-    <p>Shopping Cart</p>
-  </div>
-  <div class="total-cart">
-    <p>1 Course in Cart</p>
-  </div>
+<div class="container" style="min-height: 80vh">
+  <ng-container *ngIf="coursesInCart$ | async as courses; else loadCourse">
+    <div class="p-grid p-nogutter">
+      <div class="title-cart p-col-12">
+        <p>Shopping Cart</p>
+      </div>
+      <div class="total-cart p-col-12">
+        <p>{{ courses.length }} Course in Cart</p>
+      </div>
 
-  <div class="p-grid">
-    <div class="p-col-8 info-item">
-      <div class="p-col-8 item">
-        <img
-          src="https://img-b.udemycdn.com/course/100x100/567828_67d0.jpg?secure=2xRdxeaTcohO1Y5D4jvzHA%3D%3D%2C1617447155"
-          alt=""
-        />
-        <div class="title">
-          <h5>2021 Complete Python Bootcamp From Zero to Hero in Python</h5>
-          <small>Jose Portilla, Head of Data Science, Pierian Data Inc.</small>
+      <ng-container *ngIf="courses.length; else noCourse">
+        <div class="p-col-9 p-grid p-nogutter">
+          <div
+            class="card-item p-grid p-nogutter p-col-12"
+            *ngFor="let course of courses"
+          >
+            <div class="p-col-8 p-d-flex p-flex-row">
+              <img [src]="course.img" />
+              <div class="title">
+                <p>{{ course.title }}</p>
+                <small>{{ course.author }}</small>
+              </div>
+            </div>
+            <div class="p-col-2 actionOption">
+              <a (click)="removeCourse(course)">Remove</a>
+            </div>
+            <div class="p-col-2">
+              <p class="price">
+                {{ course.price | currency }}
+                <span><i class="pi pi-tag"></i></span>
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="p-col-2 actionOption">
-        <a href="#">Remove</a>
-        <a href="#">Save for Later</a>
-      </div>
-      <div class="p-col-2">
-        <p class="price">
-          $129.99 <span><i class="pi pi-tag"></i></span>
-        </p>
-      </div>
+
+        <div class="p-col-3">
+          <p-card>
+            <p style="color: #686f7a">Total:</p>
+            <h3 style="margin: 10px 0">{{ totalPrice$ | async | currency }}</h3>
+            <button
+              pButton
+              type="button"
+              label="Check out"
+              class="p-button-danger"
+              routerLink="/category/checkout"
+            ></button>
+          </p-card>
+        </div>
+      </ng-container>
+
+      <ng-template #noCourse>
+        <div class="empty-list p-col-12">
+          <i class="pi pi-shopping-cart" style="font-size: 5rem"></i>
+
+          <p>Your cart is empty. Keep shopping to find a course!</p>
+          <p-button
+            label="Keep shopping"
+            routerLink="/category/courses"
+          ></p-button>
+        </div>
+      </ng-template>
     </div>
-    <div class="p-col-4">
-      <p style="color: #686f7a">Total:</p>
-      <h3>$129.99</h3>
-      <button
-        pButton
-        type="button"
-        label="Check out"
-        class="p-button-danger"
-      ></button>
+  </ng-container>
+
+  <ng-template #loadCourse>
+    <div style="display: flex; justify-content: center">
+      <p-progressSpinner></p-progressSpinner>
     </div>
-  </div>
+  </ng-template>
 </div>

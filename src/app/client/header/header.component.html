@@ -34,10 +34,14 @@
         <ng-template #showinfo>
           <div class="icon-user">
             <p-menubar [model]="items"></p-menubar>
+            <ng-container *ngIf="itemInCart$ | async as item">
+              <p-badge [value]="item" class="cart-badge"></p-badge>
+            </ng-container>
           </div>
         </ng-template>
       </div>
     </div>
   </div>
 </div>
+
 <app-nav></app-nav>
