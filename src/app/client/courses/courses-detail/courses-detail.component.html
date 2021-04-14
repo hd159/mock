@@ -1,172 +1,178 @@
 <div class="container">
-  <div class="p-grid" *ngIf="course$ | async as course; else loadCourse">
-    <div class="p-col-8">
-      <div class="course-header">
-        <h1>{{ course.title }}</h1>
-        <p>{{ course.subtitle }}</p>
-        <div class="rating">
-          <span class="star-rating">
-            {{ course.rating }}
-          </span>
-        </div>
-        <div class="author">
-          Created by <span>{{ course.author }}</span>
-        </div>
-        <div class="course-meta">
-          <span>Last updated {{ course._kmd.lmt | date }}</span>
-        </div>
-      </div>
-
-      <div class="course-body">
-        <div class="course-objective">
-          <h2 class="title">What you'll learn</h2>
-          <div class="p-grid">
-            <div
-              class="course-objective__content p-col-6"
-              *ngFor="let item of course.goal"
-            >
-              <i class="pi pi-check"></i>
-              <p>{{ item.content }}</p>
-            </div>
+  <<<<<<< HEAD
+  {{ displayBasic }}
+  <div class="p-grid" *ngIf="course$ | async as course">
+    =======
+    <div class="p-grid" *ngIf="course$ | async as course; else loadCourse">
+      >>>>>>> d7a930a82adc14d02101edf5d024d06e4b9ab911
+      <div class="p-col-8">
+        <div class="course-header">
+          <h1>{{ course.title }}</h1>
+          <p>{{ course.subtitle }}</p>
+          <div class="rating">
+            <span class="star-rating">
+              {{ course.rating }}
+            </span>
+          </div>
+          <div class="author">
+            Created by <span>{{ course.author }}</span>
+          </div>
+          <div class="course-meta">
+            <span>Last updated {{ course._kmd.lmt | date }}</span>
           </div>
         </div>
 
-        <div class="course-content">
-          <h2 class="title">Course content</h2>
-          <div class="curriculum">
-            <div class="content">
-              <span class="section">21 sections</span>
-              <span class="lecture">314 lectures</span>
-              <span class="length">68h total length</span>
+        <div class="course-body">
+          <div class="course-objective">
+            <h2 class="title">What you'll learn</h2>
+            <div class="p-grid">
+              <div
+                class="course-objective__content p-col-6"
+                *ngFor="let item of course.goal"
+              >
+                <i class="pi pi-check"></i>
+                <p>{{ item.content }}</p>
+              </div>
             </div>
-            <span class="expand">Expand all sections</span>
           </div>
 
-          <p-accordion [multiple]="true">
-            <ng-container *ngFor="let item of course.section">
-              <p-accordionTab [header]="item.title">
-                <div class="lecture" *ngFor="let lecture of item.chapter">
-                  <div class="title">
-                    <i class="pi pi-paperclip"></i>
-                    <p>{{ lecture.title }}</p>
+          <div class="course-content">
+            <h2 class="title">Course content</h2>
+            <div class="curriculum">
+              <div class="content">
+                <span class="section">21 sections</span>
+                <span class="lecture">314 lectures</span>
+                <span class="length">68h total length</span>
+              </div>
+              <span class="expand">Expand all sections</span>
+            </div>
+
+            <p-accordion [multiple]="true">
+              <ng-container *ngFor="let item of course.section">
+                <p-accordionTab [header]="item.title">
+                  <div class="lecture" *ngFor="let lecture of item.chapter">
+                    <div class="title">
+                      <i class="pi pi-paperclip"></i>
+                      <p>{{ lecture.title }}</p>
+                    </div>
+                    <span>00:44</span>
                   </div>
-                  <span>00:44</span>
-                </div>
-              </p-accordionTab>
-            </ng-container>
-          </p-accordion>
-        </div>
-
-        <div class="course-requirement">
-          <h2 class="title">Requirements</h2>
-          <ul style="padding-left: 20px">
-            <li *ngFor="let require of course.require">
-              {{ require.content }}
-            </li>
-          </ul>
-        </div>
-
-        <div class="course-description">
-          <h2 class="title">Description</h2>
-          <div [innerHtml]="course.html"></div>
-        </div>
-
-        <div class="target-student">
-          <h2 class="title">Who this course is for:</h2>
-          <ul style="padding-left: 20px">
-            <li *ngFor="let item of course.target_student">
-              {{ item.content }}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-col-4">
-      <div class="card-sidebar">
-        <div class="sidebar-intro" (click)="showBasicDialog()">
-          <div class="content">
-            <img [src]="course.img" />
-            <div class="overlay"></div>
-            <div class="icon">
-              <span>
-                <i class="pi pi-play" style="font-size: 2rem"></i>
-              </span>
-              <p>Preview this course</p>
-            </div>
+                </p-accordionTab>
+              </ng-container>
+            </p-accordion>
           </div>
 
-          <p-dialog
-            header="Course Preview"
-            [(visible)]="displayBasic"
-            [style]="{ width: '50vw' }"
-            [baseZIndex]="100000"
-            class="modal-preview"
-            blockScroll="true"
-          >
-            <p class="title">
-              {{ course.title }}
-            </p>
+          <div class="course-requirement">
+            <h2 class="title">Requirements</h2>
+            <ul style="padding-left: 20px">
+              <li *ngFor="let require of course.require">
+                {{ require.content }}
+              </li>
+            </ul>
+          </div>
 
-            <iframe
-              [src]="course.preview_video | safeUrl"
-              width="640"
-              height="480"
-            ></iframe>
+          <div class="course-description">
+            <h2 class="title">Description</h2>
+            <div [innerHtml]="course.html"></div>
+          </div>
 
-            <div class="sample-video">
-              <p>Free Sample Videos:</p>
-            </div>
-
-            <ng-template pTemplate="footer">
-              <p-button
-                (click)="displayBasic = false"
-                label="No"
-                styleClass="p-button-text"
-              ></p-button>
-              <p-button
-                (click)="displayBasic = false"
-                label="Yes"
-                styleClass="p-button-text"
-              ></p-button>
-            </ng-template>
-          </p-dialog>
+          <div class="target-student">
+            <h2 class="title">Who this course is for:</h2>
+            <ul style="padding-left: 20px">
+              <li *ngFor="let item of course.target_student">
+                {{ item.content }}
+              </li>
+            </ul>
+          </div>
         </div>
+      </div>
 
-        <div class="sidebar-content">
-          <div class="section-buy">
-            <div class="price">
-              <span class="current-price">{{ course.price }}</span>
-              <s><span class="original-price">$129.99</span></s>
-              <span class="discount">91% off</span>
+      <div class="p-col-4">
+        <div class="card-sidebar">
+          <div class="sidebar-intro" (click)="showBasicDialog()">
+            <div class="content">
+              <img [src]="course.img" />
+              <div class="overlay"></div>
+              <div class="icon">
+                <span>
+                  <i class="pi pi-play" style="font-size: 2rem"></i>
+                </span>
+                <p>Preview this course</p>
+              </div>
             </div>
-            <div class="discount-expire">
-              <i class="pi pi-clock"></i>
-              <span>1 day left at this price!</span>
-            </div>
-            <button
-              class="btn btn-add"
-              [routerLink]="['/category/learn', course._id]"
+
+            <p-dialog
+              header="Course Preview"
+              [(visible)]="displayBasic"
+              [style]="{ width: '50vw' }"
+              [baseZIndex]="100000"
+              class="modal-preview"
+              blockScroll="true"
             >
-              Add to cart
-            </button>
-            <button class="btn btn-buy" routerLink="/category/checkout">
-              Buy now
-            </button>
-            <p class="money-back">30-Day Money-Back Guarantee</p>
+              <p class="title">
+                {{ course.title }}
+              </p>
+
+              <iframe
+                [src]="course.preview_video | safeUrl"
+                width="640"
+                height="480"
+              ></iframe>
+
+              <div class="sample-video">
+                <p>Free Sample Videos:</p>
+              </div>
+
+              <ng-template pTemplate="footer">
+                <p-button
+                  (click)="displayBasic = false"
+                  label="No"
+                  styleClass="p-button-text"
+                ></p-button>
+                <p-button
+                  (click)="displayBasic = false"
+                  label="Yes"
+                  styleClass="p-button-text"
+                ></p-button>
+              </ng-template>
+            </p-dialog>
           </div>
 
-          <div class="section-description">
-            <h2>This course includes:</h2>
+          <div class="sidebar-content">
+            <div class="section-buy">
+              <div class="price">
+                <span class="current-price">{{ course.price }}</span>
+                <s><span class="original-price">$129.99</span></s>
+                <span class="discount">91% off</span>
+              </div>
+              <div class="discount-expire">
+                <i class="pi pi-clock"></i>
+                <span>1 day left at this price!</span>
+              </div>
+              <button
+                class="btn btn-add"
+                [routerLink]="['/category/learn', course._id]"
+              >
+                Add to cart
+              </button>
+              <button class="btn btn-buy" routerLink="/category/checkout">
+                Buy now
+              </button>
+              <p class="money-back">30-Day Money-Back Guarantee</p>
+            </div>
+
+            <div class="section-description">
+              <h2>This course includes:</h2>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <ng-template #loadCourse>
-    <div style="display: flex; justify-content: center">
-      <p-progressSpinner></p-progressSpinner>
-    </div>
-  </ng-template>
+    <ng-template #loadCourse>
+      <div style="display: flex; justify-content: center">
+        <p-progressSpinner></p-progressSpinner>
+      </div>
+    </ng-template>
+  </div>
 </div>
