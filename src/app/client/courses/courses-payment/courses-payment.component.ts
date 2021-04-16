@@ -1,10 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  Subject,
+  Subscription,
+} from 'rxjs';
 import { render } from 'creditcardpayments/creditCardPayments';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from 'src/app/service/courses.service';
-import { map, mergeMap, shareReplay, takeUntil } from 'rxjs/operators';
+import {
+  map,
+  mergeMap,
+  shareReplay,
+  switchAll,
+  takeUntil,
+} from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { MessageService } from 'primeng/api';
 
@@ -25,13 +37,16 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
   selectedCity;
   paymentMethod = 'paypal';
   userInfo$: Observable<any>;
+  showBtn: boolean = true;
+  loading = false;
   unsubscription = new Subject();
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
     private coursesService: CoursesService,
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -63,15 +78,17 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
   }
 
   onPayment() {
+    this.showBtn = false;
     render({
       id: '#paypalbtn',
       currency: 'USD',
       value: this.totalPrice.toString(),
       onApprove: (detail) => {
+        this.loading = true;
         this.userInfo$
           .pipe(
             mergeMap((user) => {
-              const courses = this.coursesService.courseInCart.value.map(
+              const coursesId = this.coursesService.courseInCart.value.map(
                 (item) => item._id
               );
               if (!user.learning) {
@@ -80,20 +97,29 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
 
               const body = {
                 ...user,
-                learning: [...user.learning, ...courses],
+                learning: [...user.learning, ...coursesId],
               };
 
-              return this.authService.updateLearning(user._id, body);
+              const updateUser = this.authService.updateLearning(
+                user._id,
+                body
+              );
+
+              const updateStudents = this.coursesService.updateStudent();
+
+              return combineLatest([updateUser, updateStudents]);
             }),
             takeUntil(this.unsubscription)
           )
           .subscribe((val) => {
+            this.loading = false;
             this.messageService.add({
               severity: 'success',
               detail: 'Payment success',
             });
 
             this.coursesService.resetCourseInCart();
+            // this.router.navigateByUrl('/category/learning');
           });
       },
     });

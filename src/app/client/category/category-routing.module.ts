@@ -9,6 +9,8 @@ import { LessonCategoryComponent } from './lesson-category/lesson-category.compo
 import { PostdetailComponent } from './postdetail/postdetail.component';
 import { CourseLearnComponent } from '../courses/course-learn/course-learn.component';
 import { LearningComponent } from '../courses/learning/learning.component';
+import { CourseGuard } from '../../service/course.guard';
+import { LearningGuard } from '../../service/learning.guard';
 
 const routes: Routes = [
   { path: 'post/:id', component: PostdetailComponent },
@@ -17,9 +19,21 @@ const routes: Routes = [
     children: [
       { path: 'courses', component: CoursesComponent },
       { path: 'courses/:id', component: CoursesDetailComponent },
-      { path: 'learn/:id', component: CourseLearnComponent },
-      { path: 'checkout', component: CoursesPaymentComponent },
-      { path: 'learning', component: LearningComponent },
+      {
+        path: 'learn/:id',
+        component: CourseLearnComponent,
+        canActivate: [LearningGuard],
+      },
+      {
+        path: 'checkout',
+        component: CoursesPaymentComponent,
+        canActivate: [CourseGuard],
+      },
+      {
+        path: 'learning',
+        component: LearningComponent,
+        canActivate: [CourseGuard],
+      },
       {
         path: ':name',
         component: HostCategoryComponent,

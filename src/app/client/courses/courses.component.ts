@@ -28,9 +28,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private coursesService: CoursesService,
     private router: Router,
     private authService: AuthService
-  ) {
-    this.coursesService.courseInCart.subscribe((val) => console.log(val));
-  }
+  ) {}
 
   ngOnInit(): void {
     this.sortPriceOptions = [
