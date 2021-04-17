@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, mergeMap, switchAll } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { CollectionService } from './collection.service';
 
@@ -62,6 +62,16 @@ export class CoursesService extends CollectionService<any> {
     localStorage.setItem(
       `courseInCart${this.authService.userInfo.value}`,
       JSON.stringify([])
+    );
+  }
+
+  updateStudent() {
+    return this.courseInCart.pipe(
+      switchAll(),
+      mergeMap((course) => {
+        const courseUpdate = { ...course, student: course.student + 1 };
+        return this.update(courseUpdate, course._id);
+      })
     );
   }
 }

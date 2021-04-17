@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, BehaviorSubject } from 'rxjs';
+
+import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import {
   catchError,
   finalize,
@@ -12,6 +13,7 @@ import {
 import { AuthService } from '../service/auth.service';
 import { CategoryService } from '../service/category.service';
 import { CoursesService } from '../service/courses.service';
+import { PreviousRouteService } from '../service/previous-route.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +29,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    private previousRouteService: PreviousRouteService
   ) {}
 
   ngOnInit() {
@@ -58,20 +61,43 @@ export class LoginComponent implements OnInit, OnDestroy {
     };
 
     // send request to server here
-    this.authService.login(user.password, user.password).subscribe(
-      (data: any) => {
+    const login = this.authService.login(user.password, user.password);
+    this.sub = combineLatest([
+      login,
+      this.previousRouteService.prevRoute,
+    ]).subscribe(
+      ([login, prevRoute]) => {
         if (localStorage.getItem('typeUser') === 'admin')
           this.router.navigateByUrl('/admin');
         else {
           localStorage.setItem('logged', 'true');
           this.coursesService.getCoursesLocal();
-          this.router.navigateByUrl('/');
+          if (prevRoute) {
+            this.router.navigateByUrl(prevRoute);
+          } else {
+            this.router.navigateByUrl('/');
+          }
         }
       },
       (err) => {
         this.loading = false;
       }
     );
+
+    // this.authService.login(user.password, user.password).subscribe(
+    //   (data: any) => {
+    //     if (localStorage.getItem('typeUser') === 'admin')
+    //       this.router.navigateByUrl('/admin');
+    //     else {
+    //       localStorage.setItem('logged', 'true');
+    //       this.coursesService.getCoursesLocal();
+    //       this.router.navigateByUrl('/');
+    //     }
+    //   },
+    //   (err) => {
+    //     this.loading = false;
+    //   }
+    // );
 
     //
   }

@@ -2,7 +2,15 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
-import { catchError, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  map,
+  pluck,
+  shareReplay,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 import { User } from '../store';
 
 export interface AuthState {
@@ -39,6 +47,7 @@ export class AuthService {
     this.getUserId();
 
     this.userDetail$ = this.userInfo.pipe(
+      filter((val) => !!val),
       switchMap((id) => this.getUser(id)),
       shareReplay()
     );
@@ -76,7 +85,7 @@ export class AuthService {
         map((data: any) => {
           if (data._kmd.roles !== undefined) {
             if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
-              localStorage.setItem('typeUser', 'user');
+              localStorage.setItem('typeUser', 'admin');
               this.isAdminSubject$.next(data);
               this.setUserId(data._id);
             }
@@ -115,7 +124,11 @@ export class AuthService {
   }
 
   getUser(id: string) {
-    return this.http.get<any>(`${this.userUrl}/${id}`);
+    return this.http.get<any>(`${this.userUrl}/${id}`).pipe(
+      catchError((err) => {
+        return of(false);
+      })
+    );
   }
 
   getUserLearning(id: string): Observable<any[]> {
@@ -131,11 +144,21 @@ export class AuthService {
             learning = [...value.learning];
           }
           return learning;
+        }),
+        catchError((err) => {
+          return of(false);
         })
       );
   }
 
   updateLearning(userId, body) {
     return this.http.put(`${this.userUrl}/${userId}`, body);
+  }
+
+  logout() {
+    localStorage.setItem('logged', 'false');
+    localStorage.setItem('typeUser', '');
+    localStorage.removeItem('userInfo');
+    this.userInfo.next(null);
   }
 }

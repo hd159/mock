@@ -139,11 +139,16 @@
         <p-button
           label="Complete Payment"
           (click)="onPayment()"
-          id="paypalbtn"
+          *ngIf="showBtn"
         ></p-button>
+        <div id="paypalbtn"></div>
       </p-card>
     </div>
   </div>
+</div>
+
+<div class="loading" *ngIf="loading">
+  <p-progressSpinner></p-progressSpinner>
 </div>
 
 <p-toast></p-toast>

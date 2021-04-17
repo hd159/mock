@@ -24,17 +24,18 @@ export const routes: Routes = [
           ),
       },
       { path: 'user-info', component: UserInfoComponent },
-      { path: 'cart', component: CartComponent }
+      { path: 'cart', component: CartComponent },
     ],
   },
 
   { path: 'admin/login', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'admin/register', component: RegisterComponent },
   {
     path: 'admin',
     loadChildren: () =>
       import('./admin/admin.module').then((m) => m.AdminModule),
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
   },
 
   { path: 'network-err', component: ErrorNetworkComponent },
@@ -54,4 +55,4 @@ const routerOptions: ExtraOptions = {
   imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
