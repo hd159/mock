@@ -2,7 +2,7 @@
   <p-card>
     <div class="page" [formGroup]="formLandingPage">
       <form [formGroup]="formLandingPage" (ngSubmit)="onSubmit()">
-        <div class="p-grid p-fluid">
+        <div class="p-grid p-fluid p-m-0">
           <div class="p-col-12">
             <div class="p-inputgroup p-grid">
               <span class="p-col-12" for="">Course title </span>
@@ -42,28 +42,31 @@
           <div class="p-col-12">
             <div class="p-grid p-inputgroup">
               <span class="p-col-12" for="">Basic Info</span>
-              <div class="p-col-4">
+              <div class="p-col-4 p-pl-0">
                 <p-dropdown
                   [options]="cities"
-                  formControlName="selectedCity"
+                  formControlName="language"
                   optionLabel="name"
-                  optionValue="code"
+                  [showClear]="true"
+                  placeholder="-- Select Language --"
                 ></p-dropdown>
               </div>
               <div class="p-col-4">
                 <p-dropdown
                   [options]="levels"
-                  formControlName="selectedLevel"
+                  formControlName="level"
                   optionLabel="name"
-                  optionValue="code"
+                  [showClear]="true"
+                  placeholder="-- Select Level --"
                 ></p-dropdown>
               </div>
-              <div class="p-col-4">
+              <div class="p-col-4 p-pr-0">
                 <p-dropdown
                   [options]="categories"
-                  formControlName="selectedCategory"
+                  formControlName="category"
                   optionLabel="name"
-                  optionValue="code"
+                  [showClear]="true"
+                  placeholder="-- Select Category --"
                 ></p-dropdown>
               </div>
             </div>
@@ -104,13 +107,20 @@
               />
             </div>
           </div>
+
+          <div class="p-col-4">
+            <div class="p-inputgroup p-grid">
+              <span class="p-col-12" for="">Discount</span>
+              <input
+                type="text"
+                pInputText
+                placeholder="Discount"
+                formControlName="discount"
+              />
+            </div>
+          </div>
         </div>
-        <p-button
-          label="Save"
-          icon="pi pi-check"
-          type="submit"
-          disabled="true"
-        ></p-button>
+        <p-button label="Save" icon="pi pi-check" type="submit"></p-button>
       </form>
     </div>
 
@@ -125,4 +135,9 @@
       </div>
     </ng-template>
   </p-card>
+</div>
+
+<p-toast [baseZIndex]="100000"></p-toast>
+<div class="loading" *ngIf="loading">
+  <p-progressSpinner></p-progressSpinner>
 </div>

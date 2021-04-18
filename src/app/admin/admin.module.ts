@@ -49,6 +49,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StepsModule } from 'primeng/steps';
 import { MenuModule } from 'primeng/menu';
 import { GoalsCourseComponent } from './courses/goals-course/goals-course.component';
+import { EditCourseComponent } from './courses/edit-course/edit-course.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { GoalsCourseComponent } from './courses/goals-course/goals-course.compon
     CoursesLandingpageComponent,
     AddCourseComponent,
     GoalsCourseComponent,
+    EditCourseComponent,
   ],
   imports: [
     CommonModule,

@@ -1,4 +1,4 @@
-<div class="p-col-8">
+<div class="p-col-8 p-px-0">
   <form [formGroup]="parentForm">
     <p-card
       styleClass="curriculum-lists"
@@ -16,6 +16,7 @@
             pInputText
             [formControl]="item.get('title')"
             style="width: 450px"
+            placeholder="Enter title"
           />
 
           <span class="section-action">
@@ -31,11 +32,7 @@
         styleClass="chapter-editor"
         *ngFor="let itemChapter of getChapter(item); index as j"
       >
-        <!-- <div class="add-content">
-          <button>+ Content</button>
-        </div> -->
-
-        <p-panel [toggleable]="true" [collapsed]="true">
+        <p-panel [toggleable]="true" [collapsed]="true" class="panel">
           <ng-template pTemplate="header"
             ><div class="edit-chapter">
               <i class="pi pi-check"></i>
@@ -50,6 +47,7 @@
                 pInputText
                 [formControl]="itemChapter.get('title')"
                 style="width: 450px"
+                placeholder="Enter title"
               />
               <span class="lecture-action">
                 <i class="pi pi-pencil"></i>
@@ -57,14 +55,6 @@
               </span>
             </div>
           </ng-template>
-
-          <div class="lecture-desc">
-            <label for="">Lecture description</label>
-            <app-text-editor
-              [height]="200"
-              [parentForm]="itemChapter"
-            ></app-text-editor>
-          </div>
 
           <div class="lecture-content-type">
             <p-tabView>
@@ -75,18 +65,16 @@
                     type="text"
                     pInputText
                     [formControl]="itemChapter.get('videoUrl')"
-                    style="width: 450px"
                   />
                 </div>
               </p-tabPanel>
               <p-tabPanel header="Video & Slide Mashup">
-                <div class="video-upload p-d-flex p-flex-column">
+                <div class="video-upload p-d-flex p-flex-column p-mb-2">
                   <label>Upload video</label>
                   <input
                     type="text"
                     pInputText
-                    [formControl]="itemChapter.get('videoUrl')"
-                    style="width: 450px"
+                    [formControl]="itemChapter.get('videoUrl2')"
                   />
                 </div>
 
@@ -96,17 +84,17 @@
                     type="text"
                     pInputText
                     [formControl]="itemChapter.get('pdfUrl')"
-                    style="width: 450px"
                   />
                 </div>
               </p-tabPanel>
-              <!-- <p-tabPanel header="Article">
-                <label for="">Text</label>
-                <app-text-editor
-                  [height]="200"
-                  formControlName="article_lecture"
-                ></app-text-editor>
-              </p-tabPanel> -->
+              <p-tabPanel header="Description">
+                <div class="lecture-desc">
+                  <app-text-editor
+                    [height]="200"
+                    [parentForm]="itemChapter"
+                  ></app-text-editor>
+                </div>
+              </p-tabPanel>
             </p-tabView>
           </div>
         </p-panel>

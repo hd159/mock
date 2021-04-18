@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-center w-100 h-100">
     <div class="card mx-5 my-5 w-100 border-0">
       <div class="card-header border-0">
-        <a class="h3 px-2 text-primary" href=""
+        <a class="h3 px-2 text-primary" routerLink="/login"
           ><i class="fas fa-arrow-left"></i
         ></a>
       </div>
@@ -16,128 +16,54 @@
               <p class="text-center">Please input username and password</p>
             </div>
 
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <form [formGroup]="formRegister" (ngSubmit)="onSubmit()">
               <div class="row">
                 <div class="col-6">
-                  <div class="form-group">
-                    <label for="username" class="text-secondary"
-                      >Username:</label
-                    >
-                    <input
-                      type="text"
-                      formControlName="username"
-                      class="form-control"
-                      [ngClass]="{
-                        'is-invalid': submitted && f.username.errors
-                      }"
-                      placeholder="Username"
-                    />
-                    <div
-                      *ngIf="submitted && f.username.errors"
-                      class="invalid-feedback"
-                    >
-                      <div *ngIf="f.username.errors.required">
-                        Username is required
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="firstName" class="text-secondary"
-                      >First Name:</label
-                    >
-                    <input
-                      type="text"
-                      formControlName="firstName"
-                      class="form-control"
-                      [ngClass]="{
-                        'is-invalid': submitted && f.firstName.errors
-                      }"
-                      placeholder="First Name"
-                    />
-                    <div
-                      *ngIf="submitted && f.firstName.errors"
-                      class="invalid-feedback"
-                    >
-                      <div *ngIf="f.firstName.errors.required">
-                        First Name is required
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="lastName" class="text-secondary"
-                      >Last Name:</label
-                    >
-                    <input
-                      type="text"
-                      formControlName="lastName"
-                      class="form-control"
-                      [ngClass]="{
-                        'is-invalid': submitted && f.lastName.errors
-                      }"
-                      placeholder="lastName"
-                    />
-                    <div
-                      *ngIf="submitted && f.lastName.errors"
-                      class="invalid-feedback"
-                    >
-                      <div *ngIf="f.userlastNamename.errors.required">
-                        Last Name is required
-                      </div>
-                    </div>
-                  </div>
+                  <app-input-log
+                    [parentForm]="formRegister"
+                    label="Username"
+                    [submitted]="submitted"
+                    [control]="formRegister.get('username')"
+                  ></app-input-log>
+
+                  <app-input-log
+                    [parentForm]="formRegister"
+                    label="First Name"
+                    [submitted]="submitted"
+                    [control]="formRegister.get('firstName')"
+                  ></app-input-log>
+
+                  <app-input-log
+                    [parentForm]="formRegister"
+                    label="Last Name"
+                    [submitted]="submitted"
+                    [control]="formRegister.get('lastName')"
+                  ></app-input-log>
                 </div>
                 <div class="col-6">
-                  <div class="form-group">
-                    <label for="email" class="text-secondary">Email:</label>
-                    <input
-                      type="text"
-                      formControlName="email"
-                      class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
-                      placeholder="Email"
-                    />
-                    <div
-                      *ngIf="submitted && f.email.errors"
-                      class="invalid-feedback"
-                    >
-                      <div *ngIf="f.email.errors.required">
-                        Email is required
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="password" class="text-secondary"
-                      >Password:</label
-                    >
-                    <input
-                      type="password"
-                      formControlName="password"
-                      class="form-control"
-                      [ngClass]="{
-                        'is-invalid': submitted && f.password.errors
-                      }"
-                      placeholder="Password"
-                    />
-                    <div
-                      *ngIf="submitted && f.password.errors"
-                      class="invalid-feedback"
-                    >
-                      <div *ngIf="f.password.errors.required">
-                        Password is required
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="password" class="text-secondary"
-                      >Confirm Password:</label
-                    >
-                    <input
-                      type="password"
-                      class="form-control"
-                      formControlName="confirmPassword"
-                      placeholder="Password"
-                    />
-                  </div>
+                  <app-input-log
+                    [parentForm]="formRegister"
+                    label="Email"
+                    [submitted]="submitted"
+                    [control]="formRegister.get('email')"
+                    type="email"
+                  ></app-input-log>
+
+                  <app-input-log
+                    [parentForm]="formRegister"
+                    label="Password"
+                    [submitted]="submitted"
+                    [control]="formRegister.get('password')"
+                    type="password"
+                  ></app-input-log>
+
+                  <app-input-log
+                    [parentForm]="formRegister"
+                    label="Confirm Password"
+                    [submitted]="submitted"
+                    [control]="formRegister.get('confirmPassword')"
+                    type="password"
+                  ></app-input-log>
                 </div>
               </div>
 
@@ -164,3 +90,5 @@
     </div>
   </div>
 </section>
+
+<p-toast></p-toast>

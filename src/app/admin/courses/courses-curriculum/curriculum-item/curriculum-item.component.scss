@@ -79,10 +79,6 @@
         .lecture-desc {
           margin-bottom: 20px;
         }
-
-        .lecture-content-type {
-
-        }
       }
     }
 
@@ -106,4 +102,8 @@
       }
     }
   }
+}
+
+:host ::ng-deep .panel {
+  width: 100%;
 }

@@ -13,6 +13,7 @@ import { CoursesCurriculumComponent } from './courses/courses-curriculum/courses
 import { CoursesLandingpageComponent } from './courses/courses-landingpage/courses-landingpage.component';
 import { AddCourseComponent } from './courses/add-course/add-course.component';
 import { GoalsCourseComponent } from './courses/goals-course/goals-course.component';
+import { EditCourseComponent } from './courses/edit-course/edit-course.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,15 @@ const routes: Routes = [
         component: AddCourseComponent,
         children: [
           { path: '', redirectTo: 'landing-page', pathMatch: 'full' },
+          { path: 'landing-page', component: CoursesLandingpageComponent },
+          { path: 'curriculum', component: CoursesCurriculumComponent },
+          { path: 'goals', component: GoalsCourseComponent },
+        ],
+      },
+      {
+        path: 'courses/edit/:id',
+
+        children: [
           { path: 'landing-page', component: CoursesLandingpageComponent },
           { path: 'curriculum', component: CoursesCurriculumComponent },
           { path: 'goals', component: GoalsCourseComponent },

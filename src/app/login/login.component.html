@@ -24,6 +24,7 @@
                   formControlName="username"
                   class="form-control"
                   [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+                  [ngClass]="{ 'is-invalid': submitted && loginFail }"
                   placeholder="Username"
                 />
                 <div
@@ -42,6 +43,7 @@
                   formControlName="password"
                   class="form-control"
                   [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                  [ngClass]="{ 'is-invalid': submitted && loginFail }"
                   placeholder="Password"
                 />
                 <div
@@ -76,3 +78,5 @@
     </div>
   </div>
 </section>
+
+<p-toast></p-toast>

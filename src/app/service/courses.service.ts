@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, mergeMap, switchAll } from 'rxjs/operators';
+import { map, mergeMap, pluck, switchAll } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { CollectionService } from './collection.service';
 
@@ -17,11 +18,17 @@ interface Course {
 export class CoursesService extends CollectionService<any> {
   newCourse: BehaviorSubject<any>;
   courseInCart: BehaviorSubject<any[]>;
-  constructor(http: HttpClient, private authService: AuthService) {
+  constructor(
+    http: HttpClient,
+    private authService: AuthService,
+    private route: ActivatedRoute
+  ) {
     super(initalCoursesState, 'courses', http);
     this.newCourse = new BehaviorSubject(null);
 
     this.getCoursesLocal();
+
+    this.route.params.subscribe(console.log);
   }
 
   get newCourseData() {
@@ -73,5 +80,9 @@ export class CoursesService extends CollectionService<any> {
         return this.update(courseUpdate, course._id);
       })
     );
+  }
+
+  getCountries(): Observable<any[]> {
+    return this.http.get('/assets/countries.json').pipe(pluck('data'));
   }
 }

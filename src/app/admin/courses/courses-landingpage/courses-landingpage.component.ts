@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { of, Subject } from 'rxjs';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { CoursesService } from 'src/app/service/courses.service';
 
 @Component({
@@ -8,30 +11,50 @@ import { CoursesService } from 'src/app/service/courses.service';
   templateUrl: './courses-landingpage.component.html',
   styleUrls: ['./courses-landingpage.component.scss'],
 })
-export class CoursesLandingpageComponent implements OnInit {
+export class CoursesLandingpageComponent implements OnInit, OnDestroy {
   formLandingPage: FormGroup;
   cities: any[];
   levels: any[];
   categories: any[];
-
+  idcourse: string;
+  loading: boolean;
+  unsubscription = new Subject();
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private coursesService: CoursesService
+    private route: ActivatedRoute,
+    private coursesService: CoursesService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
     this.formLandingPage = this.initForm();
-    const valueCourse = this.coursesService.newCourseData;
-    this.formLandingPage.patchValue({ ...valueCourse });
 
-    this.cities = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' },
-    ];
+    this.route.params
+      .pipe(
+        tap(() => (this.loading = true)),
+        switchMap(({ id }) => {
+          if (id) {
+            this.idcourse = id;
+            return this.coursesService.findById(id);
+          } else {
+            return of(null);
+          }
+        }),
+        takeUntil(this.unsubscription)
+      )
+      .subscribe((val) => {
+        this.loading = false;
+        if (val) {
+          this.formLandingPage.patchValue({ ...val });
+        }
+      });
+
+    this.coursesService
+      .getCountries()
+      .pipe(takeUntil(this.unsubscription))
+      .subscribe((val) => (this.cities = val));
+
     this.levels = [
       { name: 'Beginner', value: 'Beginner' },
       { name: 'Intermediate', value: 'Intermediate' },
@@ -41,30 +64,63 @@ export class CoursesLandingpageComponent implements OnInit {
     this.categories = [{ name: 'Development', value: 'dev' }];
   }
 
+  ngOnDestroy() {
+    this.unsubscription.next();
+    this.unsubscription.unsubscribe();
+  }
+
   initForm() {
     return this.fb.group({
-      title: '',
-      subtitle: '',
-      html: '',
-      selectedCity: '',
-      selectedLevel: '',
-      selectedCategory: '',
-      img: '',
-      preview_video: '',
-      price: '',
+      title: ['', Validators.required],
+      subtitle: ['', Validators.required],
+      html: ['', Validators.required],
+      language: [null, Validators.required],
+      level: [null, Validators.required],
+      category: [null, Validators.required],
+      img: ['', Validators.required],
+      preview_video: ['', Validators.required],
+      price: ['', Validators.required],
+      discount: ['', Validators.required],
     });
   }
 
   onSubmit() {
-    console.log(this.formLandingPage.value);
+    const valid = this.checkForm();
+    if (!valid) {
+      return;
+    }
+    const value = this.formLandingPage.value;
   }
 
   nextPage() {
+    const valid = this.checkForm();
+    if (!valid) {
+      return;
+    }
     const landingPageData = this.formLandingPage.value;
     this.coursesService.newCourse.next({
       ...this.coursesService.newCourseData,
       ...landingPageData,
     });
-    this.router.navigate(['admin/courses/add/curriculum']);
+
+    if (this.idcourse) {
+      this.router.navigate(['admin/courses/edit', this.idcourse, 'curriculum']);
+    } else {
+      this.router.navigate(['admin/courses/add/curriculum']);
+    }
+  }
+
+  checkForm() {
+    let valid;
+    if (this.formLandingPage.invalid) {
+      valid = false;
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please input all fields',
+      });
+    }
+
+    return true;
   }
 }

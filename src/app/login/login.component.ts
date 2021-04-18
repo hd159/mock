@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import {
@@ -24,13 +25,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   form: FormGroup;
   loading = false;
   submitted = false;
+  loginFail = false;
   sub: Subscription;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
     private coursesService: CoursesService,
-    private previousRouteService: PreviousRouteService
+    private previousRouteService: PreviousRouteService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -47,9 +50,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.submitted = true;
+    this.loginFail = false;
 
     // stop here if form is invalid
     if (this.form.invalid) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please input all fields',
+      });
       return;
     }
 
@@ -81,25 +90,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       },
       (err) => {
         this.loading = false;
+        this.loginFail = true;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Invalid credential',
+        });
       }
     );
-
-    // this.authService.login(user.password, user.password).subscribe(
-    //   (data: any) => {
-    //     if (localStorage.getItem('typeUser') === 'admin')
-    //       this.router.navigateByUrl('/admin');
-    //     else {
-    //       localStorage.setItem('logged', 'true');
-    //       this.coursesService.getCoursesLocal();
-    //       this.router.navigateByUrl('/');
-    //     }
-    //   },
-    //   (err) => {
-    //     this.loading = false;
-    //   }
-    // );
-
-    //
   }
 
   ngOnDestroy() {
