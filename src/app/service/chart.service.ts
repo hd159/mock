@@ -294,10 +294,6 @@ export class ChartService {
   // chart with view
   countPostOfView(year: number, month: number, limit: number = 5) {
     const key = year.toString() + month;
-    // const query = new Query();
-    // query.limit = limit;
-    // query.exists(`view.${key}`);
-    // query.descending(`view.${key}`);
 
     const params = new HttpParams()
       .set('sort', JSON.stringify({ [`view.${key}`]: -1 }))
@@ -309,7 +305,7 @@ export class ChartService {
       map((post: any) => ({
         content: post.content,
         idcha: post.idcha,
-        view: post.view[key] || 0,
+        view: post.view ? post.view[key] : 0,
         title: post.title,
         _id: post._id,
       })),

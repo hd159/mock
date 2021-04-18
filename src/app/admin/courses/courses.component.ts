@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CoursesService } from 'src/app/service/courses.service';
 
 @Component({
@@ -12,7 +13,8 @@ import { CoursesService } from 'src/app/service/courses.service';
 export class CoursesComponent implements OnInit, OnDestroy {
   courses: any[];
   selectedCourses: any[] = [];
-  subscription: Subscription[] = [];
+  loading: boolean;
+  unscription = new Subject();
   constructor(
     private coursesService: CoursesService,
     private confirmationService: ConfirmationService,
@@ -20,33 +22,19 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
   ngOnInit(): void {
-    const sub = this.coursesService.find().subscribe((val) => {
-      console.log(val);
-      this.courses = val;
-    });
-    this.subscription.push(sub);
+    this.coursesService
+      .find()
+      .pipe(takeUntil(this.unscription))
+      .subscribe((val) => {
+        console.log(val);
+        this.courses = val;
+      });
   }
 
   ngOnDestroy() {
-    this.subscription.forEach((sub) => sub.unsubscribe());
+    this.unscription.next();
+    this.unscription.unsubscribe();
   }
-
-  // onSubmit() {
-  //   const target = this.targetForm.value;
-  //   const landing = this.landingPage.formLandingPage.value;
-  //   const curriculum = this.curriculum.formCurriculum.value;
-
-  //   const newCourses = {
-  //     ...target,
-  //     ...landing,
-  //     ...curriculum,
-  //     author: 'jane',
-  //     rating: 0,
-  //     price: 30,
-  //   };
-
-  //   this.coursesService.create(newCourses).subscribe((val) => console.log(val));
-  // }
 
   createCourse() {
     this.router.navigateByUrl('admin/courses/add');
@@ -58,14 +46,21 @@ export class CoursesComponent implements OnInit, OnDestroy {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.courses = this.courses.filter((val) => val._id !== course._id);
+        this.loading = true;
+        this.coursesService.removeById(course._id).subscribe(
+          (val) => {
+            this.loading = false;
+            this.courses = this.courses.filter((val) => val._id !== course._id);
 
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Deleted',
-          life: 3000,
-        });
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Successful',
+              detail: 'Product Deleted',
+              life: 3000,
+            });
+          },
+          (err) => console.log(err)
+        );
       },
       reject: () => {
         this.messageService.add({
@@ -78,5 +73,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     });
   }
 
-  editCourse(course) {}
+  editCourse(course) {
+    this.router.navigate(['admin/courses/edit', course._id, 'landing-page']);
+  }
 }

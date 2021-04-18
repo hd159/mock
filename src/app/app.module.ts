@@ -26,6 +26,9 @@ import { BadgeModule } from 'primeng/badge';
 import { CardModule } from 'primeng/card';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CarouselModule } from 'primeng/carousel';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { InputLogComponent } from './register/input-log/input-log.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,7 @@ import { CarouselModule } from 'primeng/carousel';
     HomeClientComponent,
     UserInfoComponent,
     CartComponent,
+    InputLogComponent,
   ],
   imports: [
     CommonModule,
@@ -57,10 +61,12 @@ import { CarouselModule } from 'primeng/carousel';
     CardModule,
     ProgressSpinnerModule,
     CarouselModule,
+    ToastModule,
   ],
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true },
+    MessageService,
   ],
   bootstrap: [AppComponent],
 })

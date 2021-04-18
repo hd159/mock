@@ -26,11 +26,7 @@ export class CollectionService<T> {
   private subject: BehaviorSubject<T>;
   state$: Observable<T>;
 
-  constructor(
-    intialState: T,
-    collectionName: string,
-    private http: HttpClient
-  ) {
+  constructor(intialState: T, collectionName: string, public http: HttpClient) {
     this.subject = new BehaviorSubject(intialState);
     this.state$ = this.subject.asObservable();
     this.url = `https://baas.kinvey.com/appdata/kid_rJvDFm84u/${collectionName}`;

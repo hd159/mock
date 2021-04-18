@@ -10,7 +10,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
   @Input() parentForm: FormGroup;
   @Input() mode = 'admin';
   @Input() height = 500;
-  @Input() formControlName = 'html'
+  @Input() formControlName = 'html';
   plugins = [
     'advlist autolink lists link image charmap print preview anchor',
     'searchreplace visualblocks code fullscreen',
@@ -22,7 +22,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
   bullist numlist outdent indent | removeformat | help emoticons preview';
 
   menubar = true;
-  constructor() { }
+  constructor() {}
 
   ngOnChanges() {
     if (this.mode !== 'admin') {
@@ -32,5 +32,5 @@ export class TextEditorComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }
