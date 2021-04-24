@@ -1,13 +1,12 @@
-import { Router } from '@angular/router';
-import { LoginComponent } from './../../login/login.component';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { CoursesService } from 'src/app/service/courses.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
+import { CoursesService } from 'src/app/service/courses.service';
 import { PreviousRouteService } from 'src/app/service/previous-route.service';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
@@ -59,18 +58,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    if (localStorage.getItem('typeUser') === '' || localStorage.getItem('typeUser') === null) {
-
+    if (localStorage.getItem('logged') === 'false' || localStorage.getItem('logged') === null) {
       this.isLogin = false;
     }
-    else {
-      this.isLogin = true;
-      setTimeout(() => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login success' });
-      }, 1000);
-    }
-    console.log(this.isLogin)
+    else this.isLogin = true;
     this.itemInCart$ = this.coursesService.courseInCart
       .asObservable()
       .pipe(map((val) => val.length));
@@ -79,7 +70,7 @@ export class HeaderComponent implements OnInit {
     this.isLogin = false;
     this.authService.logout();
     this.router.navigateByUrl('/');
-    localStorage.setItem('typeUser', '');
+    localStorage.setItem('logged', 'false');
     this.previousRouteService.setPrevRoute(null);
   }
 

@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private messageService: MessageService,
     private checkPassword: CheckPassWord
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.formRegister = this.formBuilder.group(
@@ -103,10 +103,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
             summary: 'Success',
             detail: 'Register success',
           });
-
+          localStorage.setItem('logged', 'true')
           setTimeout(() => {
-            this.router.navigateByUrl('/user-info');
-          }, 500);
+            this.router.navigateByUrl('/');
+          }, 1000);
         },
         (err) => {
           if (err.status === 409) {
