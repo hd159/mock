@@ -59,15 +59,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    if (localStorage.getItem('typeUser') != '') {
-      this.isLogin = true;
-      setTimeout(() => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login success' });
-      }, 1000);
+    if (localStorage.getItem('logged') === 'false' || localStorage.getItem('logged') === null) {
+      this.isLogin = false;
     }
-    else this.isLogin = false;
-    console.log(this.isLogin)
+    else this.isLogin = true;
     this.itemInCart$ = this.coursesService.courseInCart
       .asObservable()
       .pipe(map((val) => val.length));
@@ -76,7 +71,7 @@ export class HeaderComponent implements OnInit {
     this.isLogin = false;
     this.authService.logout();
     this.router.navigateByUrl('/');
-    localStorage.setItem('typeUser', '');
+    localStorage.setItem('logged', 'false');
     this.previousRouteService.setPrevRoute(null);
   }
 
