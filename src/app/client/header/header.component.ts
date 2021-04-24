@@ -7,6 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { PreviousRouteService } from 'src/app/service/previous-route.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
@@ -49,7 +50,8 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private coursesService: CoursesService,
     private authService: AuthService,
-    private previousRouteService: PreviousRouteService
+    private previousRouteService: PreviousRouteService,
+    private messageService: MessageService
   ) {
     this.searchForm = this.fb.group({
       search: [''],
@@ -57,16 +59,25 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem('logged') == 'true') this.isLogin = true;
+
+    if (localStorage.getItem('typeUser') != '') {
+      this.isLogin = true;
+      setTimeout(() => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login success' });
+      }, 1000);
+    }
+    else this.isLogin = false;
+    console.log(this.isLogin)
     this.itemInCart$ = this.coursesService.courseInCart
       .asObservable()
       .pipe(map((val) => val.length));
   }
-
   logoutUser() {
     this.isLogin = false;
     this.authService.logout();
     this.router.navigateByUrl('/');
+    localStorage.setItem('typeUser', '');
     this.previousRouteService.setPrevRoute(null);
   }
+
 }
