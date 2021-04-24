@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     };
 
     // send request to server here
-    const login = this.authService.login(user.password, user.password);
+    const login = this.authService.login(user.username, user.password);
     this.sub = combineLatest([
       login,
       this.previousRouteService.prevRoute,

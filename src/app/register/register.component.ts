@@ -92,7 +92,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.loading = true;
     // send request to server here
     const user = this.formRegister.value;
-
+    console.log(this.f.password.value)
     this.authService
       .registerUser(user)
       .pipe(takeUntil(this.unsubscription))
