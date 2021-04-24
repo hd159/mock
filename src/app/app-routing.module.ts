@@ -9,6 +9,7 @@ import { AuthGuard } from './service/auth.guard';
 import { ErrorNetworkComponent } from './shared/error-network/error-network.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
 import { RegisterComponent } from './register/register.component';
+import { AssignmentResolveComponent } from './client/assignment/assignment-resolve/assignment-resolve.component';
 
 export const routes: Routes = [
   {
@@ -17,11 +18,23 @@ export const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       {
+        path: 'assignment/:id/:section/:task',
+        component: AssignmentResolveComponent,
+      },
+      {
         path: 'category',
         loadChildren: () =>
           import('./client/category/category.module').then(
             (m) => m.CategoryModule
           ),
+      },
+      {
+        path: 'assignment',
+        loadChildren: () =>
+          import('./client/assignment/assignment.module').then(
+            (m) => m.AssignmentModule
+          ),
+        // canActivate: [AuthGuard],
       },
       { path: 'user-info', component: UserInfoComponent },
       { path: 'cart', component: CartComponent },

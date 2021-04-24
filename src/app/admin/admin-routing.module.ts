@@ -14,6 +14,7 @@ import { CoursesLandingpageComponent } from './courses/courses-landingpage/cours
 import { AddCourseComponent } from './courses/add-course/add-course.component';
 import { GoalsCourseComponent } from './courses/goals-course/goals-course.component';
 import { EditCourseComponent } from './courses/edit-course/edit-course.component';
+import { AssignmentsComponent } from './assignments/assignments.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,7 @@ const routes: Routes = [
           { path: 'goals', component: GoalsCourseComponent },
         ],
       },
+      { path: 'assignment', component: AssignmentsComponent },
     ],
   },
 ];

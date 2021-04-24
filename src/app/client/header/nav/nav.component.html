@@ -26,6 +26,10 @@
         <a [routerLink]="['/category/courses']">{{ Course_block }}</a>
       </li>
 
+      <li class="dropdown">
+        <a [routerLink]="['/assignment']">{{ Assign_block }}</a>
+      </li>
+
       <li class="dropdown" *ngFor="let item of anothers$ | async">
         <a [routerLink]="['/category/detail', item.parent.title]">{{
           item.parent.title

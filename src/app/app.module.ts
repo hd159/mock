@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { KinveyModule } from 'kinvey-angular-sdk';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from './shared/shared.module';
@@ -29,6 +28,9 @@ import { CarouselModule } from 'primeng/carousel';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { InputLogComponent } from './register/input-log/input-log.component';
+import { SplitterModule } from 'primeng/splitter';
+import { MonacoEditorModule, MONACO_PATH } from '@materia-ui/ngx-monaco-editor';
+import { AssignmentResolveComponent } from './client/assignment/assignment-resolve/assignment-resolve.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { InputLogComponent } from './register/input-log/input-log.component';
     UserInfoComponent,
     CartComponent,
     InputLogComponent,
+    AssignmentResolveComponent,
   ],
   imports: [
     CommonModule,
@@ -62,11 +65,17 @@ import { InputLogComponent } from './register/input-log/input-log.component';
     ProgressSpinnerModule,
     CarouselModule,
     ToastModule,
+    SplitterModule,
+    MonacoEditorModule,
   ],
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true },
     MessageService,
+    {
+      provide: MONACO_PATH,
+      useValue: 'https://unpkg.com/monaco-editor@0.23.0/min/vs',
+    },
   ],
   bootstrap: [AppComponent],
 })

@@ -37,7 +37,7 @@ export class CoursesCurriculumComponent implements OnInit, OnDestroy {
         }),
         takeUntil(this.unsubscription)
       )
-      .subscribe((val) => {
+      .subscribe((val: any) => {
         this.loading = false;
         if (val) {
           const form = this.formCurriculum.get('section') as FormArray;

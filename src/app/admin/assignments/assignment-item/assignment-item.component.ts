@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import {
   ConfirmationService,
   ConfirmEventType,
@@ -7,19 +7,15 @@ import {
 } from 'primeng/api';
 
 @Component({
-  selector: 'app-curriculum-item',
-  templateUrl: './curriculum-item.component.html',
-  styleUrls: ['./curriculum-item.component.scss'],
+  selector: 'app-assignment-item',
+  templateUrl: './assignment-item.component.html',
+  styleUrls: ['./assignment-item.component.scss'],
 })
-export class CurriculumItemComponent implements OnInit {
+export class AssignmentItemComponent implements OnInit {
   @Input() parentForm: FormGroup;
-  @Output() addSection = new EventEmitter();
   @Output() addLecture = new EventEmitter();
 
-  isEditSection = false;
-  currentIndexSection: number = 0;
   constructor(
-    private fb: FormBuilder,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
@@ -27,39 +23,18 @@ export class CurriculumItemComponent implements OnInit {
   ngOnInit(): void {}
 
   get formLists() {
-    return this.parentForm.get('section') as FormArray;
+    return this.parentForm.get('lists_assignment') as FormArray;
   }
 
-  getChapter(formSectionItem: any) {
-    return formSectionItem.get('chapter').controls;
-  }
-
-  getTitleChapter(formItem: FormControl) {
-    return formItem.get('title').value;
-  }
-
-  getDescriptionChapter(formItem: FormControl) {
-    return formItem.get('description').value;
-  }
-
-  getVideoUrlChapter(formItem: FormControl) {
-    return formItem.get('videoUrl').value;
-  }
-
-  onDelete(index) {
-    this.formLists.removeAt(index);
+  getChapter(formlistItem: any) {
+    return formlistItem.get('chapters').controls;
   }
 
   onAddLecture(sectionItem) {
     this.addLecture.emit(sectionItem);
   }
 
-  onEditSection(index) {
-    this.isEditSection = true;
-    this.currentIndexSection = index;
-  }
-
-  onDeleteSection(index) {
+  onDeleteChapter(sectionItem, index) {
     this.confirmationService.confirm({
       message:
         'You are about to remove a curriculum item. Are you sure you want to continue?',
@@ -69,9 +44,9 @@ export class CurriculumItemComponent implements OnInit {
         this.messageService.add({
           severity: 'info',
           summary: 'Confirmed',
-          detail: 'Section deleted',
+          detail: 'Lecture deleted',
         });
-        this.formLists.removeAt(index);
+        sectionItem.get('chapters').removeAt(index);
       },
       reject: (type) => {
         switch (type) {
@@ -94,7 +69,7 @@ export class CurriculumItemComponent implements OnInit {
     });
   }
 
-  onDeleteChapter(sectionItem, index) {
+  onDeleteSection(index) {
     this.confirmationService.confirm({
       message:
         'You are about to remove a curriculum item. Are you sure you want to continue?',
@@ -104,9 +79,9 @@ export class CurriculumItemComponent implements OnInit {
         this.messageService.add({
           severity: 'info',
           summary: 'Confirmed',
-          detail: 'Lecture deleted',
+          detail: 'Section deleted',
         });
-        sectionItem.get('chapter').removeAt(index);
+        this.formLists.removeAt(index);
       },
       reject: (type) => {
         switch (type) {
