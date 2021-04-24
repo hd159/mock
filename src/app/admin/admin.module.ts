@@ -50,6 +50,8 @@ import { StepsModule } from 'primeng/steps';
 import { MenuModule } from 'primeng/menu';
 import { GoalsCourseComponent } from './courses/goals-course/goals-course.component';
 import { EditCourseComponent } from './courses/edit-course/edit-course.component';
+import { AssignmentsComponent } from './assignments/assignments.component';
+import { AssignmentItemComponent } from './assignments/assignment-item/assignment-item.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +79,8 @@ import { EditCourseComponent } from './courses/edit-course/edit-course.component
     AddCourseComponent,
     GoalsCourseComponent,
     EditCourseComponent,
+    AssignmentsComponent,
+    AssignmentItemComponent,
   ],
   imports: [
     CommonModule,

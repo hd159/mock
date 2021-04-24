@@ -43,7 +43,7 @@ export class CoursesLandingpageComponent implements OnInit, OnDestroy {
         }),
         takeUntil(this.unsubscription)
       )
-      .subscribe((val) => {
+      .subscribe((val: any) => {
         this.loading = false;
         if (val) {
           this.formLandingPage.patchValue({ ...val });

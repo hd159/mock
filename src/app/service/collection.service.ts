@@ -29,7 +29,7 @@ export class CollectionService<T> {
   constructor(intialState: T, collectionName: string, public http: HttpClient) {
     this.subject = new BehaviorSubject(intialState);
     this.state$ = this.subject.asObservable();
-    this.url = `https://baas.kinvey.com/appdata/kid_rJvDFm84u/${collectionName}`;
+    this.url = `https://baas.kinvey.com/appdata/kid_SJ6y1x-vu/${collectionName}`;
   }
 
   get valueState() {
@@ -55,14 +55,16 @@ export class CollectionService<T> {
       );
   }
 
-  findById<T>(id: string): Observable<T> {
-    return this.http.get<T>(`${this.url}/${id}`).pipe(
-      catchError((err) => {
-        console.log({ ...err }, 'findById');
+  findById<T>(id: string, params?): Observable<T> {
+    return this.http
+      .get<T>(`${this.url}/${id}`, { params })
+      .pipe(
+        catchError((err) => {
+          console.log({ ...err }, 'findById');
 
-        return throwError(err);
-      })
-    );
+          return throwError(err);
+        })
+      );
   }
 
   // delete data

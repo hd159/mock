@@ -27,13 +27,13 @@ const initialAuthState: AuthState = {
   providedIn: 'root',
 })
 export class AuthService {
-  private roleIdAdmin = 'c0010439-58dc-4ed2-a498-841e69ed082e';
+  private roleIdAdmin = '4bed90a4-ad34-441c-bae2-cba0900698a7';
   listRoles = {
-    'c0010439-58dc-4ed2-a498-841e69ed082e': 'admin',
+    '4bed90a4-ad34-441c-bae2-cba0900698a7': 'admin',
     '200557a4-d086-4fce-8c22-6af8b27d2da7': 'user',
   };
 
-  private userUrl = 'https://baas.kinvey.com/user/kid_rJvDFm84u';
+  private userUrl = 'https://baas.kinvey.com/user/kid_SJ6y1x-vu';
 
   userInfo: BehaviorSubject<any> = new BehaviorSubject(null);
   userDetail$: Observable<any>;
@@ -83,6 +83,8 @@ export class AuthService {
       })
       .pipe(
         map((data: any) => {
+          console.log(data);
+
           if (data._kmd.roles !== undefined) {
             if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
               localStorage.setItem('typeUser', 'admin');
