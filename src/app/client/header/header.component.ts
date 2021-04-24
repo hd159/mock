@@ -60,13 +60,16 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (localStorage.getItem('typeUser') != '') {
+    if (localStorage.getItem('typeUser') === '' || localStorage.getItem('typeUser') === null) {
+
+      this.isLogin = false;
+    }
+    else {
       this.isLogin = true;
       setTimeout(() => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login success' });
       }, 1000);
     }
-    else this.isLogin = false;
     console.log(this.isLogin)
     this.itemInCart$ = this.coursesService.courseInCart
       .asObservable()
