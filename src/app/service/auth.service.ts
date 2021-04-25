@@ -58,9 +58,12 @@ export class AuthService {
 
   mapUser(user: any, mode?: string) {
     let userInfo: User;
-    let roleId: string[];
+    let roleId: any[];
     if (mode === 'http') {
-      roleId = user._kmd['roles']?.map((role) => role.roleId) || [];
+      roleId = user._kmd['roles']?.map((role) => {
+        const id = role.roleId;
+        return this.listRoles[id];
+      }) || ['user'];
     } else {
       roleId = user.data._kmd['roles']?.map((role) => role.roleId) || [];
     }
@@ -75,7 +78,7 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<User> {
-    console.log(username, password)
+    console.log(username, password);
     return this.http
       .post<any>(`${this.userUrl}/login`, {
         username: username,
@@ -83,8 +86,6 @@ export class AuthService {
       })
       .pipe(
         map((data: any) => {
-          console.log(data);
-
           if (data._kmd.roles !== undefined) {
             if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
               localStorage.setItem('typeUser', 'admin');
@@ -161,5 +162,19 @@ export class AuthService {
     localStorage.setItem('logged', 'false');
     localStorage.removeItem('userInfo');
     this.userInfo.next(null);
+  }
+
+  createAdminRole(body) {
+    return this.registerUser(body).pipe(
+      switchMap((val: any) => {
+        const url = `${this.userUrl}/${val._id}/roles/${this.roleIdAdmin}`;
+        return this.http.put(url, {});
+      }),
+      tap(console.log)
+    );
+  }
+
+  deleteUser(id) {
+    return this.http.delete(`${this.userUrl}/${id}?hard=true`);
   }
 }

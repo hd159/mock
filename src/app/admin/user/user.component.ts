@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { finalize, take, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { User } from 'src/app/store';
 
@@ -8,24 +11,194 @@ import { User } from 'src/app/store';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
 })
-export class UserComponent implements OnInit {
-  userLists$: Observable<User[]>;
-  listRoles = {
-    '235d3761-8861-44f0-82ce-eb19606be7c6': 'admin',
-    'eeb4dc5f-ba15-427d-b192-9797fc6eeb75': 'user',
-  };
+export class UserComponent implements OnInit, OnDestroy {
+  userLists: User[];
 
+  roles = [
+    { name: 'Admin', value: 'admin' },
+    { name: 'User', value: 'user' },
+  ];
+  selectedUsers: any[];
+  userDialog: boolean;
+  loading = false;
   showModal = false;
-  constructor(private authService: AuthService) { }
+  userForm: any;
+  unsubscription$ = new Subject();
+  submitted: boolean;
+  constructor(
+    private authService: AuthService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
+  ) {}
 
   ngOnInit(): void {
-    this.userLists$ = this.authService.getAllUser();
-    this.userLists$.subscribe((data) => {
-      console.log(data)
-    })
+    this.getUser();
   }
 
-  deleteUser(id: string) {
+  ngOnDestroy() {
+    this.unsubscription$.next();
+    this.unsubscription$.unsubscribe();
+  }
 
+  getUser() {
+    this.authService
+      .getAllUser()
+      .pipe(takeUntil(this.unsubscription$))
+      .subscribe((val) => {
+        console.log(val);
+        this.userLists = val;
+      });
+  }
+
+  createUser() {
+    this.userDialog = true;
+    this.userForm = {};
+    this.submitted = false;
+  }
+
+  hideDialog() {
+    this.userDialog = false;
+    this.submitted = false;
+    this.userForm = {};
+  }
+
+  saveUser() {
+    const { username, password } = this.userForm;
+    this.loading = true;
+    if (this.userForm.role === 'admin') {
+      this.authService
+        .createAdminRole({ username, password })
+        .pipe(
+          finalize(() => (this.loading = false)),
+          takeUntil(this.unsubscription$)
+        )
+        .subscribe(
+          (val) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'User added',
+            });
+            this.getUser();
+            this.hideDialog();
+          },
+          (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: "Some thing wen't wrong",
+            });
+          }
+        );
+    } else {
+      this.authService
+        .registerUser({ username, password })
+        .pipe(
+          finalize(() => (this.loading = false)),
+          takeUntil(this.unsubscription$)
+        )
+        .subscribe(
+          (val) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'User added',
+            });
+            this.getUser();
+            this.hideDialog();
+          },
+          (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: "Some thing wen't wrong",
+            });
+          }
+        );
+    }
+  }
+
+  editUser(user) {
+    this.userForm = { ...user };
+    this.userDialog = true;
+  }
+
+  deleteUser(user: any) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete ' + user.username + '?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.loading = true;
+        this.authService
+          .deleteUser(user._id)
+          .pipe(
+            finalize(() => (this.loading = false)),
+            takeUntil(this.unsubscription$)
+          )
+          .subscribe((val) => {
+            this.userForm = {};
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Successful',
+              detail: 'User Deleted',
+              life: 3000,
+            });
+            this.getUser();
+          });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
+      },
+    });
+  }
+
+  deleteSelectedUsers() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete the selected users?',
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.loading = true;
+        const deletemutiple = this.selectedUsers
+          .map((user) => user._id)
+          .map((id) => this.authService.deleteUser(id));
+        combineLatest(deletemutiple)
+          .pipe(
+            finalize(() => (this.loading = false)),
+            takeUntil(this.unsubscription$)
+          )
+          .subscribe(
+            (val) => {
+              this.selectedUsers = null;
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'Users Deleted',
+                life: 3000,
+              });
+              this.getUser();
+            },
+            (err) => {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: "Some thing wen't wrong",
+              });
+            }
+          );
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
+      },
+    });
   }
 }

@@ -1,53 +1,196 @@
-<div class="container">
-  <div class="mb-3">
-    <a [routerLink]="['../', 'add-user']">
-      <button class="btn btn-primary">Add user</button></a
+<div class="p-field p-col-12">
+  <p-card *ngIf="userLists; else loadUser">
+    <p-toolbar styleClass="p-mb-4">
+      <ng-template pTemplate="left">
+        <button
+          pButton
+          pRipple
+          label="New"
+          icon="pi pi-plus"
+          class="p-button-success p-mr-2"
+          (click)="createUser()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          [label]="Delete"
+          icon="pi pi-trash"
+          class="p-button-danger"
+          (click)="deleteSelectedUsers()"
+          [disabled]="!selectedUsers || !selectedUsers.length"
+        ></button>
+      </ng-template>
+    </p-toolbar>
+
+    <p-table
+      #dt
+      [value]="userLists"
+      [rows]="10"
+      [paginator]="true"
+      [globalFilterFields]="['username', 'email']"
+      [rowHover]="true"
+      dataKey="_id"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+      [(selection)]="selectedUsers"
     >
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <div class="card-title">User List</div>
-      <table class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Roles</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of userLists$ | async; index as i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-              <span *ngFor="let role of user.roleId"
-                >{{ listRoles[role] }}
-              </span>
-            </td>
-            <td>
-              <a
-                class="btn btn-icon btn-light btn-hover-danger btn-sm mx-2"
-                (click)="showModal = !showModal"
-              >
-                <i class="fas fa-edit"></i>
-              </a>
-              <a
-                class="btn btn-icon btn-light btn-hover-danger btn-sm mx-2"
-                (click)="deleteUser(user._id)"
-              >
-                <i class="fas fa-trash"></i>
-              </a>
-            </td>
-            <app-user-modal
-              [user]="user"
-              [(showModal)]="showModal"
-            ></app-user-modal>
-          </tr>
-        </tbody>
-      </table>
+      <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          <h5 class="p-m-0">Manage Users</h5>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (input)="dt.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search..."
+            />
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th pSortableColumn="username">
+            User name <p-sortIcon field="username"></p-sortIcon>
+          </th>
+
+          <th pSortableColumn="email">
+            Email <p-sortIcon field="username"></p-sortIcon>
+          </th>
+          <th>Roles</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="user"></p-tableCheckbox>
+          </td>
+          <td>{{ user.username }}</td>
+
+          <td>{{ user.email }}</td>
+          <td>
+            <span *ngFor="let role of user.roleId">{{ role }}</span>
+          </td>
+
+          <td>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-success p-mr-2"
+              (click)="editUser(user)"
+            ></button>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-warning"
+              (click)="deleteUser(user)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          In total there are {{ userLists ? userLists.length : 0 }} courses.
+        </div>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <ng-template #loadUser>
+    <div class="p-d-flex p-jc-center p-ai-center" style="height: 600px">
+      <p-progressSpinner></p-progressSpinner>
     </div>
-  </div>
+  </ng-template>
+</div>
+
+<p-toast [baseZIndex]="1000000"></p-toast>
+
+<p-dialog
+  [(visible)]="userDialog"
+  [style]="{ width: '550px' }"
+  header="User Details"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <div class="p-field">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        pInputText
+        id="name"
+        [(ngModel)]="userForm.username"
+        required
+        autofocus
+      />
+      <small class="p-invalid" *ngIf="submitted && !userForm.username"
+        >Name is required.</small
+      >
+    </div>
+
+    <div class="p-field" *ngIf="!userForm._id">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        pInputText
+        id="password"
+        [(ngModel)]="userForm.password"
+        required
+        autofocus
+      />
+      <small class="p-invalid" *ngIf="submitted && !userForm.username"
+        >Password is required.</small
+      >
+    </div>
+
+    <div class="p-field">
+      <label class="p-mb-3">Roles</label>
+
+      <div class="p-formgrid p-grid">
+        <div
+          class="p-field-radiobutton p-col-6"
+          *ngFor="let item of roles; index as i"
+        >
+          <p-radioButton
+            [id]="i"
+            name="role"
+            [value]="item.value"
+            [(ngModel)]="userForm.role"
+          ></p-radioButton>
+          <label for="role1">{{ item.name }}</label>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Save"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="saveUser()"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+
+<div class="loading" *ngIf="loading">
+  <p-progressSpinner></p-progressSpinner>
 </div>

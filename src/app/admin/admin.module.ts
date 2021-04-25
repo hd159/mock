@@ -52,6 +52,9 @@ import { GoalsCourseComponent } from './courses/goals-course/goals-course.compon
 import { EditCourseComponent } from './courses/edit-course/edit-course.component';
 import { AssignmentsComponent } from './assignments/assignments.component';
 import { AssignmentItemComponent } from './assignments/assignment-item/assignment-item.component';
+import { DialogModule } from 'primeng/dialog';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [
@@ -107,6 +110,9 @@ import { AssignmentItemComponent } from './assignments/assignment-item/assignmen
     ProgressSpinnerModule,
     StepsModule,
     MenuModule,
+    DialogModule,
+    MultiSelectModule,
+    RadioButtonModule,
   ],
   providers: [SweetAlert2Module, ConfirmationService, MessageService],
 })
