@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private coursesService: CoursesService,
     private previousRouteService: PreviousRouteService,
     private messageService: MessageService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -80,15 +80,19 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.router.navigateByUrl('/admin');
         else {
           localStorage.setItem('logged', 'true');
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login success' });
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Login success',
+          });
           this.coursesService.getCoursesLocal();
+          this.authService.isLoginClient$.next(true);
           if (prevRoute) {
             this.router.navigateByUrl(prevRoute);
           } else {
             setTimeout(() => {
               this.router.navigateByUrl('/');
             }, 1000);
-
           }
         }
       },
