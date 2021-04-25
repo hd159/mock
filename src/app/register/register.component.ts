@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private messageService: MessageService,
     private checkPassword: CheckPassWord
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.formRegister = this.formBuilder.group(
@@ -92,18 +92,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.loading = true;
     // send request to server here
     const user = this.formRegister.value;
-    console.log(this.f.password.value)
+    console.log(this.f.password.value);
     this.authService
       .registerUser(user)
       .pipe(takeUntil(this.unsubscription))
       .subscribe(
-        (val) => {
+        (val: any) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Register success',
           });
-          localStorage.setItem('logged', 'true')
+          localStorage.setItem('logged', 'true');
+
           setTimeout(() => {
             this.router.navigateByUrl('/');
           }, 1000);

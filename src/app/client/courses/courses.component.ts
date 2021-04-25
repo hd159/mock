@@ -105,6 +105,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   onSortChange(event) {
     let value = event.value;
+    console.log(value);
 
     if (value.indexOf('!') === 0) {
       this.sortOrder = -1;

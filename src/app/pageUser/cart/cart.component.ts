@@ -38,7 +38,7 @@ export class CartComponent implements OnInit {
     //   })
     // );
 
-    this.relatedCourses$.subscribe();
+    // this.relatedCourses$.subscribe();
   }
 
   removeCourse(course) {
