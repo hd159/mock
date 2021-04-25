@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { DataView } from 'primeng/dataview';
 import { combineLatest, Observable, of, Subject, Subscription } from 'rxjs';
-import { map, mergeMap, takeUntil } from 'rxjs/operators';
+import { map, mergeMap, takeUntil, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { CoursesService } from 'src/app/service/courses.service';
 
@@ -21,19 +23,21 @@ export class CoursesComponent implements OnInit, OnDestroy {
   sortCategoriesOptions: any[];
   sortOrder: number;
   sortField: string;
-
-  subscription: Subscription[] = [];
+  displayDialog: boolean;
+  currentUserId: any;
+  userForm: FormGroup;
+  loading: boolean;
   unsubscription = new Subject();
   constructor(
     private coursesService: CoursesService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private messageService: MessageService
   ) {}
 
-  onChange(e) {
-    console.log(e);
-  }
   ngOnInit(): void {
+    this.userForm = this.initForm();
     this.sortPriceOptions = [
       { label: 'Price High to Low', value: '!price' },
       { label: 'Price Low to High', value: 'price' },
@@ -52,6 +56,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     const totalCourses: Observable<any[]> = this.coursesService.find();
 
     const coursesHasBuy: Observable<any[]> = this.authService.userInfo.pipe(
+      tap((id) => (this.currentUserId = id)),
       mergeMap((id) => {
         if (id) {
           return this.authService.getUserLearning(id);
@@ -61,7 +66,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
       })
     );
 
-    const sub = combineLatest([totalCourses, courseInCart, coursesHasBuy])
+    combineLatest([totalCourses, courseInCart, coursesHasBuy])
       .pipe(
         map(([courses, courseIncart, coursesHasBuy]) => {
           let result = [...courses];
@@ -76,13 +81,13 @@ export class CoursesComponent implements OnInit, OnDestroy {
           }));
 
           return result;
-        })
+        }),
+        takeUntil(this.unsubscription)
       )
       .subscribe((val) => {
         this.courses = val;
+        console.log(this.currentUserId);
       });
-
-    this.subscription.push(sub);
   }
 
   ngOnDestroy() {
@@ -90,6 +95,12 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.unsubscription.unsubscribe();
   }
 
+  initForm() {
+    return this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
   showBasicDialog(index?) {
     this.currentIndex = index;
     this.displayBasic = true;
@@ -117,11 +128,37 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   addToCart(course) {
-    if (course.inCart) {
-      this.router.navigateByUrl('/cart');
+    if (!this.currentUserId) {
+      this.displayDialog = true;
     } else {
-      course.inCart = true;
-      this.coursesService.setCourseInCart(course);
+      if (course.inCart) {
+        this.router.navigateByUrl('/cart');
+      } else {
+        course.inCart = true;
+        this.coursesService.setCourseInCart(course);
+      }
     }
+  }
+
+  onLogin() {
+    if (this.userForm.invalid) {
+      return;
+    }
+    const { username, password } = this.userForm.value;
+    this.loading = true;
+    this.authService
+      .login(username, password)
+      .pipe(takeUntil(this.unsubscription))
+      .subscribe((val) => {
+        this.loading = false;
+        this.displayDialog = false;
+        localStorage.setItem('logged', 'true');
+        this.authService.isLoginClient$.next(true);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Login success',
+        });
+      });
   }
 }

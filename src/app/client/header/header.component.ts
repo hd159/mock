@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { CoursesService } from 'src/app/service/courses.service';
@@ -15,7 +15,7 @@ import { PreviousRouteService } from 'src/app/service/previous-route.service';
 })
 export class HeaderComponent implements OnInit {
   searchForm: FormGroup;
-  isLogin = false;
+  isLogin: Observable<boolean>;
   itemInCart$: Observable<number>;
 
   items = [
@@ -58,20 +58,20 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem('logged') === 'false' || localStorage.getItem('logged') === null) {
-      this.isLogin = false;
+    if (JSON.parse(localStorage.getItem('logged'))) {
+      this.authService.isLoginClient$.next(true);
     }
-    else this.isLogin = true;
+    this.isLogin = this.authService.isLoginClient$.asObservable();
     this.itemInCart$ = this.coursesService.courseInCart
       .asObservable()
       .pipe(map((val) => val.length));
   }
   logoutUser() {
-    this.isLogin = false;
+    this.authService.isLoginClient$.next(false);
+
     this.authService.logout();
     this.router.navigateByUrl('/');
     localStorage.setItem('logged', 'false');
     this.previousRouteService.setPrevRoute(null);
   }
-
 }

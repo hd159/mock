@@ -39,6 +39,7 @@ export class AuthService {
   userDetail$: Observable<any>;
 
   isAdminSubject$ = new BehaviorSubject<User>(null);
+  isLoginClient$ = new BehaviorSubject<boolean>(null);
   private authSubject = new BehaviorSubject<AuthState>(initialAuthState);
   authState$: Observable<AuthState> = this.authSubject.asObservable();
 

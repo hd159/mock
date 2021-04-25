@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="icon-container">
-        <ng-container *ngIf="!isLogin; else showinfo">
+        <ng-container *ngIf="!(isLogin | async); else showinfo">
           <button
             routerLink="admin/login"
             pButton
