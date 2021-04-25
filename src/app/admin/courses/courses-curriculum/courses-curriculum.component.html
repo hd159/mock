@@ -1,4 +1,4 @@
-<div class="p-field p-col-12">
+<div class="p-field p-col-10">
   <p-card header="Curriculum">
     <p class="title">
       If you’re intending to offer your course for free, the total length of
@@ -11,14 +11,14 @@
         (addLecture)="addLecture($event)"
       ></app-curriculum-item>
 
-      <div class="add-content p-col-8 p-px-0 p-d-flex p-jc-between">
+      <div class="add-content p-col-12 p-px-0 p-d-flex p-jc-between">
         <button pButton (click)="addSection()" label="Add section"></button>
         <button pButton label="Save"></button>
       </div>
     </form>
 
     <ng-template pTemplate="footer">
-      <div class="p-grid p-nogutter p-justify-between p-col-8 p-px-0">
+      <div class="p-grid p-nogutter p-justify-between p-col-12 p-px-0">
         <p-button
           label="Back"
           (onClick)="prevPage()"
@@ -38,3 +38,4 @@
 <div class="loading" *ngIf="loading">
   <p-progressSpinner></p-progressSpinner>
 </div>
+<p-toast [baseZIndex]="100000"></p-toast>

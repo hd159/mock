@@ -1,96 +1,128 @@
-<div class="p-grid">
-  <div class="p-col-2 menu-left">
-    <div class="card card-profile shadow">
-      <div class="" style="height: 300px">
-        <div class="col-lg-3 order-lg-2">
-          <div class="card-profile-image">
-            <a>
-              <img src="../assets/image/avata.jpeg" class="rounded-circle" />
-            </a>
+<div class="" style="min-height: 80vh">
+  <form [formGroup]="formUserInfo" (submit)="onSubmit()" *ngIf="userInfo">
+    <div class="p-grid p-m-0">
+      <div class="p-col-3 menu-left p-p-0">
+        <h3 class="profile-title">Profile Picture</h3>
+
+        <div class="profile-picture">
+          <p class="p-mb-1">Image preview</p>
+          <span class="help-block"
+            >Minimum 200x200 pixels, Maximum 6000x6000 pixels</span
+          >
+          <div class="picture-preview p-mt-2">
+            <div class="img">
+              <img [src]="formUserInfo.value.img || defaultimg" alt="" />
+            </div>
+          </div>
+          <div class="upload-img">
+            <app-input
+              [control]="formUserInfo.get('img')"
+              label="Select Image"
+            ></app-input>
           </div>
         </div>
       </div>
-      <div class="card-body pt-4 pt-md-4">
-        <div class="text-center">
-          <h3>name</h3>
-          <div class="h5 font-weight-300">
-            <i class="ni location_pin mr-2"></i>address
+      <div class="p-col-7" style="padding-bottom: 0">
+        <div class="p-grid">
+          <div class="p-col-12 content" style="text-align: center">
+            <h3>Public profile</h3>
+            <p>Add information about yourself</p>
           </div>
-          <div class="h5 mt-4">
-            <i class="ni business_briefcase-24 mr-2"></i>country
+
+          <div class="p-col-12 content">
+            <div class="p-col-9 p-py-0 m-auto">
+              <app-input
+                [control]="formUserInfo.get('firstName')"
+                label="First name"
+              ></app-input>
+            </div>
+            <div class="p-col-9 p-py-0 m-auto">
+              <app-input
+                [control]="formUserInfo.get('lastName')"
+                label="Last name"
+              ></app-input>
+            </div>
+            <div class="p-col-9 p-py-0 m-auto">
+              <app-input
+                [control]="formUserInfo.get('headline')"
+                label="Headline"
+                [placeholder]="placeholderHeadline"
+              ></app-input>
+            </div>
+            <div class="p-col-9 p-py-0 m-auto">
+              <app-input
+                [control]="formUserInfo.get('biography')"
+                label="Biography"
+                inputType="textarea"
+              ></app-input>
+            </div>
+            <div class="p-col-9 p-py-0 m-auto">
+              <label>Language</label>
+              <p-dropdown
+                [options]="languages"
+                formControlName="language"
+                optionLabel="name"
+                [showClear]="true"
+                placeholder="-- Select Language --"
+              ></p-dropdown>
+            </div>
           </div>
-          <div><i class="ni education_hat mr-2"></i>university</div>
-          <hr class="my-4" />
-          <p>description</p>
+
+          <div class="p-col-12 content p-py-4">
+            <form [formGroup]="formSocial">
+              <div class="p-col-9 p-py-0 m-auto">
+                <app-input
+                  [inputPrimeNg]="true"
+                  label="Website (http(s)://..)"
+                  primeNgAddon="Website"
+                  [control]="formSocial.get('website')"
+                ></app-input>
+              </div>
+
+              <div class="p-col-9 p-py-0 m-auto">
+                <app-input
+                  [inputPrimeNg]="true"
+                  label="Facebook Profile"
+                  primeNgAddon='<i class="pi pi-facebook"></i>'
+                  [control]="formSocial.get('facebook')"
+                ></app-input>
+              </div>
+
+              <div class="p-col-9 p-py-0 m-auto">
+                <app-input
+                  [inputPrimeNg]="true"
+                  label="Twitter Profile"
+                  primeNgAddon='<i class="pi pi-twitter"></i>'
+                  [control]="formSocial.get('twitter')"
+                ></app-input>
+              </div>
+
+              <div class="p-col-9 p-py-0 m-auto">
+                <app-input
+                  [inputPrimeNg]="true"
+                  [control]="formSocial.get('youtube')"
+                  label="Youtube Profile"
+                  primeNgAddon='<i class="pi pi-youtube"></i>'
+                ></app-input>
+              </div>
+            </form>
+          </div>
+          <div class="p-col-12 content">
+            <button
+              pButton
+              pRipple
+              type="submit"
+              label="Save"
+              class="p-button-danger"
+            ></button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="p-col-8" style="padding-bottom: 0">
-    <div class="p-grid">
-      <div class="p-col-12 content">
-        <h3>Public profile</h3>
-        <p>Add information about yourself</p>
-      </div>
-      <div class="p-col-12 content content-info">
-        <input type="text" pInputText placeholder="first name" />
-        <input type="text" pInputText placeholder="last name" />
-        <input type="text" pInputText placeholder="headline" />
-        <p-dropdown [options]="cities" optionLabel="name"></p-dropdown>
-      </div>
-      <div class="p-col-12 content">
-        <div class="p-field p-col-12">
-          <div class="p-inputgroup">
-            <span class="p-inputgroup-addon"> Website </span>
-            <span class="p-float-label">
-              <input type="text" id="inputgroup" pInputText />
-              <label for="inputgroup">Website (http(s)://..)</label>
-            </span>
-          </div>
-        </div>
-        <div class="p-field p-col-12">
-          <div class="p-inputgroup">
-            <span class="p-inputgroup-addon">
-              <i class="pi pi-facebook"></i>
-            </span>
-            <span class="p-float-label">
-              <input type="text" id="inputgroup" pInputText />
-              <label for="inputgroup">Facebook Profile</label>
-            </span>
-          </div>
-        </div>
-        <div class="p-field p-col-12">
-          <div class="p-inputgroup">
-            <span class="p-inputgroup-addon">
-              <i class="pi pi-twitter"></i>
-            </span>
-            <span class="p-float-label">
-              <input type="text" id="inputgroup" pInputText />
-              <label for="inputgroup">Twitter Profile</label>
-            </span>
-          </div>
-        </div>
-        <div class="p-field p-col-12">
-          <div class="p-inputgroup">
-            <span class="p-inputgroup-addon">
-              <i class="pi pi-youtube"></i>
-            </span>
-            <span class="p-float-label">
-              <input type="text" id="inputgroup" pInputText />
-              <label for="inputgroup">Youtube Profile</label>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="p-col-12 content">
-        <button
-          pButton
-          pRipple
-          type="button"
-          label="Save"
-          class="p-button-danger"
-        ></button>
-      </div>
-    </div>
-  </div>
+  </form>
+</div>
+
+<p-toast [baseZIndex]="1000000"></p-toast>
+<div class="loading" *ngIf="loading">
+  <p-progressSpinner></p-progressSpinner>
 </div>

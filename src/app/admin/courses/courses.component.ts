@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -14,7 +15,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   courses: any[];
   selectedCourses: any[] = [];
   loading: boolean;
-  unscription = new Subject();
+  unscription$ = new Subject();
   constructor(
     private coursesService: CoursesService,
     private confirmationService: ConfirmationService,
@@ -22,9 +23,13 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
   ngOnInit(): void {
+    const params = new HttpParams().set(
+      'fields',
+      'title,img,price,category,rating'
+    );
     this.coursesService
-      .find()
-      .pipe(takeUntil(this.unscription))
+      .find(params)
+      .pipe(takeUntil(this.unscription$))
       .subscribe((val) => {
         console.log(val);
         this.courses = val;
@@ -32,8 +37,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unscription.next();
-    this.unscription.unsubscribe();
+    this.unscription$.next();
+    this.unscription$.unsubscribe();
   }
 
   createCourse() {

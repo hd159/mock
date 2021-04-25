@@ -74,8 +74,7 @@
 
     .course-objective__content {
       display: flex;
-      justify-content: center;
-
+      align-items: baseline;
       p {
         margin-left: 16px;
         color: hsl(220, 5%, 12%);
@@ -411,4 +410,57 @@ iframe {
 
 :host ::ng-deep .p-progress-spinner {
   height: 500px;
+}
+
+:host .related-course {
+  .course-related-container {
+    padding: 16px 0;
+    border-bottom: 1px solid #d7d5d5;
+    justify-content: space-between;
+
+    .main-content {
+      p {
+        color: #3c3b37;
+        font-weight: 700;
+        letter-spacing: -0.2px;
+        line-height: 19.2px;
+      }
+    }
+
+    .sub-content {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+
+      .rating {
+        span {
+          margin-right: 5px;
+          color: #be5a0e;
+        }
+        i {
+          color: #be5a0e;
+        }
+      }
+
+      .student {
+        span {
+          margin-left: 5px;
+          color: #3c3b37;
+        }
+
+        i {
+          color: #3c3b37;
+        }
+      }
+
+      .price {
+        color: hsl(48, 4%, 23%);
+        font-size: 14px;
+        font-weight: 700;
+        gap: normal;
+        letter-spacing: -0.2px;
+        line-height: 14px;
+      }
+    }
+  }
 }

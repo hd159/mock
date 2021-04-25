@@ -11,7 +11,17 @@ export class InputComponent implements OnInit {
   @Input() label: string;
   @Input() inputType = 'input';
   @Input() type = 'text';
+  @Input() placeholder = '';
+  @Input() inputPrimeNg: boolean;
+  @Input() primeNgAddon: string;
+  id: number;
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.id = this.generateId();
+  }
+
+  generateId() {
+    return Math.random();
+  }
 }

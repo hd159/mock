@@ -1,4 +1,4 @@
-<div class="mb-3 form-group">
+<div class="mb-3 form-group" *ngIf="!inputPrimeNg">
   <label class="form-label"> {{ label }} </label>
   <input
     *ngIf="inputType === 'input'"
@@ -7,6 +7,7 @@
     [formControl]="control"
     [type]="type"
     [class]="type === 'file' ? 'p-0 border-0' : ''"
+    [placeholder]="placeholder"
   />
 
   <textarea
@@ -14,6 +15,7 @@
     class="form-control mb-2"
     autocomplete="off"
     [formControl]="control"
+    [placeholder]="placeholder"
   >
   </textarea>
 
@@ -33,4 +35,19 @@
 
     <p *ngIf="control.errors.email" class="text-danger">Email not correct</p>
   </ng-container>
+</div>
+
+<div class="p-field p-col-12 p-px-0" *ngIf="inputPrimeNg">
+  <div class="p-inputgroup">
+    <span
+      class="p-inputgroup-addon"
+      style="min-width: 70px"
+      [innerHtml]="primeNgAddon"
+    >
+    </span>
+    <span class="p-float-label">
+      <input type="text" [id]="id" pInputText [formControl]="control" />
+      <label [for]="id">{{ label }}</label>
+    </span>
+  </div>
 </div>

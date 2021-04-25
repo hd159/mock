@@ -12,10 +12,10 @@
             [cancel]="false"
           ></p-rating>
           <span class="p-mx-1">(3,943 ratings)</span>
-          <span>{{ course.student }} students</span>
+          <span>{{ course.student || 0 }} students</span>
         </div>
         <div class="author">
-          Created by <span>{{ course.author }}</span>
+          Created by <span>{{ course.author || "jane" }}</span>
         </div>
         <div class="course-meta">
           <span>Last updated {{ course._kmd.lmt | date }}</span>
@@ -36,7 +36,7 @@
           </div>
         </div>
 
-        <div class="course-content">
+        <div class="course-content" *ngIf="course.section[0].title">
           <h2 class="title">Course content</h2>
           <div class="curriculum">
             <div class="content">
@@ -174,6 +174,35 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="p-grid" *ngIf="relatedCourses">
+    <div class="p-col-8 related-course">
+      <h2 class="title">Students also bought:</h2>
+      <a
+        class="course-related-container p-grid p-m-0"
+        *ngFor="let item of relatedCourses"
+        [routerLink]="['/category/courses', item._id]"
+      >
+        <div class="img p-col-2">
+          <img [src]="item.img" alt="" />
+        </div>
+        <div class="main-content p-col-7">
+          <p>{{ item.title }}</p>
+        </div>
+        <div class="sub-content p-col-3">
+          <div class="rating">
+            <span>{{ item.rating || 0 }}</span>
+            <i class="pi pi-star"></i>
+          </div>
+          <div class="student">
+            <i class="fas fa-user-friends"></i>
+            <span>{{ item.student || 10000 }}</span>
+          </div>
+          <span class="price">{{ item.price | currency }}</span>
+        </div>
+      </a>
     </div>
   </div>
 

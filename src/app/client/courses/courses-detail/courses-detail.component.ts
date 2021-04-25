@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Accordion } from 'primeng/accordion';
@@ -13,10 +13,11 @@ import { CoursesService } from 'src/app/service/courses.service';
 })
 export class CoursesDetailComponent implements OnInit, OnDestroy {
   course: any;
-  fakecourse: any;
   displayBasic = false;
   showmore = false;
-  unsubscription = new Subject();
+  relatedCourses: any;
+  loadRelatedCourse = new Subject();
+  unsubscription$ = new Subject();
   constructor(
     private route: ActivatedRoute,
     private coursesService: CoursesService,
@@ -31,7 +32,7 @@ export class CoursesDetailComponent implements OnInit, OnDestroy {
           return combineLatest([course, this.coursesService.courseInCart]);
         }),
 
-        takeUntil(this.unsubscription)
+        takeUntil(this.unsubscription$)
       )
       .subscribe(
         ([course, courseInCart]: any[]) => {
@@ -40,14 +41,36 @@ export class CoursesDetailComponent implements OnInit, OnDestroy {
             this.course['incart'] = true;
           }
           console.log(this.course);
+          this.loadRelatedCourse.next();
         },
         (err) => console.log(err)
       );
+
+    this.loadRelatedCourse
+      .pipe(switchMap(() => this.getRelatedCourses()))
+      .subscribe((val) => {
+        this.relatedCourses = val;
+        console.log(val);
+      });
   }
 
   ngOnDestroy() {
-    this.unsubscription.next();
-    this.unsubscription.unsubscribe();
+    this.unsubscription$.next();
+    this.unsubscription$.unsubscribe();
+  }
+
+  getRelatedCourses() {
+    const category = this.course.category.value;
+    const id = this.course._id;
+    const query = {
+      $and: [{ 'category.value': `${category}` }, { _id: { $ne: `${id}` } }],
+    };
+    const params = new HttpParams()
+      .set('fields', 'img,title,rating,student,price')
+      .set('query', JSON.stringify(query))
+      .set('limit', '5')
+      .set('sort', JSON.stringify({ student: -1 }));
+    return this.coursesService.find(params);
   }
 
   showDialog() {

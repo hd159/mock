@@ -152,7 +152,7 @@ export class AuthService {
       );
   }
 
-  updateLearning(userId, body) {
+  updateUser(userId, body) {
     return this.http.put(`${this.userUrl}/${userId}`, body);
   }
 

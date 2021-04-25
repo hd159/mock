@@ -61,7 +61,12 @@ export class CoursesLandingpageComponent implements OnInit, OnDestroy {
       { name: 'Expert', value: 'Expert' },
       { name: 'All level', value: 'All level' },
     ];
-    this.categories = [{ name: 'Development', value: 'dev' }];
+    this.categories = [
+      { name: 'Development', value: 'dev' },
+      { name: 'Business', value: 'business' },
+      { name: 'Marketing', value: 'marketing' },
+      { name: 'Design', value: 'design' },
+    ];
   }
 
   ngOnDestroy() {
@@ -80,7 +85,7 @@ export class CoursesLandingpageComponent implements OnInit, OnDestroy {
       img: ['', Validators.required],
       preview_video: ['', Validators.required],
       price: ['', Validators.required],
-      discount: ['', Validators.required],
+      discount: [''],
     });
   }
 
@@ -94,9 +99,13 @@ export class CoursesLandingpageComponent implements OnInit, OnDestroy {
 
   nextPage() {
     const valid = this.checkForm();
+    console.log(valid);
+
     if (!valid) {
       return;
     }
+    console.log(123);
+
     const landingPageData = this.formLandingPage.value;
     this.coursesService.newCourse.next({
       ...this.coursesService.newCourseData,
@@ -111,7 +120,7 @@ export class CoursesLandingpageComponent implements OnInit, OnDestroy {
   }
 
   checkForm() {
-    let valid;
+    let valid = true;
     if (this.formLandingPage.invalid) {
       valid = false;
       this.messageService.add({
@@ -121,6 +130,6 @@ export class CoursesLandingpageComponent implements OnInit, OnDestroy {
       });
     }
 
-    return true;
+    return valid;
   }
 }

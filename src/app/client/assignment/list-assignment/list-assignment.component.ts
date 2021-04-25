@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { AssignmentService } from '../assignment.service';
@@ -13,7 +14,9 @@ export class ListAssignmentComponent implements OnInit, OnDestroy {
   constructor(private assignmentService: AssignmentService) {}
 
   ngOnInit(): void {
-    this.assignmentService.find().subscribe((val) => {
+    const params = new HttpParams().set('fields', 'description,name,img');
+
+    this.assignmentService.find(params).subscribe((val) => {
       console.log(val);
 
       this.assignments = val;

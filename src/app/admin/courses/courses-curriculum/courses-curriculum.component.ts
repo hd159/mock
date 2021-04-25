@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { of, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { CoursesService } from 'src/app/service/courses.service';
@@ -19,7 +20,8 @@ export class CoursesCurriculumComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     private coursesService: CoursesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -130,5 +132,19 @@ export class CoursesCurriculumComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate(['admin/courses/add/goals']);
     }
+  }
+
+  checkForm() {
+    let valid;
+    if (this.formCurriculum.invalid) {
+      valid = false;
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Please input all fields',
+      });
+    }
+
+    return valid;
   }
 }

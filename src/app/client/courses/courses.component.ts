@@ -30,6 +30,9 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private authService: AuthService
   ) {}
 
+  onChange(e) {
+    console.log(e);
+  }
   ngOnInit(): void {
     this.sortPriceOptions = [
       { label: 'Price High to Low', value: '!price' },
@@ -37,9 +40,9 @@ export class CoursesComponent implements OnInit, OnDestroy {
     ];
 
     this.sortCategoriesOptions = [
-      { label: 'Development', value: 'development' },
+      { label: 'Development', value: 'dev' },
       { label: 'Business', value: 'business' },
-      { label: 'IT & Software', value: 'it-software' },
+      { label: 'Marketing', value: 'marketing' },
       { label: 'Design', value: 'design' },
     ];
 
@@ -83,7 +86,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.forEach((item) => item.unsubscribe());
     this.unsubscription.next();
     this.unsubscription.unsubscribe();
   }

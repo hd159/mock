@@ -95,16 +95,19 @@ export class GoalsCourseComponent implements OnInit, OnDestroy {
       ...this.coursesService.newCourseData,
       ...goalsData,
     });
-
-    console.log(this.coursesService.newCourseData);
+    this.loading = true;
     this.coursesService
       .create(this.coursesService.newCourseData)
+      .pipe(takeUntil(this.unsubscription))
       .subscribe((val) => {
+        this.loading = false;
         this.messageService.add({
           severity: 'success',
           summary: 'Course Added',
         });
+        this.targetForm = this.initForm();
         this.coursesService.newCourse.next(null);
+        this.router.navigate(['admin/courses/add/landing-page']);
       });
   }
 

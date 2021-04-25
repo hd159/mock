@@ -10,7 +10,7 @@
           class="p-button-success p-mr-2"
           (click)="createCourse()"
         ></button>
-        <button
+        <!-- <button
           pButton
           pRipple
           [label]="Delete"
@@ -18,7 +18,7 @@
           class="p-button-danger"
           (click)="deleteSelectedCourses()"
           [disabled]="!selectedCourses || !selectedCourses.length"
-        ></button>
+        ></button> -->
       </ng-template>
 
       <ng-template pTemplate="right">
@@ -45,7 +45,7 @@
       [value]="courses"
       [rows]="10"
       [paginator]="true"
-      [globalFilterFields]="['title', 'price', 'category', 'status']"
+      [globalFilterFields]="['title', 'price', 'category']"
       [rowHover]="true"
       dataKey="id"
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -84,9 +84,6 @@
           <th pSortableColumn="rating">
             Reviews <p-sortIcon field="rating"></p-sortIcon>
           </th>
-          <th pSortableColumn="inventoryStatus">
-            Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
-          </th>
           <th></th>
         </tr>
       </ng-template>
@@ -105,7 +102,7 @@
             />
           </td>
           <td>{{ course.price | currency: "USD" }}</td>
-          <td>{{ course.category }}</td>
+          <td>{{ course.category.name }}</td>
           <td>
             <p-rating
               [ngModel]="course.rating"
@@ -113,7 +110,7 @@
               [cancel]="false"
             ></p-rating>
           </td>
-          <td><span>Status</span></td>
+
           <td>
             <button
               pButton
@@ -147,7 +144,7 @@
   </ng-template>
 </div>
 
-<p-toast [baseZIndex]="100000"></p-toast>
+<p-toast [baseZIndex]="1000000"></p-toast>
 <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
 <div class="loading" *ngIf="loading">
   <p-progressSpinner></p-progressSpinner>

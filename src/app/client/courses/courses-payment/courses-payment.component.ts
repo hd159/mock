@@ -100,10 +100,7 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
                 learning: [...user.learning, ...coursesId],
               };
 
-              const updateUser = this.authService.updateLearning(
-                user._id,
-                body
-              );
+              const updateUser = this.authService.updateUser(user._id, body);
 
               const updateStudents = this.coursesService.updateStudent();
 
