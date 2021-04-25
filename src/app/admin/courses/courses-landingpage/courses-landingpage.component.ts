@@ -84,8 +84,8 @@ export class CoursesLandingpageComponent implements OnInit, OnDestroy {
       category: [null, Validators.required],
       img: ['', Validators.required],
       preview_video: ['', Validators.required],
-      price: ['', Validators.required],
-      discount: [''],
+      price: [null, Validators.required],
+      discount: [null],
     });
   }
 

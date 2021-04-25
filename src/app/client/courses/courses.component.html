@@ -52,7 +52,7 @@
               <span class="course-category">{{ course.selectedCategory }}</span>
             </div>
             <div class="course-list-action">
-              <span class="course-price">${{ course.price }}</span>
+              <span class="course-price">{{ course.price | currency }}</span>
               <p-button
                 icon="pi pi-shopping-cart"
                 label="Add to cart"
