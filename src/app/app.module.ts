@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from './shared/shared.module';
+import { LoadingProgressModule } from './loading-progress/loading-progress.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -67,6 +68,7 @@ import { AssignmentResolveComponent } from './client/assignment/assignment-resol
     ToastModule,
     SplitterModule,
     MonacoEditorModule,
+    LoadingProgressModule,
   ],
 
   providers: [

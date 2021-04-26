@@ -69,9 +69,7 @@ export class AuthService {
       roleId = user.data._kmd['roles']?.map((role) => role.roleId) || [];
     }
     userInfo = {
-      username: user.username,
-      _id: user._id,
-      email: user.email,
+      ...user,
       roleId,
     };
 

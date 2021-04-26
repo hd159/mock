@@ -7,11 +7,7 @@ import { AuthService } from './auth.service';
 import { CollectionService } from './collection.service';
 
 const initalCoursesState = {};
-interface Course {
-  landingPageData: any;
-  curriculumData: any;
-  goalsData: any;
-}
+
 @Injectable({
   providedIn: 'root',
 })

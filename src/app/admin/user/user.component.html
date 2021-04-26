@@ -61,6 +61,7 @@
             Email <p-sortIcon field="username"></p-sortIcon>
           </th>
           <th>Roles</th>
+          <th>Total Courses</th>
           <th>Action</th>
         </tr>
       </ng-template>
@@ -75,7 +76,7 @@
           <td>
             <span *ngFor="let role of user.roleId">{{ role }}</span>
           </td>
-
+          <td>{{ user.learning?.length || 0 }}</td>
           <td>
             <button
               pButton
@@ -83,6 +84,13 @@
               icon="pi pi-pencil"
               class="p-button-rounded p-button-success p-mr-2"
               (click)="editUser(user)"
+            ></button>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-search"
+              class="p-button-rounded p-mr-2"
+              (click)="viewDetail(user)"
             ></button>
             <button
               pButton
@@ -109,12 +117,10 @@
   </ng-template>
 </div>
 
-<p-toast [baseZIndex]="1000000"></p-toast>
-
 <p-dialog
   [(visible)]="userDialog"
   [style]="{ width: '550px' }"
-  header="User Details"
+  header="Edit User"
   [modal]="true"
   styleClass="p-fluid"
 >
@@ -189,8 +195,96 @@
   </ng-template>
 </p-dialog>
 
+<p-dialog
+  [(visible)]="userDetailDialog"
+  [style]="{ width: '80vw' }"
+  [modal]="true"
+  styleClass="p-fluid"
+  [draggable]="false"
+  [baseZIndex]="10000000"
+>
+  <ng-template pTemplate="header">
+    <p>User Info</p>
+  </ng-template>
+  <p-divider></p-divider>
+  <ng-template pTemplate="content">
+    <div class="p-grid">
+      <div class="p-col-6">Username: {{ userDetail.username }}</div>
+      <div class="p-col-6">Email: {{ userDetail.email }}</div>
+      <div class="p-col-6">FirstName: {{ userDetail.firstName }}</div>
+      <div class="p-col-6">LastName: {{ userDetail.lastName }}</div>
+    </div>
+    <p-divider></p-divider>
+    <div class="p-gird">
+      <p-table
+        #dt
+        [value]="userDetail.courses"
+        [scrollable]="true"
+        [rows]="100"
+        scrollHeight="400px"
+        [virtualScroll]="true"
+        [virtualRowHeight]="34"
+        [globalFilterFields]="['title']"
+      >
+        <ng-template pTemplate="caption">
+          <div class="table-header p-d-flex p-jc-between p-ai-center">
+            <p>Course Info</p>
+            <span class="p-input-icon-left" style="width: 30%">
+              <i class="pi pi-search"></i>
+              <input
+                pInputText
+                type="text"
+                (input)="dt.filterGlobal($event.target.value, 'contains')"
+                placeholder=" Search"
+              />
+            </span>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Imgage</th>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-course let-i="rowIndex">
+          <tr>
+            <td>
+              <img [src]="course.img" alt="" />
+            </td>
+            <td>{{ course.title }}</td>
+            <td>{{ course.price | currency }}</td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+          <tr>
+            <th colspan="2"></th>
+            <th>Total: {{ totalPrice | currency }}</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8">No courses found</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Close"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="userDetailDialog = false"
+    ></button>
+  </ng-template>
+</p-dialog>
 <p-toast [baseZIndex]="1000000"></p-toast>
 
-<div class="loading" *ngIf="loading">
-  <p-progressSpinner></p-progressSpinner>
-</div>
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

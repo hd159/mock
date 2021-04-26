@@ -18,7 +18,9 @@ import {
   takeUntil,
 } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
+import { PaymentService } from 'src/app/service/payment.service';
 import { MessageService } from 'primeng/api';
+import { LoadingProgressService } from 'src/app/loading-progress/loading-progress.service';
 
 @Component({
   selector: 'app-courses-payment',
@@ -46,7 +48,9 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
     private coursesService: CoursesService,
     private authService: AuthService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingProgressService,
+    private paymentService: PaymentService
   ) {}
 
   ngOnInit(): void {
@@ -82,9 +86,11 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
     render({
       id: '#paypalbtn',
       currency: 'USD',
-      value: this.totalPrice.toString(),
+      value: this.totalPrice.toFixed(2),
       onApprove: (detail) => {
-        this.loading = true;
+        console.log(detail);
+
+        this.loadingService.showLoading();
         this.userInfo$
           .pipe(
             mergeMap((user) => {
@@ -100,16 +106,25 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
                 learning: [...user.learning, ...coursesId],
               };
 
+              const bodyPayment = {
+                userId: user._id,
+                ...detail,
+              };
+
               const updateUser = this.authService.updateUser(user._id, body);
 
               const updateStudents = this.coursesService.updateStudent();
 
-              return combineLatest([updateUser, updateStudents]);
+              const paymentInfo = this.paymentService.createPayment(
+                bodyPayment
+              );
+
+              return combineLatest([updateUser, updateStudents, paymentInfo]);
             }),
             takeUntil(this.unsubscription)
           )
           .subscribe((val) => {
-            this.loading = false;
+            this.loadingService.hideLoading();
             this.messageService.add({
               severity: 'success',
               detail: 'Payment success',
@@ -120,5 +135,11 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
           });
       },
     });
+  }
+
+  createPayment(userid, paymentInfo) {
+    const body = {
+      userid,
+    };
   }
 }
