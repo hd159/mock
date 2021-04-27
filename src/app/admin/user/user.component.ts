@@ -131,6 +131,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   viewDetail(user) {
+    this.totalPrice = 0;
     if (user.learning && user.learning.length > 0) {
       this.loadingService.showLoading();
       this.getCourseUserHasBuy(user.learning)
