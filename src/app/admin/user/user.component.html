@@ -60,6 +60,7 @@
           <th pSortableColumn="email">
             Email <p-sortIcon field="username"></p-sortIcon>
           </th>
+          <th>Password</th>
           <th>Roles</th>
           <th>Total Courses</th>
           <th>Action</th>
@@ -73,6 +74,7 @@
           <td>{{ user.username }}</td>
 
           <td>{{ user.email }}</td>
+          <td>{{ user.confirmPassword }}</td>
           <td>
             <span *ngFor="let role of user.roleId">{{ role }}</span>
           </td>
