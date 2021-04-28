@@ -55,6 +55,8 @@ import { AssignmentItemComponent } from './assignments/assignment-item/assignmen
 import { DialogModule } from 'primeng/dialog';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { PaymentInfoComponent } from './payment-info/payment-info.component';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +86,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     EditCourseComponent,
     AssignmentsComponent,
     AssignmentItemComponent,
+    PaymentInfoComponent,
+    PaymentComponent,
   ],
   imports: [
     CommonModule,
@@ -113,6 +117,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     DialogModule,
     MultiSelectModule,
     RadioButtonModule,
+    ChartsModule,
   ],
   providers: [SweetAlert2Module, ConfirmationService, MessageService],
 })

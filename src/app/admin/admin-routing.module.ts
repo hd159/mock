@@ -15,6 +15,8 @@ import { AddCourseComponent } from './courses/add-course/add-course.component';
 import { GoalsCourseComponent } from './courses/goals-course/goals-course.component';
 import { EditCourseComponent } from './courses/edit-course/edit-course.component';
 import { AssignmentsComponent } from './assignments/assignments.component';
+import { PaymentInfoComponent } from './payment-info/payment-info.component';
+import { PaymentComponent } from './payment/payment.component';
 
 const routes: Routes = [
   {
@@ -50,6 +52,8 @@ const routes: Routes = [
         ],
       },
       { path: 'assignment', component: AssignmentsComponent },
+      // { path: 'payment', component: PaymentInfoComponent },
+      { path: 'payment', component: PaymentComponent },
     ],
   },
 ];

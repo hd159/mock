@@ -139,6 +139,31 @@
         appDropdown
       >
         <a>
+          <span><i class="far fa-list-alt"></i></span>
+          <span>Payment</span>
+          <span class="arrows"><i class="fas fa-chevron-down"></i></span
+        ></a>
+        <div
+          class="nav-item-dropdown-contents"
+          routerLinkActive="expanded-child"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a
+            [routerLink]="['./', 'payment']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Manage Payment</a
+          >
+        </div>
+      </div>
+
+      <div
+        class="nav-item-dropdown"
+        [routerLinkActive]="['active-dropdown']"
+        [routerLinkActiveOptions]="{ exact: true }"
+        appDropdown
+      >
+        <a>
           <span><i class="fas fa-users"></i></span>
           <span>Users</span>
           <span class="arrows"><i class="fas fa-chevron-down"></i></span

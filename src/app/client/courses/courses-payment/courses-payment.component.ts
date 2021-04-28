@@ -107,8 +107,9 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
               };
 
               const bodyPayment = {
-                userId: user._id,
+                user: { ...user },
                 ...detail,
+                courses: [...this.coursesService.courseInCart.value],
               };
 
               const updateUser = this.authService.updateUser(user._id, body);
