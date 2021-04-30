@@ -13,12 +13,12 @@ import { CoursesService } from 'src/app/service/courses.service';
 })
 export class GoalsCourseComponent implements OnInit, OnDestroy {
   targetForm: FormGroup;
-  label_target = 'What will students learn in your course?';
-  label_require = 'Are there any course requirements or prerequisites?';
-  label_target_student = 'Who are your target students?';
-  placeholder_target = 'Example: Low-light photography';
-  placeholder_require = 'Example: Be able to read sheet music';
-  placeholder_target_student = 'Example: Beginner Python developers';
+  label_target = '  Học viên sẽ học được gì từ khóa học?';
+  label_require = 'Yêu cầu, điều kiện tiên quyết để tham gia khóa học?';
+  label_target_student = 'Ai phù hợp với khóa học này?';
+  placeholder_target = 'Ví dụ: Có kiến thức sử dụng Microsoft SQL Server';
+  placeholder_require = ' Ví dụ: Có khả năng đọc bản nhạc';
+  placeholder_target_student = 'Ví dụ: Lập trình viên mới làm quen với python';
   idcourse: string;
   loading: boolean;
   unsubscription = new Subject();
@@ -28,7 +28,7 @@ export class GoalsCourseComponent implements OnInit, OnDestroy {
     private coursesService: CoursesService,
     private messageService: MessageService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.targetForm = this.initForm();

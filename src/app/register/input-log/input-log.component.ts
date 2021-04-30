@@ -12,13 +12,14 @@ export class InputLogComponent implements OnInit, OnChanges {
   @Input() parentForm: FormGroup;
   @Input() submitted: boolean;
   @Input() type = 'text';
-  constructor() {}
+  @Input() placeholder
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   get form() {
     return this.parentForm.controls;
   }
 
-  ngOnChanges() {}
+  ngOnChanges() { }
 }

@@ -4,10 +4,10 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Name</th>
-          <th>Img</th>
-          <th>Description</th>
-          <th>Group</th>
+          <th>Tên</th>
+          <th>Hình ảnh</th>
+          <th>Giới thiệu</th>
+          <th>Category Parent</th>
           <th></th>
         </tr>
       </thead>
@@ -20,7 +20,7 @@
           <td>{{ item.value.group }}</td>
           <td>
             <button class="btn btn-danger" (click)="onDelete(item, i)">
-              Delete
+              Xóa
             </button>
           </td>
         </tr>

@@ -8,17 +8,17 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
   styleUrls: ['./swal-alert.component.scss'],
 })
 export class SwalAlertComponent implements OnInit {
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  swalSuccess(text?: string, title: string = 'Removed!') {
+  swalSuccess(text?: string, title: string = 'Đã xóa!') {
     let timerInterval: any;
 
     return Swal.fire({
       icon: 'success',
       text: text,
-      html: 'I will close in <b></b> milliseconds.',
+      html: 'Cửa sổ sẽ tự đóng sau <b></b> milliseconds.',
       title: title,
       timer: 3000,
       timerProgressBar: true,
@@ -44,22 +44,21 @@ export class SwalAlertComponent implements OnInit {
   swalConfirm(text?: string) {
     return Swal.fire({
       icon: 'warning',
-      text: `Are you sure you want to delete ${text}??. All information associated will be permanently
-      deleted. This operation can not be undone.`,
+      text: `Bạn có muốn xóa ${text}. Tất cả thông tin liên quan sẽ bị xóa vĩnh viến. Hành động này không thể quay lại?`,
       showCancelButton: true,
-      confirmButtonText: 'Yes, go ahead.',
-      cancelButtonText: 'No, let me think',
+      confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Hủy bỏ',
     });
   }
 
   swalCancel(text?: string) {
-    return Swal.fire('Cancelled', `${text} still in our database.)`, 'error');
+    return Swal.fire('Hủy bỏ', `Bạn đã hủy bỏ`, 'error');
   }
 
   swalError500() {
     return Swal.fire(
       '500',
-      'Your connection has interrupted, reconnect and try again',
+      ' Kết nối của bạn đã bị gián đoạn, vui lòng kết nối lại',
       'error'
     );
   }

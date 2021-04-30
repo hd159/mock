@@ -1,5 +1,5 @@
 <div class="container">
-  <h3>Post Statistics</h3>
+  <h3>Thống kê Post</h3>
   <ul class="nav nav-tabs mb-3">
     <li
       class="nav-item"
@@ -12,7 +12,7 @@
 
   <div class="row">
     <div class="from-group col-lg-6" *ngIf="yearSelect && currentTab !== 3">
-      <label for="">Year</label>
+      <label for="">Năm</label>
       <select
         class="form-select mb-3 form-control"
         id="year"
@@ -29,7 +29,7 @@
     </div>
 
     <div class="form-group col-lg-6" *ngIf="monthSelect">
-      <label for="">Month</label>
+      <label for="">Tháng</label>
       <select
         class="form-select mb-3 form-control"
         (change)="changeChart($event)"
@@ -46,7 +46,7 @@
     </div>
 
     <div class="form-group col-lg-6" *ngIf="weekSelect">
-      <label for="">Week</label>
+      <label for="">Tuần</label>
       <select
         class="form-select mb-3 form-control"
         (change)="changeChart($event)"
@@ -82,7 +82,7 @@
   </div>
 
   <p *ngIf="currentTab !== 4">
-    Total Post: {{ totalPost ? totalPost : "No Post" }}
+    Tổng Post: {{ totalPost ? totalPost : "No Post" }}
   </p>
 
   <div style="display: block" *ngIf="chartReady && currentTab !== 4">

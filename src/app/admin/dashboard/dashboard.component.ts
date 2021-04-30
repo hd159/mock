@@ -33,7 +33,7 @@ export interface DateChart {
   providers: [ChartService],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  type = ['Year', 'Month', 'Week', 'Category', 'Top 5 post in month'];
+  type = ['Năm', 'Tháng', 'Tuần', 'Category', 'Top 5 post trong tháng'];
 
   barChartOptions1: ChartOptions = {
     responsive: true,
@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private chartService: ChartService,
     private lesson: LessonService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getChart(this.currentTab, this.currentYear);

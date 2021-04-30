@@ -5,12 +5,12 @@
         <div class="p-grid p-fluid p-m-0">
           <div class="p-col-12">
             <div class="p-inputgroup p-grid">
-              <span class="p-col-12" for="">Course title </span>
+              <span class="p-col-12" for="">Tên </span>
               <input
                 type="text"
                 class="p-col-12"
                 pInputText
-                placeholder="Insert your course title"
+                placeholder="Tên khóa học"
                 formControlName="title"
               />
             </div>
@@ -18,12 +18,12 @@
 
           <div class="p-col-12">
             <div class="p-inputgroup p-grid">
-              <span class="p-col-12" for="">Course subtitle </span>
+              <span class="p-col-12" for="">Phụ đề</span>
               <input
                 type="text"
                 class="p-col-12"
                 pInputText
-                placeholder="Insert your course subtitle"
+                placeholder="Phụ đề khóa học"
                 formControlName="subtitle"
               />
             </div>
@@ -31,7 +31,7 @@
 
           <div class="p-col-12">
             <div class="p-inputgroup p-grid">
-              <span class="p-col-12" for="">Course description</span>
+              <span class="p-col-12" for="">Mô tả khóa học</span>
               <app-text-editor
                 [parentForm]="formLandingPage"
                 style="width: 100%"
@@ -41,14 +41,14 @@
 
           <div class="p-col-12">
             <div class="p-grid p-inputgroup">
-              <span class="p-col-12" for="">Basic Info</span>
+              <span class="p-col-12" for="">Thông tin cơ bản</span>
               <div class="p-col-4 p-pl-0">
                 <p-dropdown
                   [options]="cities"
                   formControlName="language"
                   optionLabel="name"
                   [showClear]="true"
-                  placeholder="-- Select Language --"
+                  placeholder="-- Chọn ngôn ngữ --"
                 ></p-dropdown>
               </div>
               <div class="p-col-4">
@@ -57,7 +57,7 @@
                   formControlName="level"
                   optionLabel="name"
                   [showClear]="true"
-                  placeholder="-- Select Level --"
+                  placeholder="-- Chọn level --"
                 ></p-dropdown>
               </div>
               <div class="p-col-4 p-pr-0">
@@ -66,7 +66,7 @@
                   formControlName="category"
                   optionLabel="name"
                   [showClear]="true"
-                  placeholder="-- Select Category --"
+                  placeholder="-- Chọn Category --"
                 ></p-dropdown>
               </div>
             </div>
@@ -74,11 +74,11 @@
 
           <div class="p-col-12">
             <div class="p-inputgroup p-grid">
-              <span class="p-col-12" for="">Course image </span>
+              <span class="p-col-12" for="">Hình ảnh </span>
               <input
                 type="text"
                 pInputText
-                placeholder="Insert your course image"
+                placeholder="Chọn ảnh "
                 formControlName="img"
               />
             </div>
@@ -90,7 +90,7 @@
               <input
                 type="text"
                 pInputText
-                placeholder="Insert your course preview video"
+                placeholder="Chọn course preview video"
                 formControlName="preview_video"
               />
             </div>
@@ -98,11 +98,11 @@
 
           <div class="p-col-4">
             <div class="p-inputgroup p-grid">
-              <span class="p-col-12" for="">Price</span>
+              <span class="p-col-12" for="">Giá</span>
               <input
                 type="number"
                 pInputText
-                placeholder="Price"
+                placeholder="Giá"
                 formControlName="price"
               />
             </div>
@@ -110,11 +110,11 @@
 
           <div class="p-col-4">
             <div class="p-inputgroup p-grid">
-              <span class="p-col-12" for="">Discount</span>
+              <span class="p-col-12" for="">Giảm giá</span>
               <input
                 type="number"
                 pInputText
-                placeholder="Discount"
+                placeholder="Giảm giá"
                 formControlName="discount"
               />
             </div>
@@ -127,7 +127,7 @@
     <ng-template pTemplate="footer">
       <div class="p-grid p-nogutter p-justify-end">
         <p-button
-          label="Next"
+          label="Tiếp theo"
           (onClick)="nextPage()"
           icon="pi pi-angle-right"
           iconPos="right"

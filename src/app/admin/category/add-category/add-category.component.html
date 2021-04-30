@@ -1,5 +1,5 @@
 <div class="container">
-  <h3 class="mb-3">Create new Category</h3>
+  <h3 class="mb-3">Tạo mới Category</h3>
 
   <form [formGroup]="categoryForm" (submit)="onSubmit()">
     <app-category-selector
@@ -13,7 +13,7 @@
     ></app-category-list>
 
     <button type="submit" class="btn btn-primary" *ngIf="listForm.length > 0">
-      Submit
+      Gửi
     </button>
   </form>
 

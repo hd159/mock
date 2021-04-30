@@ -1,3 +1,4 @@
+import { LoadingProgressService } from './../../../../loading-progress/loading-progress.service';
 import { HttpParams } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, OnChanges, ViewChild } from '@angular/core';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
@@ -8,7 +9,6 @@ import { finalize, map, mergeMap, tap } from 'rxjs/operators';
 import { Category } from 'src/app/model/model';
 import { CategoryService } from 'src/app/service/category.service';
 import { LessonService } from 'src/app/service/lesson.service';
-import { LoadingService } from 'src/app/service/loading.service';
 import { SwalAlertComponent } from 'src/app/shared/swal-alert/swal-alert.component';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
@@ -31,7 +31,7 @@ export class CategoryItemComponent implements OnInit, OnChanges {
   constructor(
     private categoryService: CategoryService,
     private lessonService: LessonService,
-    private loading: LoadingService,
+    private loading: LoadingProgressService,
     private swal: SwalAlertComponent
   ) { }
 
@@ -61,11 +61,11 @@ export class CategoryItemComponent implements OnInit, OnChanges {
     this.itemDelete = item;
     this.swal.swalConfirm(item.title + ' category').then((result) => {
       if (result.value) {
-        this.loading.loadingOn();
+        this.loading.showLoading();
         this.resolvedelete().subscribe((val) => {
           this.swal.swalSuccess();
           this.removed.emit();
-          this.loading.loadingOff();
+          this.loading.hideLoading();
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         this.itemDelete = null;

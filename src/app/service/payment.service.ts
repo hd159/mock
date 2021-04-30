@@ -78,7 +78,6 @@ export class PaymentService extends CollectionService<any> {
         val.filter((item) => item.year === year && item.month === month)
       ),
       map((monthData) => {
-        console.log(monthData);
 
         let obj = {};
         monthData.forEach((item) => {

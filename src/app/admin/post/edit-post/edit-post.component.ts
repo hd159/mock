@@ -1,12 +1,11 @@
+import { LoadingProgressService } from './../../../loading-progress/loading-progress.service';
 import { HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Query } from 'kinvey-angular-sdk';
 import { Observable, of, Subscription } from 'rxjs';
 import { finalize, mergeMap } from 'rxjs/operators';
 import { Post } from 'src/app/model/model';
 import { CommentService } from 'src/app/service/comment.service';
 import { LessonService } from 'src/app/service/lesson.service';
-import { LoadingService } from 'src/app/service/loading.service';
 import { SwalAlertComponent } from 'src/app/shared/swal-alert/swal-alert.component';
 import Swal from 'sweetalert2';
 
@@ -27,24 +26,27 @@ export class EditPostComponent implements OnInit, OnDestroy {
     private lessonService: LessonService,
     private commentService: CommentService,
     private swal: SwalAlertComponent,
-    private loading: LoadingService
+    private loading: LoadingProgressService
   ) {
+
+  }
+
+  ngOnInit(): void {
     this.getPosts();
     this.getPaginationPage();
   }
-
-  ngOnInit(): void {}
 
   onDelete(post: Post) {
     this.postDelete = post;
     this.swal.swalConfirm(post.title + ' post').then((result) => {
       if (result.value) {
-        this.loading.loadingOn();
+        this.loading.showLoading();
         this.sub = this.resolveDelete()
-          .pipe(finalize(() => this.loading.loadingOff()))
+          .pipe(finalize(() => this.loading.hideLoading()))
           .subscribe(
             (val) => {
               this.lessonService.deletePost(post);
+
               const numpage = Math.ceil(
                 this.lessonService.valueState.postsEdit.length / 10
               );

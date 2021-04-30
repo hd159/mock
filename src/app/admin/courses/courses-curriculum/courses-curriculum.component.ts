@@ -1,9 +1,10 @@
+import { LoadingProgressService } from './../../../loading-progress/loading-progress.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { of, Subject } from 'rxjs';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { switchMap, takeUntil, tap, finalize } from 'rxjs/operators';
 import { CoursesService } from 'src/app/service/courses.service';
 
 @Component({
@@ -14,21 +15,21 @@ import { CoursesService } from 'src/app/service/courses.service';
 export class CoursesCurriculumComponent implements OnInit, OnDestroy {
   formCurriculum: FormGroup;
   idcourse: string;
-  loading: boolean;
   unsubscription = new Subject();
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private coursesService: CoursesService,
     private route: ActivatedRoute,
-    private messageService: MessageService
-  ) {}
+    private messageService: MessageService,
+    private loadingService: LoadingProgressService
+  ) { }
 
   ngOnInit(): void {
     this.formCurriculum = this.initForm();
     this.route.params
       .pipe(
-        tap(() => (this.loading = true)),
+        tap(this.loadingService.showLoading),
         switchMap(({ id }) => {
           if (id) {
             this.idcourse = id;
@@ -37,10 +38,11 @@ export class CoursesCurriculumComponent implements OnInit, OnDestroy {
             return of(null);
           }
         }),
+        finalize(this.loadingService.hideLoading),
         takeUntil(this.unsubscription)
       )
       .subscribe((val: any) => {
-        this.loading = false;
+        // this.loading = false;
         if (val) {
           const form = this.formCurriculum.get('section') as FormArray;
           form.clear();

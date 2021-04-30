@@ -2,13 +2,13 @@
   <div class="p-grid">
     <div class="p-col-7">
       <div class="checkout-info">
-        <h2 class="title">Checkout</h2>
+        <h2 class="title">Thanh toán</h2>
 
         <div class="checkout-address">
-          <h3>Billing Address</h3>
+          <h3>Địa chỉ:</h3>
           <p-dropdown
             [options]="filteredCountries"
-            placeholder="Select a City"
+            placeholder="Chọn thành phố"
             optionLabel="name"
             [showClear]="true"
             [filter]="true"
@@ -25,7 +25,7 @@
                 inputId="card"
                 [(ngModel)]="paymentMethod"
               ></p-radioButton>
-              <label for="card">New Payment Card</label>
+              <label for="card">Thêm phương thức thanh toán mới</label>
             </div>
 
             <div class="p-field-radiobutton">
@@ -87,8 +87,8 @@
               <div class="for-paypal">
                 <p-card>
                   <p class="title">
-                    In order to complete your transaction, we will transfer you
-                    over to PayPal's secure servers.
+                    Để hoàn tất thanh toán, chúng tôi sẽ chuyển bạn đến trang
+                    PayPal's.
                   </p>
                 </p-card>
               </div>
@@ -96,7 +96,7 @@
           </div>
 
           <div class="payment-detail">
-            <h2 class="title">Order Details</h2>
+            <h2 class="title">Chi tiết đơn hàng</h2>
             <ul class="list-items">
               <li *ngFor="let course of courses">
                 <div class="item p-grid p-nogutter">
@@ -105,7 +105,7 @@
                     {{ course.title }}
                   </p>
                   <span class="price p-col-1">{{
-                    course.price | currency
+                    course.price | currency: "VND"
                   }}</span>
                 </div>
               </li>
@@ -118,26 +118,23 @@
     <div class="p-col-5">
       <p-card class="checkout-panel">
         <div class="complete-checkout">
-          <h2 class="title">Summary</h2>
+          <h2 class="title">Đơn Hàng</h2>
           <div class="original-price">
-            <span>Original price:</span>
-            <span>{{ originalPrice | currency }}</span>
+            <span>Giá gốc: </span>
+            <span>{{ originalPrice | currency: "VND" }}</span>
           </div>
           <div class="discounts">
-            <span>Coupon discounts:</span>
-            <span>{{ discountPrice | currency }}</span>
+            <span>Giảm giá:</span>
+            <span>{{ discountPrice | currency: "VND" }}</span>
           </div>
           <div class="total">
-            <span>Total:</span>
-            <span>{{ totalPrice | currency }}</span>
+            <span>Tổng:</span>
+            <span>{{ totalPrice | currency: "VND" }}</span>
           </div>
         </div>
 
-        <p class="legal">
-          By completing your purchase you agree to these Terms of Service.
-        </p>
         <p-button
-          label="Complete Payment"
+          label="Thanh toán"
           (click)="onPayment()"
           *ngIf="showBtn"
         ></p-button>

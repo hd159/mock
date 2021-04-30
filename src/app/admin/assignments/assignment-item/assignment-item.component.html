@@ -6,7 +6,7 @@
     <ng-template pTemplate="header">
       <div class="section-info">
         <span class="section-number">{{
-          "Section" + " " + (i + 1) + " " + ":"
+          "Chương" + " " + (i + 1) + " " + ":"
         }}</span>
         <i class="pi pi-book"></i>
         <input
@@ -15,7 +15,7 @@
           pInputText
           [formControl]="item.get('title')"
           style="width: 450px"
-          placeholder="Enter title"
+          placeholder="Tiêu đề chương"
         />
 
         <span class="section-action">
@@ -36,7 +36,7 @@
             <i class="pi pi-check"></i>
 
             <span class="lecture-number">
-              {{ "Lecture" + " " + (j + 1) + " " + ":" }}</span
+              {{ "Bài" + " " + (j + 1) + " " + ":" }}</span
             >
             <span class="lecture-action">
               <i class="pi pi-trash" (click)="onDeleteChapter(item, j)"></i>
@@ -45,7 +45,7 @@
         </ng-template>
 
         <div class="task p-mb-3">
-          <label for="">Task</label>
+          <label for="">Yêu cầu</label>
           <app-text-editor
             [height]="500"
             [parentForm]="itemChapter"
@@ -53,20 +53,20 @@
         </div>
 
         <app-input
-          label="Input"
+          label="Dữ liệu đầu vào"
           [control]="itemChapter.get('input')"
           inputType="textarea"
         ></app-input>
 
         <app-input
-          label="Answer"
+          label="Đáp án"
           [control]="itemChapter.get('answer')"
           inputType="textarea"
         ></app-input>
       </p-panel>
     </p-card>
     <div class="add-lecture">
-      <button (click)="onAddLecture(item)">Add lecture</button>
+      <button (click)="onAddLecture(item)">Thêm bài tập</button>
     </div>
   </p-card>
 </form>

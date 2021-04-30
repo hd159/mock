@@ -12,8 +12,8 @@
         >
           <div class="col" style="max-width: 80%">
             <div class="mb-4">
-              <h1 class="text-center h1">Register new account</h1>
-              <p class="text-center">Please input username and password</p>
+              <h1 class="text-center h1">Đăng ký tài khoản</h1>
+              <!-- <p class="text-center">Please input username and password</p> -->
             </div>
 
             <form [formGroup]="formRegister" (ngSubmit)="onSubmit()">
@@ -21,23 +21,26 @@
                 <div class="col-6">
                   <app-input-log
                     [parentForm]="formRegister"
-                    label="Username"
+                    label="Tên tài khoản"
                     [submitted]="submitted"
                     [control]="formRegister.get('username')"
+                    placeholder="hhoa"
                   ></app-input-log>
 
                   <app-input-log
                     [parentForm]="formRegister"
-                    label="First Name"
+                    label="Tên"
                     [submitted]="submitted"
                     [control]="formRegister.get('firstName')"
+                    placeholder="Hoa"
                   ></app-input-log>
 
                   <app-input-log
                     [parentForm]="formRegister"
-                    label="Last Name"
+                    label="Họ"
                     [submitted]="submitted"
                     [control]="formRegister.get('lastName')"
+                    placeholder="Nguyen"
                   ></app-input-log>
                 </div>
                 <div class="col-6">
@@ -47,22 +50,25 @@
                     [submitted]="submitted"
                     [control]="formRegister.get('email')"
                     type="email"
+                    placeholder="hhoa@gmail.com"
                   ></app-input-log>
 
                   <app-input-log
                     [parentForm]="formRegister"
-                    label="Password"
+                    label="Mật khẩu"
                     [submitted]="submitted"
                     [control]="formRegister.get('password')"
                     type="password"
+                    placeholder="123456"
                   ></app-input-log>
 
                   <app-input-log
                     [parentForm]="formRegister"
-                    label="Confirm Password"
+                    label="Nhập lại mật khẩu"
                     [submitted]="submitted"
                     [control]="formRegister.get('confirmPassword')"
                     type="password"
+                    placeholder="123456"
                   ></app-input-log>
                 </div>
               </div>
@@ -74,14 +80,14 @@
                     *ngIf="loading"
                     class="spinner-border spinner-border-sm mr-1"
                   ></span>
-                  Register
+                  Đăng ký
                 </button>
               </div>
             </form>
             <div class="mt-4">
               <p class="text-center">
-                Already have an account?
-                <span><a routerLink="/admin/login">Login</a></span>
+                Bạn đã có tài khoản?
+                <span><a routerLink="/admin/login">Đăng nhập ngay</a></span>
               </p>
             </div>
           </div>

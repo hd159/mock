@@ -1,8 +1,8 @@
 <form [formGroup]="parentForm">
-  <app-input [control]="parentForm.get('title')" label="Title"></app-input>
+  <app-input [control]="parentForm.get('title')" label="Tên"></app-input>
 
   <div class="mb-3 form-group">
-    <label class="form-label">Parent</label>
+    <label class="form-label">Category Parent</label>
     <input
       list="groupParent"
       class="form-control"
@@ -32,11 +32,11 @@
     </ng-container>
   </div>
 
-  <app-input [control]="parentForm.get('img')" label="Img"></app-input>
+  <app-input [control]="parentForm.get('img')" label="Hình ảnh"></app-input>
 
   <app-input
     [control]="parentForm.get('desc')"
-    label="Description"
+    label="Mô tả"
     inputType="textarea"
   ></app-input>
 </form>

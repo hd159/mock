@@ -2,7 +2,7 @@
   <form [formGroup]="formUserInfo" (submit)="onSubmit()" *ngIf="userInfo">
     <div class="p-grid p-m-0">
       <div class="p-col-3 menu-left p-p-0">
-        <h3 class="profile-title">Profile Picture</h3>
+        <h3 class="profile-title">Hình ảnh</h3>
 
         <div class="profile-picture">
           <p class="p-mb-1">Image preview</p>
@@ -25,21 +25,21 @@
       <div class="p-col-7" style="padding-bottom: 0">
         <div class="p-grid">
           <div class="p-col-12 content" style="text-align: center">
-            <h3>Public profile</h3>
-            <p>Add information about yourself</p>
+            <h3>Thông tin</h3>
+            <p>Thêm thông tin của bạn</p>
           </div>
 
           <div class="p-col-12 content">
             <div class="p-col-9 p-py-0 m-auto">
               <app-input
                 [control]="formUserInfo.get('firstName')"
-                label="First name"
+                label="Tên"
               ></app-input>
             </div>
             <div class="p-col-9 p-py-0 m-auto">
               <app-input
                 [control]="formUserInfo.get('lastName')"
-                label="Last name"
+                label="Họ"
               ></app-input>
             </div>
             <div class="p-col-9 p-py-0 m-auto">
@@ -52,18 +52,18 @@
             <div class="p-col-9 p-py-0 m-auto">
               <app-input
                 [control]="formUserInfo.get('biography')"
-                label="Biography"
+                label="Tiểu sử"
                 inputType="textarea"
               ></app-input>
             </div>
             <div class="p-col-9 p-py-0 m-auto">
-              <label>Language</label>
+              <label>Ngôn ngữ</label>
               <p-dropdown
                 [options]="languages"
                 formControlName="language"
                 optionLabel="name"
                 [showClear]="true"
-                placeholder="-- Select Language --"
+                placeholder="-- Chọn ngôn ngữ --"
               ></p-dropdown>
             </div>
           </div>

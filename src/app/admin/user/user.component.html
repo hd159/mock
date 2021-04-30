@@ -5,7 +5,7 @@
         <button
           pButton
           pRipple
-          label="New"
+          label="Thêm người dùng"
           icon="pi pi-plus"
           class="p-button-success p-mr-2"
           (click)="createUser()"
@@ -30,20 +30,20 @@
       [globalFilterFields]="['username', 'email']"
       [rowHover]="true"
       dataKey="_id"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      currentPageReportTemplate="Hiển thị {first} đến {last} của {totalRecords} users"
       [showCurrentPageReport]="true"
       [(selection)]="selectedUsers"
     >
       <ng-template pTemplate="caption">
         <div class="p-d-flex p-ai-center p-jc-between">
-          <h5 class="p-m-0">Manage Users</h5>
+          <h5 class="p-m-0">Quản lý người dùng</h5>
           <span class="p-input-icon-left">
             <i class="pi pi-search"></i>
             <input
               pInputText
               type="text"
               (input)="dt.filterGlobal($event.target.value, 'contains')"
-              placeholder="Search..."
+              placeholder="Tìm kiếm..."
             />
           </span>
         </div>
@@ -54,16 +54,16 @@
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
           <th pSortableColumn="username">
-            User name <p-sortIcon field="username"></p-sortIcon>
+            Tên người dùng <p-sortIcon field="username"></p-sortIcon>
           </th>
 
-          <th pSortableColumn="email">
+          <th pSortableColumn="email" style="width: 300px">
             Email <p-sortIcon field="username"></p-sortIcon>
           </th>
           <th>Password</th>
-          <th>Roles</th>
-          <th>Total Courses</th>
-          <th>Action</th>
+          <th>Quyền</th>
+          <th>Khóa học đã mua</th>
+          <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-user>
@@ -73,7 +73,11 @@
           </td>
           <td>{{ user.username }}</td>
 
-          <td>{{ user.email }}</td>
+          <td>
+            <span class="email">
+              {{ user.email }}
+            </span>
+          </td>
           <td>{{ user.confirmPassword }}</td>
           <td>
             <span *ngFor="let role of user.roleId">{{ role }}</span>
@@ -106,7 +110,7 @@
       </ng-template>
       <ng-template pTemplate="summary">
         <div class="p-d-flex p-ai-center p-jc-between">
-          In total there are {{ userLists ? userLists.length : 0 }} courses.
+          Tổng người dùng: {{ userLists ? userLists.length : 0 }}.
         </div>
       </ng-template>
     </p-table>
@@ -122,13 +126,13 @@
 <p-dialog
   [(visible)]="userDialog"
   [style]="{ width: '550px' }"
-  header="Edit User"
+  header="Thêm người dùng"
   [modal]="true"
   styleClass="p-fluid"
 >
   <ng-template pTemplate="content">
     <div class="p-field">
-      <label for="name">Name</label>
+      <label for="name">Tên người dùng</label>
       <input
         type="text"
         pInputText
@@ -138,12 +142,12 @@
         autofocus
       />
       <small class="p-invalid" *ngIf="submitted && !userForm.username"
-        >Name is required.</small
+        >Field is required.</small
       >
     </div>
 
     <div class="p-field" *ngIf="!userForm._id">
-      <label for="password">Password</label>
+      <label for="password">Mật khẩu</label>
       <input
         type="password"
         pInputText
@@ -153,12 +157,12 @@
         autofocus
       />
       <small class="p-invalid" *ngIf="submitted && !userForm.username"
-        >Password is required.</small
+        >Field is required.</small
       >
     </div>
 
     <div class="p-field">
-      <label class="p-mb-3">Roles</label>
+      <label class="p-mb-3">Quyền</label>
 
       <div class="p-formgrid p-grid">
         <div
@@ -181,7 +185,7 @@
     <button
       pButton
       pRipple
-      label="Cancel"
+      label="Hủy bỏ"
       icon="pi pi-times"
       class="p-button-text"
       (click)="hideDialog()"
@@ -189,7 +193,7 @@
     <button
       pButton
       pRipple
-      label="Save"
+      label="Lưu"
       icon="pi pi-check"
       class="p-button-text"
       (click)="saveUser()"
@@ -206,15 +210,15 @@
   [baseZIndex]="10000000"
 >
   <ng-template pTemplate="header">
-    <p>User Info</p>
+    <p>Thông tin người dùng</p>
   </ng-template>
   <p-divider></p-divider>
   <ng-template pTemplate="content">
     <div class="p-grid">
-      <div class="p-col-6">Username: {{ userDetail.username }}</div>
+      <div class="p-col-6">Tên người dùng: {{ userDetail.username }}</div>
       <div class="p-col-6">Email: {{ userDetail.email }}</div>
-      <div class="p-col-6">FirstName: {{ userDetail.firstName }}</div>
-      <div class="p-col-6">LastName: {{ userDetail.lastName }}</div>
+      <div class="p-col-6">Tên: {{ userDetail.firstName }}</div>
+      <div class="p-col-6">Họ: {{ userDetail.lastName }}</div>
     </div>
     <p-divider></p-divider>
     <div class="p-gird">
@@ -230,14 +234,14 @@
       >
         <ng-template pTemplate="caption">
           <div class="table-header p-d-flex p-jc-between p-ai-center">
-            <p>Course Info</p>
+            <p>Thông tin khóa học</p>
             <span class="p-input-icon-left" style="width: 30%">
               <i class="pi pi-search"></i>
               <input
                 pInputText
                 type="text"
                 (input)="dt.filterGlobal($event.target.value, 'contains')"
-                placeholder=" Search"
+                placeholder=" Tìm kiếm..."
               />
             </span>
           </div>
@@ -245,9 +249,9 @@
 
         <ng-template pTemplate="header">
           <tr>
-            <th>Imgage</th>
-            <th>Name</th>
-            <th>Price</th>
+            <th>Hình ảnh</th>
+            <th>Tên khóa học</th>
+            <th>Giá</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-course let-i="rowIndex">
@@ -256,20 +260,20 @@
               <img [src]="course.img" alt="" />
             </td>
             <td>{{ course.title }}</td>
-            <td>{{ course.price | currency }}</td>
+            <td>{{ course.price | currency: "VND" }}</td>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="footer">
           <tr>
             <th colspan="2"></th>
-            <th>Total: {{ totalPrice | currency }}</th>
+            <th>Tổng cộng: {{ totalPrice | currency: "VND" }}</th>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="8">No courses found</td>
+            <td colspan="8">Không tìm thấy khóa học</td>
           </tr>
         </ng-template>
       </p-table>
@@ -280,7 +284,7 @@
     <button
       pButton
       pRipple
-      label="Close"
+      label="Đóng"
       icon="pi pi-check"
       class="p-button-text"
       (click)="userDetailDialog = false"
@@ -289,4 +293,9 @@
 </p-dialog>
 <p-toast [baseZIndex]="1000000"></p-toast>
 
-<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+<p-confirmDialog
+  [style]="{ width: '450px' }"
+  acceptLabel="Đồng ý"
+  rejectLabel="Hủy bỏ"
+>
+</p-confirmDialog>

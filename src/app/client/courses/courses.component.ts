@@ -34,13 +34,13 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private fb: FormBuilder,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.userForm = this.initForm();
     this.sortPriceOptions = [
-      { label: 'Price High to Low', value: '!price' },
-      { label: 'Price Low to High', value: 'price' },
+      { label: 'Giá thấp đến cao', value: 'price' },
+      { label: 'Giá cao đến thấp', value: '!price' },
     ];
 
     this.sortCategoriesOptions = [
@@ -128,7 +128,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   addToCart(course) {
-    if (!this.currentUserId) {
+    if (!this.currentUserId && localStorage.getItem('logged') !== 'true') {
       this.displayDialog = true;
     } else {
       if (course.inCart) {

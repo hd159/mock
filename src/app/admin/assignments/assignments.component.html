@@ -1,18 +1,18 @@
 <div class="p-field p-col-12">
-  <p-card header="Add assignment">
+  <p-card header="Thêm bài tập">
     <div class="page">
       <form [formGroup]="formAssignment" (ngSubmit)="onSubmit()">
         <div class="p-grid p-fluid p-m-0">
           <div class="p-col-12">
             <app-input
-              label="Name"
+              label="Tên"
               [control]="formAssignment.get('name')"
             ></app-input>
           </div>
 
           <div class="p-col-12">
             <app-input
-              label="Description"
+              label="Mô tả"
               [control]="formAssignment.get('description')"
               inputType="textarea"
             ></app-input>
@@ -20,7 +20,7 @@
 
           <div class="p-col-12">
             <app-input
-              label="Image"
+              label="Hình ảnh"
               [control]="formAssignment.get('img')"
             ></app-input>
           </div>
@@ -34,12 +34,12 @@
         </div>
 
         <p-button
-          label="Add Section"
+          label="Thêm chương mới"
           (click)="addSection()"
           class="p-mr-3"
         ></p-button>
 
-        <p-button label="Submit" icon="pi pi-check" type="submit"></p-button>
+        <p-button label="Hoàn tất" icon="pi pi-check" type="submit"></p-button>
       </form>
     </div>
   </p-card>

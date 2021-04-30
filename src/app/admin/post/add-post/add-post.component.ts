@@ -1,3 +1,4 @@
+import { LoadingProgressService } from './../../../loading-progress/loading-progress.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -42,7 +43,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
     private router: Router,
     private categoryService: CategoryService,
     private swal: SwalAlertComponent,
-    private loading: LoadingService
+    private loading: LoadingProgressService
   ) {
     this.addPostForm = this.initForm();
     const nameCategory$ = this.categoryService.find().pipe(
@@ -89,7 +90,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   initForm(): FormGroup {
     return this.fb.group({
@@ -105,7 +106,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.loading.loadingOn();
+    this.loading.showLoading();
 
     const newpost: Post = this.addPostForm.value;
     newpost.idcha = this.idSelect;
@@ -117,7 +118,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
       this.lessonService
         .create(newpost)
         .pipe(
-          finalize(() => this.loading.loadingOff()),
+          finalize(() => this.loading.hideLoading()),
           takeUntil(this.unSub$)
         )
         .subscribe(
@@ -127,7 +128,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
               title: val.title,
             };
             this.lessonService.updatePost(post, 'create');
-            this.swal.swalSuccess(null, 'Post created');
+            this.swal.swalSuccess(null, 'Thêm post thành công');
 
             this.addPostForm.reset();
           },
@@ -141,7 +142,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
       this.lessonService
         .update(newpost, newpost._id)
         .pipe(
-          finalize(() => this.loading.loadingOff()),
+          finalize(() => this.loading.hideLoading()),
           takeUntil(this.unSub$)
         )
         .subscribe(
