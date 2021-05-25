@@ -84,8 +84,6 @@ export class AuthService {
       })
       .pipe(
         map((data: any) => {
-          console.log(data);
-
           if (data._kmd.roles !== undefined) {
             if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
               localStorage.setItem('typeUser', 'admin');
