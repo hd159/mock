@@ -57,6 +57,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { PaymentInfoComponent } from './payment-info/payment-info.component';
 import { PaymentComponent } from './payment/payment.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -117,8 +118,8 @@ import { PaymentComponent } from './payment/payment.component';
     DialogModule,
     MultiSelectModule,
     RadioButtonModule,
-    ChartsModule,
+    TooltipModule
   ],
   providers: [SweetAlert2Module, ConfirmationService, MessageService],
 })
-export class AdminModule {}
+export class AdminModule { }

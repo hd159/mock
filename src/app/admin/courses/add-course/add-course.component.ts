@@ -8,20 +8,20 @@ import { MenuItem } from 'primeng/api';
 })
 export class AddCourseComponent implements OnInit {
   items: MenuItem[];
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.items = [
       {
-        label: 'Landing Page',
+        label: 'Thông tin chính',
         routerLink: 'landing-page',
       },
       {
-        label: 'Curriculum',
+        label: 'Nội dung khóa học',
         routerLink: 'curriculum',
       },
       {
-        label: 'Target your student',
+        label: 'Mục tiêu khóa học',
         routerLink: 'goals',
       },
     ];

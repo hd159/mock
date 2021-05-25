@@ -3,7 +3,7 @@
     <a class="menu-button text-light" (click)="toggerSidebar()">
       <i class="fas fa-bars"></i>
     </a>
-    <a href="" class="px-4 text-light" id="heading">Admin Panel</a>
+    <a href="" class="px-4 text-light" id="heading">Trang Admin</a>
   </div>
   <div class="d-flex align-items-center flex-row-reverse">
     <div
@@ -16,8 +16,8 @@
     </div>
   </div>
   <div class="dropdown-user" *ngIf="userDropdown">
-    <a href="">Profile</a>
-    <a (click)="onLogout()">Logout</a>
+    <a href="">Trang cá nhân</a>
+    <a (click)="onLogout()">Đăng xuất</a>
   </div>
 </header>
 <div class="d-flex">
@@ -49,10 +49,10 @@
 
         <div class="nav-item-dropdown-contents">
           <a [routerLink]="['./', 'edit-post']" [routerLinkActive]="['active']"
-            >Manage Posts</a
+            >Quản lý Posts</a
           >
           <a [routerLink]="['./', 'add-post']" [routerLinkActive]="['active']"
-            >Create New Post</a
+            >Tạo mới Post</a
           >
         </div>
       </div>
@@ -76,9 +76,9 @@
             [routerLink]="['./', 'edit-category']"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
-            >Manage Categories</a
+            >Quản lý Categories</a
           >
-          <a [routerLink]="['./', 'add-category']">Create New Category</a>
+          <a [routerLink]="['./', 'add-category']">Tạo mới Category</a>
         </div>
       </div>
 
@@ -90,7 +90,7 @@
       >
         <a>
           <span><i class="far fa-list-alt"></i></span>
-          <span>Courses </span>
+          <span>Khóa học </span>
           <span class="arrows"><i class="fas fa-chevron-down"></i></span
         ></a>
         <div
@@ -102,7 +102,7 @@
             [routerLink]="['./', 'courses']"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
-            >Manage Courses</a
+            >Quản lý Courses</a
           >
         </div>
       </div>
@@ -115,7 +115,7 @@
       >
         <a>
           <span><i class="far fa-list-alt"></i></span>
-          <span>Assignment</span>
+          <span>Bài tập</span>
           <span class="arrows"><i class="fas fa-chevron-down"></i></span
         ></a>
         <div
@@ -127,7 +127,7 @@
             [routerLink]="['./', 'assignment']"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
-            >Manage Assignment</a
+            >Quản lý Bài tập</a
           >
         </div>
       </div>
@@ -152,7 +152,7 @@
             [routerLink]="['./', 'payment']"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
-            >Manage Payment</a
+            >Quản lý Payment</a
           >
         </div>
       </div>
@@ -169,8 +169,8 @@
           <span class="arrows"><i class="fas fa-chevron-down"></i></span
         ></a>
         <div class="nav-item-dropdown-contents">
-          <a [routerLink]="['./', 'users']">Manage Users</a>
-          <a>Roles</a>
+          <a [routerLink]="['./', 'users']">Quản lý Users</a>
+          <!-- <a>Roles</a> -->
         </div>
       </div>
     </div>

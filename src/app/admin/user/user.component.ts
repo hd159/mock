@@ -36,7 +36,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private loadingService: LoadingProgressService,
     private coursesService: CoursesService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getUser();
@@ -83,8 +83,8 @@ export class UserComponent implements OnInit, OnDestroy {
           (val) => {
             this.messageService.add({
               severity: 'success',
-              summary: 'Success',
-              detail: 'User added',
+              summary: 'Thành công',
+              detail: 'Đã thêm người dùng mới',
             });
             this.getUser();
             this.hideDialog();
@@ -92,8 +92,8 @@ export class UserComponent implements OnInit, OnDestroy {
           (err) => {
             this.messageService.add({
               severity: 'error',
-              summary: 'Error',
-              detail: "Some thing wen't wrong",
+              summary: 'Thất bại',
+              detail: "Đã có lỗi xảy ra",
             });
           }
         );
@@ -108,8 +108,8 @@ export class UserComponent implements OnInit, OnDestroy {
           (val) => {
             this.messageService.add({
               severity: 'success',
-              summary: 'Success',
-              detail: 'User added',
+              summary: 'Thành công',
+              detail: 'Đã thêm người dùng mới',
             });
             this.getUser();
             this.hideDialog();
@@ -117,8 +117,8 @@ export class UserComponent implements OnInit, OnDestroy {
           (err) => {
             this.messageService.add({
               severity: 'error',
-              summary: 'Error',
-              detail: "Some thing wen't wrong",
+              summary: 'Thất bại',
+              detail: "Đã có lỗi xảy ra",
             });
           }
         );
@@ -146,6 +146,8 @@ export class UserComponent implements OnInit, OnDestroy {
             ...user,
             courses: [...val],
           };
+
+
         });
     } else {
       this.userDetailDialog = true;
@@ -167,8 +169,8 @@ export class UserComponent implements OnInit, OnDestroy {
 
   deleteUser(user: any) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + user.username + '?',
-      header: 'Confirm',
+      message: 'Bạn có muốn xóa ' + user.username + '?',
+      header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.loadingService.showLoading();
@@ -182,8 +184,8 @@ export class UserComponent implements OnInit, OnDestroy {
             this.userForm = {};
             this.messageService.add({
               severity: 'success',
-              summary: 'Successful',
-              detail: 'User Deleted',
+              summary: 'Thành công',
+              detail: 'Người dùng đã bị xóa',
               life: 3000,
             });
             this.getUser();
@@ -192,8 +194,8 @@ export class UserComponent implements OnInit, OnDestroy {
       reject: () => {
         this.messageService.add({
           severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
+          summary: 'Hủy bỏ',
+          detail: 'Bạn đã hủy bỏ',
         });
       },
     });
@@ -201,8 +203,8 @@ export class UserComponent implements OnInit, OnDestroy {
 
   deleteSelectedUsers() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected users?',
-      header: 'Confirm',
+      message: ' Bạn có muốn xóa các người dùng đã chọn?',
+      header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.loadingService.showLoading();
@@ -219,8 +221,8 @@ export class UserComponent implements OnInit, OnDestroy {
               this.selectedUsers = null;
               this.messageService.add({
                 severity: 'success',
-                summary: 'Successful',
-                detail: 'Users Deleted',
+                summary: 'Thành công',
+                detail: 'Người dùng đã bị xóa',
                 life: 3000,
               });
               this.getUser();
@@ -228,8 +230,8 @@ export class UserComponent implements OnInit, OnDestroy {
             (err) => {
               this.messageService.add({
                 severity: 'error',
-                summary: 'Error',
-                detail: "Some thing wen't wrong",
+                summary: 'Lỗi',
+                detail: "Đã có lỗi xảy ra",
               });
             }
           );
@@ -237,8 +239,8 @@ export class UserComponent implements OnInit, OnDestroy {
       reject: () => {
         this.messageService.add({
           severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
+          summary: 'Hủy bỏ',
+          detail: 'Bạn đã hủy bỏ',
         });
       },
     });

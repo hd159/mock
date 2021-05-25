@@ -1,16 +1,13 @@
 <div class="container">
   <div class="card">
     <div class="card-body">
-      <h3>{{ isEdit ? "Edit Post" : "Create new Post" }}</h3>
+      <h3>{{ isEdit ? "Chỉnh sửa Post" : "Tạo mới Post" }}</h3>
 
       <form [formGroup]="addPostForm" (submit)="onSubmit()">
-        <app-input
-          label="Title"
-          [control]="addPostForm.get('title')"
-        ></app-input>
+        <app-input label="Tên" [control]="addPostForm.get('title')"></app-input>
 
         <div class="mb-3">
-          <label class="form-label">Parent Group</label>
+          <label class="form-label">Category cấp 1</label>
           <input
             class="form-control"
             formControlName="idcha"
@@ -27,7 +24,7 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label">GrandParent Group</label>
+          <label class="form-label">Category cấp 2</label>
           <input
             class="form-control"
             formControlName="content"
@@ -43,21 +40,24 @@
         </div>
 
         <app-input
-          label="Content"
+          label="Nhóm"
           [control]="addPostForm.get('group')"
         ></app-input>
 
         <app-input
-          label="Description"
+          label="Giới thiệu"
           [control]="addPostForm.get('desc')"
           inputType="textarea"
         ></app-input>
 
-        <app-input label="Image" [control]="addPostForm.get('img')"></app-input>
-
+        <app-input
+          label="Hình ảnh"
+          [control]="addPostForm.get('img')"
+        ></app-input>
+        <label>Nội dung</label>
         <app-text-editor [parentForm]="addPostForm"></app-text-editor>
         <button class="btn btn-primary my-3" [disabled]="addPostForm.invalid">
-          Submit
+          Hoàn thành
         </button>
       </form>
       <app-swal-alert></app-swal-alert>

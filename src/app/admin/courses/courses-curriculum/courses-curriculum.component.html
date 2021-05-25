@@ -1,10 +1,5 @@
 <div class="p-field p-col-10">
-  <p-card header="Curriculum">
-    <p class="title">
-      If you’re intending to offer your course for free, the total length of
-      video content must be less than 2 hours.
-    </p>
-
+  <p-card header="Nội dung khóa học">
     <form [formGroup]="formCurriculum" (submit)="onSubmit()">
       <app-curriculum-item
         [parentForm]="formCurriculum"
@@ -12,20 +7,20 @@
       ></app-curriculum-item>
 
       <div class="add-content p-col-12 p-px-0 p-d-flex p-jc-between">
-        <button pButton (click)="addSection()" label="Add section"></button>
-        <button pButton label="Save"></button>
+        <button pButton (click)="addSection()" label="Thêm chương học"></button>
+        <button pButton label="Lưu"></button>
       </div>
     </form>
 
     <ng-template pTemplate="footer">
       <div class="p-grid p-nogutter p-justify-between p-col-12 p-px-0">
         <p-button
-          label="Back"
+          label="Quay lại"
           (onClick)="prevPage()"
           icon="pi pi-angle-left"
         ></p-button>
         <p-button
-          label="Next"
+          label="Tiếp theo"
           (onClick)="nextPage()"
           icon="pi pi-angle-right"
           iconPos="right"
@@ -35,7 +30,4 @@
   </p-card>
 </div>
 
-<div class="loading" *ngIf="loading">
-  <p-progressSpinner></p-progressSpinner>
-</div>
 <p-toast [baseZIndex]="100000"></p-toast>

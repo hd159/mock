@@ -7,7 +7,7 @@
       <ng-template pTemplate="header">
         <div class="section-info">
           <span class="section-number">{{
-            "Section" + " " + (i + 1) + " " + ":"
+            "Phần" + " " + (i + 1) + " " + ":"
           }}</span>
           <i class="pi pi-book"></i>
           <input
@@ -16,7 +16,7 @@
             pInputText
             [formControl]="item.get('title')"
             style="width: 450px"
-            placeholder="Enter title"
+            placeholder="Nhập tên tiêu đề chương học"
           />
 
           <span class="section-action">
@@ -38,7 +38,7 @@
               <i class="pi pi-check"></i>
 
               <span class="lecture-number">
-                {{ "Lecture" + " " + (j + 1) + " " + ":" }}</span
+                {{ "Bài" + " " + (j + 1) + " " + ":" }}</span
               >
               <i class="pi pi-book"></i>
               <input
@@ -47,7 +47,7 @@
                 pInputText
                 [formControl]="itemChapter.get('title')"
                 style="width: 450px"
-                placeholder="Enter title"
+                placeholder="Nhập tiêu đề bài học"
               />
               <span class="lecture-action">
                 <i class="pi pi-pencil"></i>
@@ -60,7 +60,7 @@
             <p-tabView>
               <p-tabPanel header="Video">
                 <div class="video-upload p-d-flex p-flex-column">
-                  <label>Upload video</label>
+                  <label>Chọn video</label>
                   <input
                     type="text"
                     pInputText
@@ -70,7 +70,7 @@
               </p-tabPanel>
               <p-tabPanel header="Video & Slide Mashup">
                 <div class="video-upload p-d-flex p-flex-column p-mb-2">
-                  <label>Upload video</label>
+                  <label>Chon Video</label>
                   <input
                     type="text"
                     pInputText
@@ -79,7 +79,7 @@
                 </div>
 
                 <div class="pdf-upload p-d-flex p-flex-column">
-                  <label>Upload Pdf</label>
+                  <label>Chon tài liệu</label>
                   <input
                     type="text"
                     pInputText
@@ -87,7 +87,7 @@
                   />
                 </div>
               </p-tabPanel>
-              <p-tabPanel header="Description">
+              <p-tabPanel header="Mô tả">
                 <div class="lecture-desc">
                   <app-text-editor
                     [height]="200"
@@ -100,7 +100,7 @@
         </p-panel>
       </p-card>
       <div class="add-lecture">
-        <button (click)="onAddLecture(item)">Add lecture</button>
+        <button (click)="onAddLecture(item)">Thêm bài học</button>
       </div>
     </p-card>
   </form>

@@ -21,7 +21,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router
-  ) {}
+  ) { }
   ngOnInit(): void {
     const params = new HttpParams().set(
       'fields',
@@ -47,8 +47,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   deleteCourse(course) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + course.title + '?',
-      header: 'Confirm',
+      message: 'Bạn có muốn xóa ' + course.title + '?',
+      header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.loading = true;
@@ -59,19 +59,26 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
             this.messageService.add({
               severity: 'success',
-              summary: 'Successful',
-              detail: 'Product Deleted',
+              summary: 'Thành công',
+              detail: 'Khóa học đã bị xóa',
               life: 3000,
             });
           },
-          (err) => console.log(err)
+          (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Thất bại',
+              detail: 'Đã có lỗi xảy ra',
+              life: 3000,
+            });
+          }
         );
       },
       reject: () => {
         this.messageService.add({
           severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
+          summary: 'Hủy bỏ',
+          detail: 'Bạn đã hủy bỏ',
           life: 3000,
         });
       },

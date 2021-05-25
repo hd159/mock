@@ -41,7 +41,7 @@ export class PaymentComponent implements OnInit {
   barChartLegend = true;
   barChartPlugins = [pluginDataLabels];
   barChartData: ChartDataSets[];
-  constructor(private paymentService: PaymentService) {}
+  constructor(private paymentService: PaymentService) { }
 
   ngOnInit(): void {
     this.barChartData = [
@@ -58,7 +58,20 @@ export class PaymentComponent implements OnInit {
     );
     this.barChartLabels = arrDay;
     this.paymentService.countSalesOfMonth(year, month).subscribe((val) => {
-      arrDay.map((day) => {});
+
+      const coursesSale = arrDay.map(day => {
+        return val[day]?.total_courses || undefined
+      })
+
+      const priceSale = arrDay.map(day => {
+        return +val[day]?.prices.toFixed(2) || undefined
+      })
+
+      this.barChartData = [{
+        data: coursesSale, label: 'Khóa học đã bán'
+      },
+      { data: priceSale, label: 'Tổng thu nhập' }]
+
     });
   }
 

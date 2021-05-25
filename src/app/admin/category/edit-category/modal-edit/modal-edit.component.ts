@@ -71,7 +71,7 @@ export class ModalEditComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onClose() {
     this.showModalChange.emit(!this.showModal);
@@ -89,7 +89,7 @@ export class ModalEditComponent implements OnInit, OnChanges, OnDestroy {
       .update(this.categoryEdit, this.categoryEdit._id)
       .subscribe((val) => {
         this.categoryEditChange.emit(val);
-        this.swal.swalSuccess(null, 'Updated!');
+        this.swal.swalSuccess(null, 'Chỉnh sửa thành công!');
       });
 
     this.onClose();

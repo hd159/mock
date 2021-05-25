@@ -17,6 +17,7 @@
     line-height: 1.4;
     letter-spacing: -0.02rem;
     font-size: 1.2rem;
+    min-height: 53px;
   }
 
   .author {
@@ -172,4 +173,12 @@
   align-items: center;
   background: rgba(0, 0, 0, 0.2);
   z-index: 10000000;
+}
+
+
+:host ::ng-deep .p-card-footer {
+  .p-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }

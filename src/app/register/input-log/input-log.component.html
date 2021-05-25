@@ -7,7 +7,7 @@
     [ngClass]="{
       'is-invalid': submitted && control.errors
     }"
-    [placeholder]="label"
+    [placeholder]="placeholder"
   />
   <div *ngIf="submitted && control.errors" class="invalid-feedback">
     <div *ngIf="control.errors.required">{{ label }} is required</div>

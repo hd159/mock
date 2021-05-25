@@ -5,7 +5,7 @@
         <button
           pButton
           pRipple
-          label="New"
+          label="Thêm course"
           icon="pi pi-plus"
           class="p-button-success p-mr-2"
           (click)="createCourse()"
@@ -21,7 +21,7 @@
         ></button> -->
       </ng-template>
 
-      <ng-template pTemplate="right">
+      <!-- <ng-template pTemplate="right">
         <p-fileUpload
           mode="basic"
           accept="image/*"
@@ -37,7 +37,7 @@
           icon="pi pi-upload"
           class="p-button-help"
         ></button>
-      </ng-template>
+      </ng-template> -->
     </p-toolbar>
 
     <p-table
@@ -48,20 +48,20 @@
       [globalFilterFields]="['title', 'price', 'category']"
       [rowHover]="true"
       dataKey="id"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      currentPageReportTemplate="Hiển thị {first} đến {last} của {totalRecords} courses"
       [showCurrentPageReport]="true"
       [(selection)]="selectedCourses"
     >
       <ng-template pTemplate="caption">
         <div class="p-d-flex p-ai-center p-jc-between">
-          <h5 class="p-m-0">Manage Courses</h5>
+          <h5 class="p-m-0">Quản lý Courses</h5>
           <span class="p-input-icon-left">
             <i class="pi pi-search"></i>
             <input
               pInputText
               type="text"
               (input)="dt.filterGlobal($event.target.value, 'contains')"
-              placeholder="Search..."
+              placeholder="Tìm kiếm..."
             />
           </span>
         </div>
@@ -72,17 +72,17 @@
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th> -->
           <th pSortableColumn="title" style="width: 20%">
-            Title <p-sortIcon field="title"></p-sortIcon>
+            Tên <p-sortIcon field="title"></p-sortIcon>
           </th>
-          <th>Image</th>
+          <th>Hình ảnh</th>
           <th pSortableColumn="price">
-            Price <p-sortIcon field="price"></p-sortIcon>
+            Giá <p-sortIcon field="price"></p-sortIcon>
           </th>
           <th pSortableColumn="category">
             Category <p-sortIcon field="category"></p-sortIcon>
           </th>
           <th pSortableColumn="rating">
-            Reviews <p-sortIcon field="rating"></p-sortIcon>
+            Đánh giá <p-sortIcon field="rating"></p-sortIcon>
           </th>
           <th></th>
         </tr>
@@ -131,7 +131,7 @@
       </ng-template>
       <ng-template pTemplate="summary">
         <div class="p-d-flex p-ai-center p-jc-between">
-          In total there are {{ courses ? courses.length : 0 }} courses.
+          Tổng cộng: {{ courses ? courses.length : 0 }} khóa học.
         </div>
       </ng-template>
     </p-table>
@@ -145,7 +145,11 @@
 </div>
 
 <p-toast [baseZIndex]="1000000"></p-toast>
-<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+<p-confirmDialog
+  [style]="{ width: '450px' }"
+  acceptLabel="Đồng ý"
+  rejectLabel="Hủy bỏ"
+></p-confirmDialog>
 <div class="loading" *ngIf="loading">
   <p-progressSpinner></p-progressSpinner>
 </div>

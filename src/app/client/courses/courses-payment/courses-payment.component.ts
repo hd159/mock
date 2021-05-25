@@ -51,7 +51,7 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
     private router: Router,
     private loadingService: LoadingProgressService,
     private paymentService: PaymentService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.http

@@ -17,13 +17,13 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   loading = false;
   placeholderHeadline = "'Engineer at Udemy' or 'Architect'";
   defaultimg =
-    'https://img-a.udemycdn.com/user/200_H/anonymous_3.png?UhdYXfkYuB40LR8CfMP0jhmy4Vo_Hirzh88TKirvqnx8CpeHBrtMk4DjRYW5o0WMrmuXJUeljBCYiCtnnqaUxkq0hPFgHT5UyWiIYk289z9UunDgtnONxKI';
+    'https://icon-library.com/images/account-icon/account-icon-16.jpg';
   constructor(
     private userService: AuthService,
     private fb: FormBuilder,
     private coursesService: CoursesService,
     private messageService: MessageService
-  ) {}
+  ) { }
   languages: any[];
   unsubscription$ = new Subject();
   ngOnInit(): void {
