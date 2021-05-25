@@ -27,13 +27,13 @@ const initialAuthState: AuthState = {
   providedIn: 'root',
 })
 export class AuthService {
-  private roleIdAdmin = '4bed90a4-ad34-441c-bae2-cba0900698a7';
+  private roleIdAdmin = 'f864900b-f61a-427a-8984-b9a6181fc814';
   listRoles = {
-    '4bed90a4-ad34-441c-bae2-cba0900698a7': 'admin',
-    '200557a4-d086-4fce-8c22-6af8b27d2da7': 'user',
+    'f864900b-f61a-427a-8984-b9a6181fc814': 'admin',
+    '804d167b-9f1e-4e4f-b92e-1a7c5d32f4c3': 'user',
   };
 
-  private userUrl = 'https://baas.kinvey.com/user/kid_SJ6y1x-vu';
+  private userUrl = 'https://baas.kinvey.com/user/kid_ryf8NPqt_';
 
   userInfo: BehaviorSubject<any> = new BehaviorSubject(null);
   userDetail$: Observable<any>;
@@ -84,6 +84,8 @@ export class AuthService {
       })
       .pipe(
         map((data: any) => {
+          console.log(data);
+
           if (data._kmd.roles !== undefined) {
             if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
               localStorage.setItem('typeUser', 'admin');
@@ -135,22 +137,20 @@ export class AuthService {
 
   getUserLearning(id: string): Observable<any[]> {
     const params = new HttpParams().set('fields', 'learning');
-    return this.http
-      .get<any[]>(`${this.userUrl}/${id}`, { params })
-      .pipe(
-        map((value: any) => {
-          let learning;
-          if (!value.learning) {
-            learning = [];
-          } else {
-            learning = [...value.learning];
-          }
-          return learning;
-        }),
-        catchError((err) => {
-          return of(false);
-        })
-      );
+    return this.http.get<any[]>(`${this.userUrl}/${id}`, { params }).pipe(
+      map((value: any) => {
+        let learning;
+        if (!value.learning) {
+          learning = [];
+        } else {
+          learning = [...value.learning];
+        }
+        return learning;
+      }),
+      catchError((err) => {
+        return of(false);
+      })
+    );
   }
 
   updateUser(userId, body) {
