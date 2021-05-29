@@ -1,5 +1,5 @@
 <div class="p-field p-col-12">
-  <p-card *ngIf="userLists; else loadUser">
+  <p-card *ngIf="userLists && userAccess; else loadUser">
     <p-toolbar styleClass="p-mb-4">
       <ng-template pTemplate="left">
         <button
@@ -91,8 +91,8 @@
               class="p-button-rounded p-button-success p-mr-2"
               (click)="editUser(user)"
               [disabled]="
-                userAccess?.priority <= user.priority &&
-                userAccess?.role !== 'admin'
+                userAccess.priority <= user.priority &&
+                userAccess.role !== 'admin'
                   ? true
                   : false
               "
@@ -111,8 +111,8 @@
               class="p-button-rounded p-button-warning"
               (click)="deleteUser(user)"
               [disabled]="
-                userAccess?.priority <= user.priority &&
-                userAccess?.role !== 'admin'
+                userAccess.priority <= user.priority &&
+                userAccess.role !== 'admin'
                   ? true
                   : false
               "

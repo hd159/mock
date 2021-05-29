@@ -126,6 +126,12 @@ export class AuthService {
     );
   }
 
+  registerUserAdminPage(data: any) {
+    return this.http
+      .post(this.userUrl, data)
+      .pipe(catchError((err) => throwError(err)));
+  }
+
   getAllUser(): Observable<User[]> {
     return this.http.get<any[]>(this.userUrl).pipe(
       map((users) => users.map((user) => this.mapUser(user, 'http'))),
@@ -170,7 +176,7 @@ export class AuthService {
   }
 
   createAdminRole(body) {
-    return this.registerUser(body).pipe(
+    return this.registerUserAdminPage(body).pipe(
       switchMap((val: any) => {
         const url = `${this.userUrl}/${val._id}/roles/${this.roleIdAdmin}`;
         return this.http.put(url, {});

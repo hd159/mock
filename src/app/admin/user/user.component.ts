@@ -37,20 +37,6 @@ export class UserComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getUser();
-    this.authService.userDetail$
-      .pipe(takeUntil(this.unsubscription$))
-      .subscribe((val) => {
-        this.userAccess = { priority: val.priority, role: val.roleId[0] };
-        this.roles = [
-          { name: 'Admin', value: 'admin' },
-          { name: 'User', value: 'user' },
-          { name: 'Supporter', value: 'supporter' },
-        ];
-
-        if (val.roleId[0] !== 'admin') {
-          this.roles = this.roles.filter((item) => item.value !== 'admin');
-        }
-      });
   }
 
   ngOnDestroy() {
@@ -59,11 +45,26 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   getUser() {
-    this.authService
-      .getAllUser()
+    const allUser$ = this.authService.getAllUser();
+    const currentUser$ = this.authService.userDetail$;
+    combineLatest([allUser$, currentUser$])
       .pipe(takeUntil(this.unsubscription$))
-      .subscribe((val) => {
-        this.userLists = val;
+      .subscribe(([allUser, currentUser]) => {
+        this.userLists = allUser;
+        this.userAccess = {
+          priority: currentUser.priority,
+          role: currentUser.roleId[0],
+        };
+
+        this.roles = [
+          { name: 'Admin', value: 'admin' },
+          { name: 'User', value: 'user' },
+          { name: 'Supporter', value: 'supporter' },
+        ];
+
+        if (currentUser.roleId[0] !== 'admin') {
+          this.roles = this.roles.filter((item) => item.value !== 'admin');
+        }
       });
   }
 
@@ -145,7 +146,7 @@ export class UserComponent implements OnInit, OnDestroy {
         );
     } else {
       this.authService
-        .registerUser({ username, password })
+        .registerUserAdminPage({ username, password })
         .pipe(
           finalize(() => this.loadingService.hideLoading()),
           takeUntil(this.unsubscription$)
