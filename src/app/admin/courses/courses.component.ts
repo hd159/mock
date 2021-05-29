@@ -21,11 +21,11 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router
-  ) { }
+  ) {}
   ngOnInit(): void {
     const params = new HttpParams().set(
       'fields',
-      'title,img,price,category,rating'
+      'title,img,price,category,rating,_kmd'
     );
     this.coursesService
       .find(params)

@@ -21,14 +21,14 @@
       <div class="icon-container">
         <ng-container *ngIf="!(isLogin | async); else showinfo">
           <button
-            routerLink="admin/login"
+            routerLink="/login"
             pButton
             pRipple
             type="button"
             label="Đăng nhập"
             class="p-button-raised p-button-text"
           ></button>
-          <p-button routerLink="admin/register" label="Đăng ký"></p-button>
+          <p-button routerLink="/register" label="Đăng ký"></p-button>
         </ng-container>
 
         <ng-template #showinfo>

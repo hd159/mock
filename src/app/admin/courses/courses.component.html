@@ -10,34 +10,7 @@
           class="p-button-success p-mr-2"
           (click)="createCourse()"
         ></button>
-        <!-- <button
-          pButton
-          pRipple
-          [label]="Delete"
-          icon="pi pi-trash"
-          class="p-button-danger"
-          (click)="deleteSelectedCourses()"
-          [disabled]="!selectedCourses || !selectedCourses.length"
-        ></button> -->
       </ng-template>
-
-      <!-- <ng-template pTemplate="right">
-        <p-fileUpload
-          mode="basic"
-          accept="image/*"
-          [maxFileSize]="1000000"
-          label="Import"
-          chooseLabel="Import"
-          class="p-mr-2 p-d-inline-block"
-        ></p-fileUpload>
-        <button
-          pButton
-          pRipple
-          label="Export"
-          icon="pi pi-upload"
-          class="p-button-help"
-        ></button>
-      </ng-template> -->
     </p-toolbar>
 
     <p-table
@@ -68,9 +41,9 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <!-- <th style="width: 3rem">
-            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-          </th> -->
+          <th pSortableColumn="_kmd.lmt">
+            Ngày tạo <p-sortIcon field="_kmd.lmt"></p-sortIcon>
+          </th>
           <th pSortableColumn="title" style="width: 20%">
             Tên <p-sortIcon field="title"></p-sortIcon>
           </th>
@@ -81,17 +54,15 @@
           <th pSortableColumn="category">
             Category <p-sortIcon field="category"></p-sortIcon>
           </th>
-          <th pSortableColumn="rating">
-            Đánh giá <p-sortIcon field="rating"></p-sortIcon>
-          </th>
+
           <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-course>
         <tr>
-          <!-- <td>
-            <p-tableCheckbox [value]="course"></p-tableCheckbox>
-          </td> -->
+          <td>
+            {{ course._kmd.lmt | date: "dd/MM/yyyy" }}
+          </td>
           <td>{{ course.title }}</td>
           <td>
             <img
@@ -103,14 +74,6 @@
           </td>
           <td>{{ course.price | currency: "USD" }}</td>
           <td>{{ course.category.name }}</td>
-          <td>
-            <p-rating
-              [ngModel]="course.rating"
-              [readonly]="true"
-              [cancel]="false"
-            ></p-rating>
-          </td>
-
           <td>
             <button
               pButton

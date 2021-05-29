@@ -175,10 +175,14 @@ export class AuthService {
     this.userInfo.next(null);
   }
 
-  createAdminRole(body) {
+  createUserWithRole(body, role) {
+    const roleSelect = Object.entries(this.listRoles).find(
+      (item) => item[1] === role
+    );
+
     return this.registerUserAdminPage(body).pipe(
       switchMap((val: any) => {
-        const url = `${this.userUrl}/${val._id}/roles/${this.roleIdAdmin}`;
+        const url = `${this.userUrl}/${val._id}/roles/${roleSelect[0]}`;
         return this.http.put(url, {});
       })
     );

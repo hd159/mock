@@ -1,18 +1,19 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { combineLatest, from, Observable, Subject } from 'rxjs';
 import { finalize, mergeMap, take, takeUntil, toArray } from 'rxjs/operators';
 import { LoadingProgressService } from 'src/app/loading-progress/loading-progress.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { CoursesService } from 'src/app/service/courses.service';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 import { User } from 'src/app/store';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
+  providers: [FalconMessageService],
 })
 export class UserComponent implements OnInit, OnDestroy {
   userLists: User[];
@@ -29,10 +30,10 @@ export class UserComponent implements OnInit, OnDestroy {
   userAccess: any;
   constructor(
     private authService: AuthService,
-    private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private loadingService: LoadingProgressService,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    private messageService: FalconMessageService
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +55,7 @@ export class UserComponent implements OnInit, OnDestroy {
         this.userAccess = {
           priority: currentUser.priority,
           role: currentUser.roleId[0],
+          id: currentUser._id,
         };
 
         this.roles = [
@@ -97,83 +99,55 @@ export class UserComponent implements OnInit, OnDestroy {
       .subscribe(
         (val) => {
           this.loadingService.hideLoading();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Thành công',
-            detail: 'Đã cập nhật người dùng',
-          });
+          this.messageService.showSuccess(
+            'Thành công',
+            'Đã cập nhật người dùng'
+          );
           this.getUser();
           this.hideDialog();
         },
         (err) => {
           this.loadingService.hideLoading();
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Thất bại',
-            detail: 'Đã có lỗi xảy ra',
-          });
+          this.messageService.showError('Thất bại', 'Đã có lỗi xảy ra');
         }
       );
   }
 
   registerUser() {
     const { username, password } = this.userForm;
+    const body = {
+      username,
+      password,
+    };
     this.loadingService.showLoading();
-    if (this.userForm.role === 'admin') {
-      this.authService
-        .createAdminRole({ username, password })
-        .pipe(
-          finalize(() => this.loadingService.hideLoading()),
-          takeUntil(this.unsubscription$)
-        )
-        .subscribe(
-          (val) => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Thành công',
-              detail: 'Đã thêm người dùng mới',
-            });
-            this.getUser();
-            this.hideDialog();
-          },
-          (err) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Thất bại',
-              detail: 'Đã có lỗi xảy ra',
-            });
-          }
-        );
-    } else {
-      this.authService
-        .registerUserAdminPage({ username, password })
-        .pipe(
-          finalize(() => this.loadingService.hideLoading()),
-          takeUntil(this.unsubscription$)
-        )
-        .subscribe(
-          (val) => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Thành công',
-              detail: 'Đã thêm người dùng mới',
-            });
-            this.getUser();
-            this.hideDialog();
-          },
-          (err) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Thất bại',
-              detail: 'Đã có lỗi xảy ra',
-            });
-          }
-        );
-    }
+
+    this.authService
+      .createUserWithRole(body, this.userForm.role)
+      .pipe(
+        finalize(() => this.loadingService.hideLoading()),
+        takeUntil(this.unsubscription$)
+      )
+      .subscribe(
+        (val) => {
+          this.messageService.showSuccess(
+            'Thành công',
+            'Đã thêm người dùng mới'
+          );
+
+          this.getUser();
+          this.hideDialog();
+        },
+        (err) => {
+          this.messageService.showError('Thất bại', 'Đã có lỗi xảy ra');
+        }
+      );
   }
 
   editUser(user) {
-    if (user.priority >= this.userAccess.priority) {
+    if (
+      user.priority >= this.userAccess.priority &&
+      this.userAccess.role !== 'admin'
+    ) {
       return;
     }
 
@@ -222,7 +196,10 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   deleteUser(user: any) {
-    if (user.priority >= this.userAccess.priority) {
+    if (
+      user.priority >= this.userAccess.priority &&
+      this.userAccess.role !== 'admin'
+    ) {
       return;
     }
 
@@ -240,21 +217,16 @@ export class UserComponent implements OnInit, OnDestroy {
           )
           .subscribe((val) => {
             this.userForm = {};
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Thành công',
-              detail: 'Người dùng đã bị xóa',
-              life: 3000,
-            });
+            this.messageService.showSuccess(
+              'Thành công',
+              'Người dùng đã bị xóa'
+            );
+
             this.getUser();
           });
       },
       reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Hủy bỏ',
-          detail: 'Bạn đã hủy bỏ',
-        });
+        this.messageService.showError('Hủy bỏ', 'Bạn đã hủy bỏ');
       },
     });
   }
@@ -277,29 +249,19 @@ export class UserComponent implements OnInit, OnDestroy {
           .subscribe(
             (val) => {
               this.selectedUsers = null;
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Thành công',
-                detail: 'Người dùng đã bị xóa',
-                life: 3000,
-              });
+              this.messageService.showSuccess(
+                'Thành công',
+                'Người dùng đã bị xóa'
+              );
               this.getUser();
             },
             (err) => {
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Lỗi',
-                detail: 'Đã có lỗi xảy ra',
-              });
+              this.messageService.showError('Lỗi', 'Đã có lỗi xảy ra');
             }
           );
       },
       reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Hủy bỏ',
-          detail: 'Bạn đã hủy bỏ',
-        });
+        this.messageService.showError('Hủy bỏ', 'Bạn đã hủy bỏ');
       },
     });
   }
