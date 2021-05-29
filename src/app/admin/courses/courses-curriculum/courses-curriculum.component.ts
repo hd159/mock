@@ -2,15 +2,16 @@ import { LoadingProgressService } from './../../../loading-progress/loading-prog
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
 import { of, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap, finalize } from 'rxjs/operators';
 import { CoursesService } from 'src/app/service/courses.service';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 
 @Component({
   selector: 'app-courses-curriculum',
   templateUrl: './courses-curriculum.component.html',
   styleUrls: ['./courses-curriculum.component.scss'],
+  providers: [FalconMessageService],
 })
 export class CoursesCurriculumComponent implements OnInit, OnDestroy {
   formCurriculum: FormGroup;
@@ -21,9 +22,9 @@ export class CoursesCurriculumComponent implements OnInit, OnDestroy {
     private router: Router,
     private coursesService: CoursesService,
     private route: ActivatedRoute,
-    private messageService: MessageService,
+    private messageService: FalconMessageService,
     private loadingService: LoadingProgressService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.formCurriculum = this.initForm();
@@ -140,11 +141,7 @@ export class CoursesCurriculumComponent implements OnInit, OnDestroy {
     let valid;
     if (this.formCurriculum.invalid) {
       valid = false;
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Please input all fields',
-      });
+      this.messageService.showError('Error', 'Please input all fields');
     }
 
     return valid;

@@ -1,22 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { Subject, Subscription } from 'rxjs';
-import {
-  catchError,
-  finalize,
-  switchMap,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthService } from '../service/auth.service';
+import { FalconMessageService } from '../service/falcon-message.service';
 import { CheckPassWord } from '../shared/validators/check-password';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
+  providers: [FalconMessageService],
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   formRegister: FormGroup;
@@ -28,7 +23,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private messageService: MessageService,
+    private messageService: FalconMessageService,
     private checkPassword: CheckPassWord
   ) {}
 
@@ -72,20 +67,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     // stop here if form is invalid
     if (this.formRegister.invalid && !this.formRegister.errors) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Please input all fields',
-      });
+      this.messageService.showError('Error', 'Please input all fields');
 
       return;
     }
     if (this.f.password.value !== this.f.confirmPassword.value) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Password do not match',
-      });
+      this.messageService.showError('Error', 'Password do not match');
       return;
     }
 
@@ -98,11 +85,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscription))
       .subscribe(
         (val: any) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Register success',
-          });
+          this.messageService.showSuccess('Success', 'Register success');
           localStorage.setItem('logged', 'true');
 
           setTimeout(() => {
@@ -111,17 +94,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
         (err) => {
           if (err.status === 409) {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'UserAlreadyExists',
-            });
+            this.messageService.showError('Error', 'UserAlreadyExists');
           } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: "Some thing wen't wrong",
-            });
+            this.messageService.showError('Error', "Some thing wen't wrong");
           }
 
           this.loading = false;

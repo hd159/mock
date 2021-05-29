@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { CoursesService } from 'src/app/service/courses.service';
@@ -49,8 +48,7 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private coursesService: CoursesService,
     private authService: AuthService,
-    private previousRouteService: PreviousRouteService,
-    private messageService: MessageService
+    private previousRouteService: PreviousRouteService
   ) {
     this.searchForm = this.fb.group({
       search: [''],

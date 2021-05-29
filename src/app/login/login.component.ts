@@ -14,12 +14,14 @@ import {
 import { AuthService } from '../service/auth.service';
 import { CategoryService } from '../service/category.service';
 import { CoursesService } from '../service/courses.service';
+import { FalconMessageService } from '../service/falcon-message.service';
 import { PreviousRouteService } from '../service/previous-route.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  providers: [FalconMessageService],
 })
 export class LoginComponent implements OnInit, OnDestroy {
   form: FormGroup;
@@ -33,7 +35,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private coursesService: CoursesService,
     private previousRouteService: PreviousRouteService,
-    private messageService: MessageService
+    private messageService: FalconMessageService
   ) {}
 
   ngOnInit() {
@@ -54,11 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     // stop here if form is invalid
     if (this.form.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Please input all fields',
-      });
+      this.messageService.showError('Error', 'Please input all fields');
       return;
     }
 
@@ -80,11 +78,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.router.navigateByUrl('/admin');
         else {
           localStorage.setItem('logged', 'true');
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Login success',
-          });
+          this.messageService.showSuccess('Success', 'Login success');
           this.coursesService.getCoursesLocal();
           this.authService.isLoginClient$.next(true);
           if (prevRoute) {
@@ -99,11 +93,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       (err) => {
         this.loading = false;
         this.loginFail = true;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Invalid credential',
-        });
+        this.messageService.showError('Error', 'Invalid credential');
       }
     );
   }

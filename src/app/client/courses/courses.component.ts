@@ -1,19 +1,18 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { Button } from 'primeng/button';
-import { DataView } from 'primeng/dataview';
-import { combineLatest, Observable, of, Subject, Subscription } from 'rxjs';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { map, mergeMap, takeUntil, tap } from 'rxjs/operators';
 import { LoadingProgressService } from 'src/app/loading-progress/loading-progress.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { CoursesService } from 'src/app/service/courses.service';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss'],
+  providers: [FalconMessageService],
 })
 export class CoursesComponent implements OnInit, OnDestroy {
   displayBasic = false;
@@ -33,7 +32,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private fb: FormBuilder,
-    private messageService: MessageService,
+    private messageService: FalconMessageService,
     private loadingProgress: LoadingProgressService
   ) {}
 
@@ -164,21 +163,16 @@ export class CoursesComponent implements OnInit, OnDestroy {
           this.displayDialog = false;
           localStorage.setItem('logged', 'true');
           this.authService.isLoginClient$.next(true);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Login success',
-          });
+          this.messageService.showSuccess('Success', 'Login success');
         },
         (err) => {
           this.loadingProgress.hideLoading();
-
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Invalid credential',
-          });
+          this.messageService.showError('Error', 'Invalid credential');
         }
       );
+  }
+
+  onChangePage() {
+    window.scrollTo(0, 0);
   }
 }

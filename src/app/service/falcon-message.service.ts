@@ -22,4 +22,20 @@ export class FalconMessageService {
       detail: description,
     });
   }
+
+  showInfo(title: string, description: string) {
+    this.messageService.add({
+      severity: 'info',
+      summary: title,
+      detail: description,
+    });
+  }
+
+  showWarning(title: string, description: string) {
+    this.messageService.add({
+      severity: 'warn',
+      summary: title,
+      detail: description,
+    });
+  }
 }

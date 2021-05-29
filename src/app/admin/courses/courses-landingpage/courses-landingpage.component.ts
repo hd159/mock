@@ -5,11 +5,13 @@ import { MessageService } from 'primeng/api';
 import { of, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { CoursesService } from 'src/app/service/courses.service';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 
 @Component({
   selector: 'app-courses-landingpage',
   templateUrl: './courses-landingpage.component.html',
   styleUrls: ['./courses-landingpage.component.scss'],
+  providers: [FalconMessageService],
 })
 export class CoursesLandingpageComponent implements OnInit, OnDestroy {
   formLandingPage: FormGroup;
@@ -24,7 +26,7 @@ export class CoursesLandingpageComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private coursesService: CoursesService,
-    private messageService: MessageService
+    private messageService: FalconMessageService
   ) {}
 
   ngOnInit(): void {
@@ -123,11 +125,7 @@ export class CoursesLandingpageComponent implements OnInit, OnDestroy {
     let valid = true;
     if (this.formLandingPage.invalid) {
       valid = false;
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Please input all fields',
-      });
+      this.messageService.showError('Error', 'Please input all fields');
     }
 
     return valid;

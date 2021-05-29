@@ -5,11 +5,13 @@ import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { CoursesService } from 'src/app/service/courses.service';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.scss'],
+  providers: [FalconMessageService],
 })
 export class UserInfoComponent implements OnInit, OnDestroy {
   formUserInfo: FormGroup;
@@ -22,8 +24,8 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     private userService: AuthService,
     private fb: FormBuilder,
     private coursesService: CoursesService,
-    private messageService: MessageService
-  ) { }
+    private messageService: FalconMessageService
+  ) {}
   languages: any[];
   unsubscription$ = new Subject();
   ngOnInit(): void {
@@ -48,11 +50,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
           this.userInfo = val;
         },
         (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: "Some thing wen't wrong",
-          });
+          this.messageService.showError('Error', "Some thing wen't wrong");
         }
       );
   }
@@ -95,18 +93,10 @@ export class UserInfoComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (val) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Update successed',
-          });
+          this.messageService.showSuccess('Success', 'Update successed');
         },
         (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: "Some thing wen't wrong",
-          });
+          this.messageService.showError('Error', "Some thing wen't wrong");
         }
       );
   }

@@ -5,11 +5,13 @@ import {
   ConfirmEventType,
   MessageService,
 } from 'primeng/api';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 
 @Component({
   selector: 'app-curriculum-item',
   templateUrl: './curriculum-item.component.html',
   styleUrls: ['./curriculum-item.component.scss'],
+  providers: [FalconMessageService],
 })
 export class CurriculumItemComponent implements OnInit {
   @Input() parentForm: FormGroup;
@@ -21,7 +23,7 @@ export class CurriculumItemComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: FalconMessageService
   ) {}
 
   ngOnInit(): void {}
@@ -66,28 +68,16 @@ export class CurriculumItemComponent implements OnInit {
       header: 'Please confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Section deleted',
-        });
+        this.messageService.showSuccess('Confirmed', 'Section deleted');
         this.formLists.removeAt(index);
       },
       reject: (type) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Rejected',
-              detail: 'You have rejected',
-            });
+            this.messageService.showError('Rejected', 'You have rejected');
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Cancelled',
-              detail: 'You have cancelled',
-            });
+            this.messageService.showWarning('Cancelled', 'You have cancelled');
             break;
         }
       },
@@ -101,28 +91,16 @@ export class CurriculumItemComponent implements OnInit {
       header: 'Please confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Lecture deleted',
-        });
+        this.messageService.showSuccess('Confirmed', 'Lecture deleted');
         sectionItem.get('chapter').removeAt(index);
       },
       reject: (type) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Rejected',
-              detail: 'You have rejected',
-            });
+            this.messageService.showError('Rejected', 'You have rejected');
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Cancelled',
-              detail: 'You have cancelled',
-            });
+            this.messageService.showWarning('Cancelled', 'You have cancelled');
             break;
         }
       },

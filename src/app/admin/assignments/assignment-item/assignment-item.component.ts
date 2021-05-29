@@ -1,15 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import {
-  ConfirmationService,
-  ConfirmEventType,
-  MessageService,
-} from 'primeng/api';
+import { ConfirmationService, ConfirmEventType } from 'primeng/api';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 
 @Component({
   selector: 'app-assignment-item',
   templateUrl: './assignment-item.component.html',
   styleUrls: ['./assignment-item.component.scss'],
+  providers: [FalconMessageService],
 })
 export class AssignmentItemComponent implements OnInit {
   @Input() parentForm: FormGroup;
@@ -17,7 +15,7 @@ export class AssignmentItemComponent implements OnInit {
 
   constructor(
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: FalconMessageService
   ) {}
 
   ngOnInit(): void {}
@@ -41,28 +39,16 @@ export class AssignmentItemComponent implements OnInit {
       header: 'Please confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Lecture deleted',
-        });
+        this.messageService.showInfo('Confirmed', 'Lecture deleted');
         sectionItem.get('chapters').removeAt(index);
       },
       reject: (type) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Rejected',
-              detail: 'You have rejected',
-            });
+            this.messageService.showError('Rejected', 'You have rejected');
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Cancelled',
-              detail: 'You have cancelled',
-            });
+            this.messageService.showWarning('Cancelled', 'You have cancelled');
             break;
         }
       },
@@ -76,28 +62,16 @@ export class AssignmentItemComponent implements OnInit {
       header: 'Please confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'Section deleted',
-        });
+        this.messageService.showInfo('Confirmed', 'Section deleted');
         this.formLists.removeAt(index);
       },
       reject: (type) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Rejected',
-              detail: 'You have rejected',
-            });
+            this.messageService.showError('Rejected', 'You have rejected');
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Cancelled',
-              detail: 'You have cancelled',
-            });
+            this.messageService.showWarning('Cancelled', 'You have cancelled');
             break;
         }
       },

@@ -1,14 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { AssignmentService } from 'src/app/client/assignment/assignment.service';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 
 @Component({
   selector: 'app-assignments',
   templateUrl: './assignments.component.html',
   styleUrls: ['./assignments.component.scss'],
+  providers: [FalconMessageService],
 })
 export class AssignmentsComponent implements OnInit, OnDestroy {
   formAssignment: FormGroup;
@@ -17,7 +18,7 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private assignmentService: AssignmentService,
-    private messageService: MessageService
+    private messageService: FalconMessageService
   ) {}
 
   ngOnInit(): void {
@@ -77,20 +78,13 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
       .subscribe(
         (val) => {
           this.loading = false;
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Assignment Added',
-          });
+
+          this.messageService.showSuccess('Success', 'Assignment Added');
           this.formAssignment.reset();
         },
         (err) => {
           this.loading = false;
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: "some thing wen't wrong",
-          });
+          this.messageService.showError('Error', "some thing wen't wrong");
         }
       );
   }
@@ -99,11 +93,7 @@ export class AssignmentsComponent implements OnInit, OnDestroy {
     let valid = true;
     if (this.formAssignment.invalid) {
       valid = false;
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Please input all fields',
-      });
+      this.messageService.showError('Error', 'Please input all fields');
     }
 
     return valid;

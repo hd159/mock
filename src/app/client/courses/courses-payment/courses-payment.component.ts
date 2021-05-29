@@ -1,38 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  Observable,
-  Subject,
-  Subscription,
-} from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
 import { render } from 'creditcardpayments/creditCardPayments';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from 'src/app/service/courses.service';
-import {
-  map,
-  mergeMap,
-  shareReplay,
-  switchAll,
-  takeUntil,
-} from 'rxjs/operators';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/service/auth.service';
 import { PaymentService } from 'src/app/service/payment.service';
-import { MessageService } from 'primeng/api';
 import { LoadingProgressService } from 'src/app/loading-progress/loading-progress.service';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 
 @Component({
   selector: 'app-courses-payment',
   templateUrl: './courses-payment.component.html',
   styleUrls: ['./courses-payment.component.scss'],
+  providers: [FalconMessageService],
 })
 export class CoursesPaymentComponent implements OnInit, OnDestroy {
   selectedCountry;
   filteredCountries;
-
   courses: any[];
-
   originalPrice: number;
   totalPrice: number;
   discountPrice = 0;
@@ -44,14 +30,12 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
   unsubscription = new Subject();
   constructor(
     private http: HttpClient,
-    private route: ActivatedRoute,
     private coursesService: CoursesService,
     private authService: AuthService,
-    private messageService: MessageService,
-    private router: Router,
+    private messageService: FalconMessageService,
     private loadingService: LoadingProgressService,
     private paymentService: PaymentService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.http
@@ -116,9 +100,8 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
 
               const updateStudents = this.coursesService.updateStudent();
 
-              const paymentInfo = this.paymentService.createPayment(
-                bodyPayment
-              );
+              const paymentInfo =
+                this.paymentService.createPayment(bodyPayment);
 
               return combineLatest([updateUser, updateStudents, paymentInfo]);
             }),
@@ -126,10 +109,7 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
           )
           .subscribe((val) => {
             this.loadingService.hideLoading();
-            this.messageService.add({
-              severity: 'success',
-              detail: 'Payment success',
-            });
+            this.messageService.showSuccess('Success', 'Payment success');
 
             this.coursesService.resetCourseInCart();
             // this.router.navigateByUrl('/category/learning');

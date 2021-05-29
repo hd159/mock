@@ -1,15 +1,17 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { Subject, Subscription } from 'rxjs';
+import { ConfirmationService } from 'primeng/api';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoursesService } from 'src/app/service/courses.service';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss'],
+  providers: [FalconMessageService],
 })
 export class CoursesComponent implements OnInit, OnDestroy {
   courses: any[];
@@ -19,7 +21,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   constructor(
     private coursesService: CoursesService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService,
+    private messageService: FalconMessageService,
     private router: Router
   ) {}
   ngOnInit(): void {
@@ -57,30 +59,15 @@ export class CoursesComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.courses = this.courses.filter((val) => val._id !== course._id);
 
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Thành công',
-              detail: 'Khóa học đã bị xóa',
-              life: 3000,
-            });
+            this.messageService.showSuccess('Thành công', 'Khóa học đã bị xóa');
           },
           (err) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Thất bại',
-              detail: 'Đã có lỗi xảy ra',
-              life: 3000,
-            });
+            this.messageService.showError('Thất bại', 'Đã có lỗi xảy ra');
           }
         );
       },
       reject: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Hủy bỏ',
-          detail: 'Bạn đã hủy bỏ',
-          life: 3000,
-        });
+        this.messageService.showError('Hủy bỏ', 'Bạn đã hủy bỏ');
       },
     });
   }

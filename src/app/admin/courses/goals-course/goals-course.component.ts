@@ -5,11 +5,13 @@ import { MessageService } from 'primeng/api';
 import { of, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { CoursesService } from 'src/app/service/courses.service';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 
 @Component({
   selector: 'app-goals-course',
   templateUrl: './goals-course.component.html',
   styleUrls: ['./goals-course.component.scss'],
+  providers: [FalconMessageService],
 })
 export class GoalsCourseComponent implements OnInit, OnDestroy {
   targetForm: FormGroup;
@@ -26,9 +28,9 @@ export class GoalsCourseComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     private coursesService: CoursesService,
-    private messageService: MessageService,
+    private messageService: FalconMessageService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.targetForm = this.initForm();
@@ -101,10 +103,7 @@ export class GoalsCourseComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscription))
       .subscribe((val) => {
         this.loading = false;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Course Added',
-        });
+        this.messageService.showSuccess('Success', 'Course Added');
         this.targetForm = this.initForm();
         this.coursesService.newCourse.next(null);
         this.router.navigate(['admin/courses/add/landing-page']);
