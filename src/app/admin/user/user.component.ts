@@ -16,11 +16,7 @@ import { User } from 'src/app/store';
 })
 export class UserComponent implements OnInit, OnDestroy {
   userLists: User[];
-
-  roles = [
-    { name: 'Admin', value: 'admin' },
-    { name: 'User', value: 'user' },
-  ];
+  roles: any;
   selectedUsers: any[];
   userDialog: boolean;
   userDetailDialog: boolean;
@@ -30,16 +26,31 @@ export class UserComponent implements OnInit, OnDestroy {
   totalPrice: number;
   unsubscription$ = new Subject();
   submitted: boolean;
+  userAccess: any;
   constructor(
     private authService: AuthService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private loadingService: LoadingProgressService,
     private coursesService: CoursesService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getUser();
+    this.authService.userDetail$
+      .pipe(takeUntil(this.unsubscription$))
+      .subscribe((val) => {
+        this.userAccess = { priority: val.priority, role: val.roleId[0] };
+        this.roles = [
+          { name: 'Admin', value: 'admin' },
+          { name: 'User', value: 'user' },
+          { name: 'Supporter', value: 'supporter' },
+        ];
+
+        if (val.roleId[0] !== 'admin') {
+          this.roles = this.roles.filter((item) => item.value !== 'admin');
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -52,7 +63,6 @@ export class UserComponent implements OnInit, OnDestroy {
       .getAllUser()
       .pipe(takeUntil(this.unsubscription$))
       .subscribe((val) => {
-        console.log(val);
         this.userLists = val;
       });
   }
@@ -70,6 +80,42 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   saveUser() {
+    if (this.userForm._id) {
+      this.updateUser();
+    } else {
+      this.registerUser();
+    }
+  }
+
+  updateUser() {
+    this.loadingService.showLoading();
+    const { _id, role, prevRole } = this.userForm;
+    this.authService
+      .updateRole(_id, role, prevRole)
+      .pipe(takeUntil(this.unsubscription$))
+      .subscribe(
+        (val) => {
+          this.loadingService.hideLoading();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Thành công',
+            detail: 'Đã cập nhật người dùng',
+          });
+          this.getUser();
+          this.hideDialog();
+        },
+        (err) => {
+          this.loadingService.hideLoading();
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Thất bại',
+            detail: 'Đã có lỗi xảy ra',
+          });
+        }
+      );
+  }
+
+  registerUser() {
     const { username, password } = this.userForm;
     this.loadingService.showLoading();
     if (this.userForm.role === 'admin') {
@@ -93,7 +139,7 @@ export class UserComponent implements OnInit, OnDestroy {
             this.messageService.add({
               severity: 'error',
               summary: 'Thất bại',
-              detail: "Đã có lỗi xảy ra",
+              detail: 'Đã có lỗi xảy ra',
             });
           }
         );
@@ -118,7 +164,7 @@ export class UserComponent implements OnInit, OnDestroy {
             this.messageService.add({
               severity: 'error',
               summary: 'Thất bại',
-              detail: "Đã có lỗi xảy ra",
+              detail: 'Đã có lỗi xảy ra',
             });
           }
         );
@@ -126,7 +172,16 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   editUser(user) {
-    this.userForm = { ...user };
+    if (user.priority >= this.userAccess.priority) {
+      return;
+    }
+
+    this.userForm = {
+      ...user,
+      role: user.roleId[user.roleId.length - 1],
+      prevRole: user.roleId[0],
+    };
+
     this.userDialog = true;
   }
 
@@ -146,8 +201,6 @@ export class UserComponent implements OnInit, OnDestroy {
             ...user,
             courses: [...val],
           };
-
-
         });
     } else {
       this.userDetailDialog = true;
@@ -168,6 +221,10 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   deleteUser(user: any) {
+    if (user.priority >= this.userAccess.priority) {
+      return;
+    }
+
     this.confirmationService.confirm({
       message: 'Bạn có muốn xóa ' + user.username + '?',
       header: 'Xác nhận',
@@ -231,7 +288,7 @@ export class UserComponent implements OnInit, OnDestroy {
               this.messageService.add({
                 severity: 'error',
                 summary: 'Lỗi',
-                detail: "Đã có lỗi xảy ra",
+                detail: 'Đã có lỗi xảy ra',
               });
             }
           );

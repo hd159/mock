@@ -80,7 +80,7 @@
           </td>
           <td>{{ user.confirmPassword }}</td>
           <td>
-            <span *ngFor="let role of user.roleId">{{ role }}</span>
+            <span>{{ user.roleId[user.roleId.length - 1] }}</span>
           </td>
           <td>{{ user.learning?.length || 0 }}</td>
           <td>
@@ -90,6 +90,12 @@
               icon="pi pi-pencil"
               class="p-button-rounded p-button-success p-mr-2"
               (click)="editUser(user)"
+              [disabled]="
+                userAccess?.priority <= user.priority &&
+                userAccess?.role !== 'admin'
+                  ? true
+                  : false
+              "
             ></button>
             <button
               pButton
@@ -104,6 +110,12 @@
               icon="pi pi-trash"
               class="p-button-rounded p-button-warning"
               (click)="deleteUser(user)"
+              [disabled]="
+                userAccess?.priority <= user.priority &&
+                userAccess?.role !== 'admin'
+                  ? true
+                  : false
+              "
             ></button>
           </td>
         </tr>
@@ -126,9 +138,12 @@
 <p-dialog
   [(visible)]="userDialog"
   [style]="{ width: '550px' }"
-  header="Thêm người dùng"
+  [header]="
+    userForm && userForm._id ? 'Chỉnh sửa người dùng' : 'Thêm người dùng'
+  "
   [modal]="true"
   styleClass="p-fluid"
+  baseZIndex="1000000"
 >
   <ng-template pTemplate="content">
     <div class="p-field">
@@ -139,7 +154,7 @@
         id="name"
         [(ngModel)]="userForm.username"
         required
-        autofocus
+        [disabled]="userForm._id"
       />
       <small class="p-invalid" *ngIf="submitted && !userForm.username"
         >Field is required.</small
@@ -154,7 +169,6 @@
         id="password"
         [(ngModel)]="userForm.password"
         required
-        autofocus
       />
       <small class="p-invalid" *ngIf="submitted && !userForm.username"
         >Field is required.</small

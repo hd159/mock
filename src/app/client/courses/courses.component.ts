@@ -6,6 +6,7 @@ import { Button } from 'primeng/button';
 import { DataView } from 'primeng/dataview';
 import { combineLatest, Observable, of, Subject, Subscription } from 'rxjs';
 import { map, mergeMap, takeUntil, tap } from 'rxjs/operators';
+import { LoadingProgressService } from 'src/app/loading-progress/loading-progress.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { CoursesService } from 'src/app/service/courses.service';
 
@@ -26,21 +27,23 @@ export class CoursesComponent implements OnInit, OnDestroy {
   displayDialog: boolean;
   currentUserId: any;
   userForm: FormGroup;
-  loading: boolean;
   unsubscription = new Subject();
   constructor(
     private coursesService: CoursesService,
     private router: Router,
     private authService: AuthService,
     private fb: FormBuilder,
-    private messageService: MessageService
-  ) { }
+    private messageService: MessageService,
+    private loadingProgress: LoadingProgressService
+  ) {}
 
   ngOnInit(): void {
     this.userForm = this.initForm();
     this.sortPriceOptions = [
       { label: 'Giá thấp đến cao', value: 'price' },
       { label: 'Giá cao đến thấp', value: '!price' },
+      { label: 'Mới nhất', value: 'new' },
+      { label: 'Cũ nhất', value: 'old' },
     ];
 
     this.sortCategoriesOptions = [
@@ -50,9 +53,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
       { label: 'Design', value: 'design' },
     ];
 
-    const courseInCart: Observable<
-      any[]
-    > = this.coursesService.courseInCart.asObservable();
+    const courseInCart: Observable<any[]> =
+      this.coursesService.courseInCart.asObservable();
     const totalCourses: Observable<any[]> = this.coursesService.find();
 
     const coursesHasBuy: Observable<any[]> = this.authService.userInfo.pipe(
@@ -65,7 +67,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
         }
       })
     );
-
     combineLatest([totalCourses, courseInCart, coursesHasBuy])
       .pipe(
         map(([courses, courseIncart, coursesHasBuy]) => {
@@ -86,7 +87,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
       )
       .subscribe((val) => {
         this.courses = val;
-        console.log(this.currentUserId);
       });
   }
 
@@ -116,14 +116,23 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   onSortChange(event) {
     let value = event.value;
-    console.log(value);
-
-    if (value.indexOf('!') === 0) {
-      this.sortOrder = -1;
-      this.sortField = value.substring(1, value.length);
-    } else {
-      this.sortOrder = 1;
-      this.sortField = value;
+    switch (value) {
+      case '!price':
+        this.sortOrder = -1;
+        this.sortField = 'price';
+        break;
+      case 'price':
+        this.sortOrder = 1;
+        this.sortField = 'price';
+        break;
+      case 'new':
+        this.sortOrder = -1;
+        this.sortField = '_kmd.ect';
+        break;
+      case 'old':
+        this.sortOrder = 1;
+        this.sortField = '_kmd.ect';
+        break;
     }
   }
 
@@ -145,20 +154,31 @@ export class CoursesComponent implements OnInit, OnDestroy {
       return;
     }
     const { username, password } = this.userForm.value;
-    this.loading = true;
+    this.loadingProgress.showLoading();
     this.authService
       .login(username, password)
       .pipe(takeUntil(this.unsubscription))
-      .subscribe((val) => {
-        this.loading = false;
-        this.displayDialog = false;
-        localStorage.setItem('logged', 'true');
-        this.authService.isLoginClient$.next(true);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Login success',
-        });
-      });
+      .subscribe(
+        (val) => {
+          this.loadingProgress.hideLoading();
+          this.displayDialog = false;
+          localStorage.setItem('logged', 'true');
+          this.authService.isLoginClient$.next(true);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Login success',
+          });
+        },
+        (err) => {
+          this.loadingProgress.hideLoading();
+
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Invalid credential',
+          });
+        }
+      );
   }
 }

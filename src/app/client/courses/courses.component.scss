@@ -4,7 +4,11 @@
 }
 
 :host ::ng-deep .course-card {
-  min-height: 400px;
+  min-height: 452px;
+
+  .p-card-header {
+    height: 155px;
+  }
 
   .card-title {
     display: -webkit-box !important;
@@ -175,10 +179,13 @@
   z-index: 10000000;
 }
 
-
 :host ::ng-deep .p-card-footer {
   .p-button {
     width: 100%;
     margin-bottom: 10px;
   }
+}
+
+:host ::ng-deep .p-dataview-content > .p-nogutter {
+  margin: 0 -0.25rem;
 }

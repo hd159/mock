@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private chartService: ChartService,
     private lesson: LessonService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getChart(this.currentTab, this.currentYear);
@@ -109,10 +109,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe((val) => {
         this.categorySelect = val;
       });
-
-    this.chartService
-      .countPostViewByCategory(2021, 2)
-      .subscribe((val) => console.log(val));
   }
 
   transformData<T>(value: T, chartLabel: string[], type: string) {

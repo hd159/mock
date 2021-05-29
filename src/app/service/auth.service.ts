@@ -27,10 +27,20 @@ const initialAuthState: AuthState = {
   providedIn: 'root',
 })
 export class AuthService {
-  private roleIdAdmin = 'f864900b-f61a-427a-8984-b9a6181fc814';
+  private roleIdAdmin = [
+    'f864900b-f61a-427a-8984-b9a6181fc814',
+    '71df7182-248e-471b-9d72-37bae5c55be0',
+  ];
   listRoles = {
     'f864900b-f61a-427a-8984-b9a6181fc814': 'admin',
     '804d167b-9f1e-4e4f-b92e-1a7c5d32f4c3': 'user',
+    '71df7182-248e-471b-9d72-37bae5c55be0': 'supporter',
+  };
+
+  priority = {
+    admin: 3,
+    supporter: 2,
+    user: 1,
   };
 
   private userUrl = 'https://baas.kinvey.com/user/kid_ryf8NPqt_';
@@ -49,6 +59,7 @@ export class AuthService {
     this.userDetail$ = this.userInfo.pipe(
       filter((val) => !!val),
       switchMap((id) => this.getUser(id)),
+      map((val) => this.mapUser(val)),
       shareReplay()
     );
   }
@@ -59,18 +70,15 @@ export class AuthService {
 
   mapUser(user: any, mode?: string) {
     let userInfo: User;
-    let roleId: any[];
-    if (mode === 'http') {
-      roleId = user._kmd['roles']?.map((role) => {
-        const id = role.roleId;
-        return this.listRoles[id];
-      }) || ['user'];
-    } else {
-      roleId = user.data._kmd['roles']?.map((role) => role.roleId) || [];
-    }
+    let roleId = user._kmd['roles']?.map((role) => {
+      const id = role.roleId;
+      return this.listRoles[id];
+    }) || ['user'];
+
     userInfo = {
       ...user,
       roleId,
+      priority: this.priority[roleId[0]],
     };
 
     return userInfo;
@@ -85,7 +93,7 @@ export class AuthService {
       .pipe(
         map((data: any) => {
           if (data._kmd.roles !== undefined) {
-            if (data._kmd.roles[0].roleId == this.roleIdAdmin) {
+            if (this.roleIdAdmin.includes(data._kmd.roles[0].roleId)) {
               localStorage.setItem('typeUser', 'admin');
               this.isAdminSubject$.next(data);
               this.setUserId(data._id);
@@ -166,12 +174,34 @@ export class AuthService {
       switchMap((val: any) => {
         const url = `${this.userUrl}/${val._id}/roles/${this.roleIdAdmin}`;
         return this.http.put(url, {});
-      }),
-      tap(console.log)
+      })
     );
   }
 
   deleteUser(id) {
     return this.http.delete(`${this.userUrl}/${id}?hard=true`);
+  }
+
+  updateRole(userid, role, prevRole) {
+    const roleSelect = Object.entries(this.listRoles).find(
+      (item) => item[1] === role
+    );
+
+    const prevSelect = Object.entries(this.listRoles).find(
+      (item) => item[1] === prevRole
+    );
+    const url = `${this.userUrl}/${userid}/roles/${roleSelect[0]}`;
+    return this.deleteRole(userid, (prevSelect && prevSelect[0]) || null).pipe(
+      switchMap(() => this.http.put(url, {}))
+    );
+  }
+
+  deleteRole(userid, prevRoleId) {
+    if (prevRoleId) {
+      const url = `${this.userUrl}/${userid}/roles/${prevRoleId}`;
+      return this.http.delete(url);
+    } else {
+      return of(null);
+    }
   }
 }

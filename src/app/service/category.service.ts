@@ -22,6 +22,7 @@ import { Category, NavCategory } from '../model/model';
 import { CategoryName, Store } from '../store';
 import { CollectionService } from './collection.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { LoadingService } from './loading.service';
 
 export interface CategoryState {
   categoryName: CategoryName;
@@ -38,7 +39,8 @@ export class CategoryService extends CollectionService<CategoryState> {
   private categorySubject = new BehaviorSubject<CategoryState>(
     initialCategoryState
   );
-  categoryState$: Observable<CategoryState> = this.categorySubject.asObservable();
+  categoryState$: Observable<CategoryState> =
+    this.categorySubject.asObservable();
 
   constructor(http: HttpClient) {
     super(initialCategoryState, 'category', http);
