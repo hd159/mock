@@ -35,6 +35,8 @@ const initialPostState: PostState = {
 export class LessonService extends CollectionService<PostState> {
   constructor(http: HttpClient, private commentService: CommentService) {
     super(initialPostState, 'posts', http);
+    // this.state$.subscribe(console.log);
+
   }
 
   updatePostState<T>(

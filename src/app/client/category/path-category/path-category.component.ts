@@ -14,21 +14,21 @@ export class PathCategoryComponent implements OnInit, OnChanges {
   @Input() postTitle: string;
   path$: Observable<Category[]>;
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(private categoryService: CategoryService) { }
 
   ngOnChanges() {
     if (this.idCategory)
       this.path$ = this.findPath(this.idCategory).pipe(
         map((val) => val.filter((item) => item.title !== 'Lập trình')),
         catchError((err) => {
-          console.log({ ...err }, '22222222222222222222222');
+          // console.log({ ...err }, '22222222222222222222222');
           return throwError(err);
         }),
         shareReplay()
       );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   findPath(id: string): Observable<Category[]> {
     let arr = [];

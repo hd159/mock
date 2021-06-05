@@ -20,12 +20,12 @@ export class AlertModalComponent implements OnInit, OnChanges {
   @Output() confirm = new EventEmitter<boolean>();
   @Input() alertLoading: boolean;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngOnChanges() {
-    console.log(this.alertLoading, this.showModal);
+    // console.log(this.alertLoading, this.showModal);
   }
 
   onClose(decide: boolean) {

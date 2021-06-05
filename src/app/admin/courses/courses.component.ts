@@ -23,7 +23,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private messageService: FalconMessageService,
     private router: Router
-  ) {}
+  ) { }
   ngOnInit(): void {
     const params = new HttpParams().set(
       'fields',
@@ -33,7 +33,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
       .find(params)
       .pipe(takeUntil(this.unscription$))
       .subscribe((val) => {
-        console.log(val);
+        // console.log(val);
         this.courses = val;
       });
   }

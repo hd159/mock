@@ -47,7 +47,7 @@ export class CollectionService<T> {
   find<T>(params?): Observable<T[]> {
     return this.http.get<T[]>(this.url, { params }).pipe(
       catchError((err) => {
-        console.log({ ...err }, 'find');
+        // console.log({ ...err }, 'find');
         return throwError(err);
       })
     );
@@ -56,7 +56,7 @@ export class CollectionService<T> {
   findById<T>(id: string, params?): Observable<T> {
     return this.http.get<T>(`${this.url}/${id}`, { params }).pipe(
       catchError((err) => {
-        console.log({ ...err }, 'findById');
+        // console.log({ ...err }, 'findById');
 
         return throwError(err);
       })
@@ -67,7 +67,7 @@ export class CollectionService<T> {
   removeById(id: string) {
     return this.http.delete(`${this.url}/${id}`).pipe(
       catchError((err) => {
-        console.log({ ...err }, 'removeById');
+        // console.log({ ...err }, 'removeById');
 
         return throwError(err);
       })
@@ -77,7 +77,7 @@ export class CollectionService<T> {
   removeMultipleValue(params: any) {
     return this.http.delete(this.url, { params }).pipe(
       catchError((err) => {
-        console.log({ ...err }, 'removeMultipleValue');
+        // console.log({ ...err }, 'removeMultipleValue');
         return throwError(err);
       })
     );
@@ -86,7 +86,7 @@ export class CollectionService<T> {
   create(entity: any): Observable<any> {
     return this.http.post(this.url, entity).pipe(
       catchError((err) => {
-        console.log({ ...err }, 'insave');
+        // console.log({ ...err }, 'insave');
         return throwError(err);
       })
     );
@@ -95,7 +95,7 @@ export class CollectionService<T> {
   update(entity, id): Observable<any> {
     return this.http.put(`${this.url}/${id}`, entity).pipe(
       catchError((err) => {
-        console.log({ ...err }, 'insave');
+        // console.log({ ...err }, 'insave');
         return throwError(err);
       })
     );
@@ -109,7 +109,6 @@ export class CollectionService<T> {
   // collect column
   group(columnName: string, query?: any): Observable<string[]> {
     return this.groupDefault(columnName, query).pipe(
-      tap((val) => console.log(val)),
       filter((val) => val['count'] !== 0),
       mergeMap((val: []) => from(val)),
       map((val) => val[columnName]),

@@ -196,7 +196,7 @@ export class AssignmentResolveComponent implements OnInit, OnDestroy {
       .subscribe(
         (val: any) => {
           this.loading = false;
-          console.log(val);
+          // console.log(val);
           if (val.stdout) {
             const result = atob(val.stdout);
             this.outputProp[1].value = result;
@@ -212,7 +212,7 @@ export class AssignmentResolveComponent implements OnInit, OnDestroy {
           }
         },
         (err) => {
-          console.log(err);
+          // console.log(err);
         }
       );
   }

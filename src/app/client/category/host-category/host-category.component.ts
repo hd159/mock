@@ -67,11 +67,11 @@ export class HostCategoryComponent implements OnInit {
       switchMap((id) => this.categoryService.getGroup(id))
     );
 
-    // this.reviews$ = this.currentId$.pipe(
-    //   filter((val) => !!val),
-    //   mergeMap(() => this.lessonService.getHotPostFromStore())
-    // );
+    this.reviews$ = this.currentId$.pipe(
+      filter((val) => !!val),
+      mergeMap(() => this.lessonService.getHotPostFromStore())
+    );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

@@ -30,7 +30,7 @@ export class GoalsCourseComponent implements OnInit, OnDestroy {
     private coursesService: CoursesService,
     private messageService: FalconMessageService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.targetForm = this.initForm();
@@ -111,7 +111,7 @@ export class GoalsCourseComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
-    console.log(this.targetForm.value);
+    // console.log(this.targetForm.value);
   }
 
   prevPage() {

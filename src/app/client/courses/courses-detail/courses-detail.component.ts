@@ -58,8 +58,7 @@ export class CoursesDetailComponent implements OnInit, OnDestroy {
             this.course['incart'] = true;
           }
           this.loadRelatedCourse.next();
-        },
-        (err) => console.log(err)
+        }
       );
 
     this.loadRelatedCourse
@@ -104,7 +103,7 @@ export class CoursesDetailComponent implements OnInit, OnDestroy {
   }
 
   addToCart(course) {
-    console.log(course);
+    // console.log(course);
 
     if (!this.currentUserId && localStorage.getItem('logged') !== 'true') {
       this.displayDialog = true;

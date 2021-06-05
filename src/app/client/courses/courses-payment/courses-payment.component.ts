@@ -72,7 +72,7 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
       currency: 'USD',
       value: (this.totalPrice / 23000).toFixed(2),
       onApprove: (detail) => {
-        console.log(detail);
+        // console.log(detail);
 
         this.loadingService.showLoading();
         this.userInfo$

@@ -11,13 +11,13 @@ import { AssignmentService } from '../assignment.service';
 export class ListAssignmentComponent implements OnInit, OnDestroy {
   assignments: any[] = [];
   unsubscription = new Subject();
-  constructor(private assignmentService: AssignmentService) {}
+  constructor(private assignmentService: AssignmentService) { }
 
   ngOnInit(): void {
     const params = new HttpParams().set('fields', 'description,name,img');
 
     this.assignmentService.find(params).subscribe((val) => {
-      console.log(val);
+      // console.log(val);
 
       this.assignments = val;
     });

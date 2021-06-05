@@ -24,7 +24,7 @@ export class CoursesService extends CollectionService<any> {
 
     this.getCoursesLocal();
 
-    this.route.params.subscribe(console.log);
+    this.route.params.subscribe();
   }
 
   get newCourseData() {

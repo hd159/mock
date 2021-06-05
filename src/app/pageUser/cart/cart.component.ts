@@ -13,7 +13,7 @@ export class CartComponent implements OnInit {
   coursesInCart$: Observable<any[]>;
   totalPrice$: Observable<number>;
   relatedCourses$: Observable<any[]>;
-  constructor(private coursesService: CoursesService) {}
+  constructor(private coursesService: CoursesService) { }
 
   ngOnInit(): void {
     this.coursesInCart$ = this.coursesService.courseInCart
@@ -63,10 +63,10 @@ export class CartComponent implements OnInit {
       )
       .join(',');
 
-    console.log(querycategory);
+    // console.log(querycategory);
 
     const cate = JSON.stringify({ $or: [`${querycategory}`] });
-    console.log(cate);
+    // console.log(cate);
 
     const idquery = id
       .map((item) => JSON.stringify({ _id: { $ne: item } }))
@@ -78,7 +78,7 @@ export class CartComponent implements OnInit {
       $and: [cate, idq],
     };
 
-    console.log(JSON.stringify(query));
+    // console.log(JSON.stringify(query));
 
     const params = new HttpParams()
       // .set('fields', 'img,title,rating,student,price')

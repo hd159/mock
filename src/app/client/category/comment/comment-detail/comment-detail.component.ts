@@ -31,11 +31,11 @@ export class CommentDetailComponent implements OnInit, OnChanges, OnDestroy {
   showTextEditor = false;
 
   sub: Subscription;
-  constructor(private commentService: CommentService) {}
+  constructor(private commentService: CommentService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  ngOnChanges(changes: any) {}
+  ngOnChanges(changes: any) { }
 
   showSubComment(id: string) {
     this.id_post = id;
@@ -66,7 +66,7 @@ export class CommentDetailComponent implements OnInit, OnChanges, OnDestroy {
     const newComment$ = this.commentService.create(newComment);
 
     // update currentComment
-    console.log(this.currentComment);
+    // console.log(this.currentComment);
 
     this.currentComment.reply = this.currentComment.reply + 1;
     const commentUpdated$ = this.commentService.update(

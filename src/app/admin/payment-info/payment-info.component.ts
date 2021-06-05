@@ -23,7 +23,7 @@ export class PaymentInfoComponent implements OnInit {
     },
   ];
   unsubscription$ = new Subject();
-  constructor(private paymentService: PaymentService) {}
+  constructor(private paymentService: PaymentService) { }
 
   ngOnInit(): void {
     this.getDataPayments();
@@ -33,7 +33,7 @@ export class PaymentInfoComponent implements OnInit {
     this.paymentService.getDataPayments().subscribe((val) => {
       this.payments = val;
       this.loading = false;
-      console.log(val);
+      // console.log(val);
     });
   }
 }

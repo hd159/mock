@@ -29,7 +29,7 @@ export class LearningComponent implements OnInit, OnDestroy {
   constructor(
     private coursesService: CoursesService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.sortCategoriesOptions = [
@@ -50,7 +50,7 @@ export class LearningComponent implements OnInit, OnDestroy {
       )
       .subscribe((val) => {
         this.courses = val;
-        console.log(val);
+        // console.log(val);
 
         val.forEach((item: any) => {
           const { author } = item;

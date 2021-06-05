@@ -38,7 +38,7 @@ export class CategoryDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private categoryService: CategoryService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const currentRoute$ = this.route.params.pipe(shareReplay());
@@ -82,11 +82,11 @@ export class CategoryDetailComponent implements OnInit {
       )
     );
 
-    // this.reviews$ = this.currentId$.pipe(
-    //   filter((val) => !!val),
-    //   mergeMap(() => this.lessonService.getHotPostFromStore()),
-    //   shareReplay()
-    // );
+    this.reviews$ = this.currentId$.pipe(
+      filter((val) => !!val),
+      mergeMap(() => this.lessonService.getHotPostFromStore()),
+      shareReplay()
+    );
 
     this.numPage$ = currentRoute$.pipe(
       switchMap(({ name }) => this.lessonService.getTotalItem(name))

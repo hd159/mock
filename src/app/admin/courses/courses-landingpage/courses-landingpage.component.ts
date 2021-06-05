@@ -27,7 +27,7 @@ export class CoursesLandingpageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private coursesService: CoursesService,
     private messageService: FalconMessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.formLandingPage = this.initForm();
@@ -101,12 +101,12 @@ export class CoursesLandingpageComponent implements OnInit, OnDestroy {
 
   nextPage() {
     const valid = this.checkForm();
-    console.log(valid);
+    // console.log(valid);
 
     if (!valid) {
       return;
     }
-    console.log(123);
+    // console.log(123);
 
     const landingPageData = this.formLandingPage.value;
     this.coursesService.newCourse.next({

@@ -9,7 +9,7 @@ export class ErrorHandleService {
   constructor(private authService: AuthService, private router: Router) { }
 
   handleError(error: any) {
-    console.log(error, 2323232);
+    // console.log(error, 2323232);
     switch (error.name) {
       case 'InvalidCredentialsError':
         // this.authService.setUser().subscribe();

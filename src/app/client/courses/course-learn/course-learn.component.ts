@@ -29,7 +29,7 @@ export class CourseLearnComponent implements OnInit, OnDestroy {
   constructor(
     private coursesService: CoursesService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.course$ = this.route.params.pipe(
@@ -38,12 +38,12 @@ export class CourseLearnComponent implements OnInit, OnDestroy {
     );
 
     this.course$.subscribe((val) => {
-      console.log(val);
+      // console.log(val);
       this.videoUrl = val.section[0].chapter[0].videoUrl;
     });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 
   selectLecture(lecture, indexLecture, indexTab) {
     this.videoUrl = lecture.videoUrl;
@@ -52,7 +52,7 @@ export class CourseLearnComponent implements OnInit, OnDestroy {
   }
 
   onTabOpen(e) {
-    console.log(e);
+    // console.log(e);
   }
 
   nextVideo() {

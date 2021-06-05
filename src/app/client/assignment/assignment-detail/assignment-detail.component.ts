@@ -21,8 +21,8 @@ export class AssignmentDetailComponent implements OnInit {
       switchMap(({ id }) => this.assignmentService.getListsAssignment(id))
     );
 
-    this.assignment$.subscribe((val) => console.log(val));
+    // this.assignment$.subscribe((val) => console.log(val));
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

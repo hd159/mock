@@ -54,7 +54,7 @@ export class EditPostComponent implements OnInit, OnDestroy {
               this.swal.swalSuccess();
             },
             (err) => {
-              console.log({ ...err });
+              // console.log({ ...err });
               if (err.request.status === 0) {
                 this.swal.swalError500();
               }
