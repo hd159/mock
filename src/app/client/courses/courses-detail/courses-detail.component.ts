@@ -1,15 +1,20 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Accordion } from 'primeng/accordion';
 import { combineLatest, Observable, pipe, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { LoadingProgressService } from 'src/app/loading-progress/loading-progress.service';
+import { AuthService } from 'src/app/service/auth.service';
 import { CoursesService } from 'src/app/service/courses.service';
+import { FalconMessageService } from 'src/app/service/falcon-message.service';
 
 @Component({
   selector: 'app-courses-detail',
   templateUrl: './courses-detail.component.html',
   styleUrls: ['./courses-detail.component.scss'],
+  providers: [FalconMessageService]
 })
 export class CoursesDetailComponent implements OnInit, OnDestroy {
   course: any;
@@ -18,13 +23,25 @@ export class CoursesDetailComponent implements OnInit, OnDestroy {
   relatedCourses: any;
   loadRelatedCourse = new Subject();
   unsubscription$ = new Subject();
+  userForm: FormGroup;
+  displayDialog: boolean;
+  currentUserId: any;
   constructor(
     private route: ActivatedRoute,
     private coursesService: CoursesService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private fb: FormBuilder,
+    private loadingProgress: LoadingProgressService,
+    private authService: AuthService,
+    private messageService: FalconMessageService,
+  ) { }
 
   ngOnInit(): void {
+    this.userForm = this.initForm();
+    this.authService.userInfo.pipe(takeUntil(this.unsubscription$)).subscribe(
+      val => { this.currentUserId = val }
+    )
+
     this.route.params
       .pipe(
         switchMap(({ id }) => {
@@ -40,7 +57,6 @@ export class CoursesDetailComponent implements OnInit, OnDestroy {
           if (courseInCart.find((item) => item._id === course._id)) {
             this.course['incart'] = true;
           }
-          console.log(this.course);
           this.loadRelatedCourse.next();
         },
         (err) => console.log(err)
@@ -50,8 +66,14 @@ export class CoursesDetailComponent implements OnInit, OnDestroy {
       .pipe(switchMap(() => this.getRelatedCourses()))
       .subscribe((val) => {
         this.relatedCourses = val;
-        console.log(val);
       });
+  }
+
+  initForm() {
+    return this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
   }
 
   ngOnDestroy() {
@@ -82,11 +104,17 @@ export class CoursesDetailComponent implements OnInit, OnDestroy {
   }
 
   addToCart(course) {
-    if (course.incart) {
-      this.router.navigateByUrl('/cart');
+    console.log(course);
+
+    if (!this.currentUserId && localStorage.getItem('logged') !== 'true') {
+      this.displayDialog = true;
     } else {
-      course['incart'] = true;
-      this.coursesService.setCourseInCart(course);
+      if (course.incart) {
+        this.router.navigateByUrl('/cart');
+      } else {
+        course.incart = true;
+        this.coursesService.setCourseInCart(course);
+      }
     }
   }
 
@@ -98,4 +126,30 @@ export class CoursesDetailComponent implements OnInit, OnDestroy {
     }
     accor.activeIndex = index.join(',');
   }
+
+  onLogin() {
+    if (this.userForm.invalid) {
+      return;
+    }
+    const { username, password } = this.userForm.value;
+    this.loadingProgress.showLoading();
+    this.authService
+      .login(username, password)
+      .pipe(takeUntil(this.unsubscription$))
+      .subscribe(
+        (val) => {
+          this.loadingProgress.hideLoading();
+          this.displayDialog = false;
+          localStorage.setItem('logged', 'true');
+          this.authService.isLoginClient$.next(true);
+          this.messageService.showSuccess('Success', 'Login success');
+        },
+        (err) => {
+          this.loadingProgress.hideLoading();
+          this.messageService.showError('Error', 'Invalid credential');
+        }
+      );
+  }
 }
+
+

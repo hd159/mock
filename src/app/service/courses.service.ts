@@ -72,7 +72,9 @@ export class CoursesService extends CollectionService<any> {
     return this.courseInCart.pipe(
       switchAll(),
       mergeMap((course) => {
-        const courseUpdate = { ...course, student: course.student + 1 };
+        const courseUpdate = { ...course, student: course.student + 1 || 1 };
+        delete courseUpdate.incart;
+        delete courseUpdate.inCart;
         return this.update(courseUpdate, course._id);
       })
     );

@@ -17,7 +17,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   user: User
   subscription: Subscription[] = []
   constructor(private authService: AuthService, private _router: Router) {
-    const sub = this.authService.isAdminSubject$.subscribe((data) => {
+    const sub = this.authService.userDetail$.subscribe((data) => {
       this.user = data
     })
 
@@ -48,8 +48,9 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
-    localStorage.setItem('logged', 'false')
-    localStorage.setItem('typeUser', '')
+    localStorage.setItem('logged', 'false');
+    localStorage.setItem('typeUser', '');
+    localStorage.removeItem('userInfo');
     this._router.navigateByUrl('/')
   }
 }

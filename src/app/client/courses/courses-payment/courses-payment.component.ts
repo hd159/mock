@@ -35,7 +35,7 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
     private messageService: FalconMessageService,
     private loadingService: LoadingProgressService,
     private paymentService: PaymentService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.http
@@ -70,7 +70,7 @@ export class CoursesPaymentComponent implements OnInit, OnDestroy {
     render({
       id: '#paypalbtn',
       currency: 'USD',
-      value: this.totalPrice.toFixed(2),
+      value: (this.totalPrice / 23000).toFixed(2),
       onApprove: (detail) => {
         console.log(detail);
 

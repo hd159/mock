@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private coursesService: CoursesService,
     private previousRouteService: PreviousRouteService,
     private messageService: FalconMessageService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -74,8 +74,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.previousRouteService.prevRoute,
     ]).subscribe(
       ([login, prevRoute]) => {
-        if (localStorage.getItem('typeUser') === 'admin')
+        if (localStorage.getItem('typeUser') === 'admin') {
           this.router.navigateByUrl('/admin');
+        }
+
         else {
           localStorage.setItem('logged', 'true');
           this.messageService.showSuccess('Success', 'Login success');

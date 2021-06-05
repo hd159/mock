@@ -214,3 +214,41 @@
     </div>
   </ng-template>
 </div>
+
+<div [class]="{ 'overlay-modal': displayDialog }"></div>
+
+<p-dialog
+  [(visible)]="displayDialog"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="1000000"
+>
+  <ng-template pTemplate="header"> Đăng nhập tài khoản của bạn </ng-template>
+  <p-divider></p-divider>
+  <form [formGroup]="userForm" (submit)="onLogin()">
+    <p class="p-mb-2">Bản phải đăng nhập trước</p>
+    <app-input
+      [control]="userForm.get('username')"
+      label="Tên tài khoản"
+    ></app-input>
+    <app-input
+      [control]="userForm.get('password')"
+      label="Mật khẩu"
+      type="password"
+    ></app-input>
+
+    <button
+      type="submit"
+      pButton
+      label="Đăng nhập"
+      [disabled]="userForm.invalid"
+    ></button>
+  </form>
+  <p-divider></p-divider>
+  <p-footer>
+    <p>
+      Bạn chưa có tài khoản? <span routerLink="/register">Đăng ký ngay</span>
+    </p>
+  </p-footer>
+</p-dialog>
+
+<p-toast [baseZIndex]="1000000000000000"></p-toast>

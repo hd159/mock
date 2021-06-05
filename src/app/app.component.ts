@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/service/auth.service';
 import { Component, OnDestroy } from '@angular/core';
 
 @Component({
@@ -6,7 +7,14 @@ import { Component, OnDestroy } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnDestroy {
-  constructor() {}
+  constructor(private authService: AuthService) {
+    this.authService.userDetail$.subscribe(val => this.authService.checkUserIsAdmin(val));
+    this.authService.userInfo.subscribe(val => {
+      if (val === null) {
+        this.authService.isAdminSubject$.next(false)
+      }
+    })
+  }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 }

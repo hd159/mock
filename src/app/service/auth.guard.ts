@@ -10,7 +10,7 @@ import {
   CanActivate,
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { filter, tap, map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -28,12 +28,17 @@ export class AuthGuard implements CanLoad, CanActivate {
     );
   }
 
-  canActivate(): Observable<any> {
+  canActivate(): Observable<boolean> {
     return this.authService.isAdminSubject$.pipe(
-      tap((val) => {
-        if (val === null) {
-          this.router.navigateByUrl('admin/login');
+      filter(val => val !== null),
+      map((val) => {
+
+        if (!val) {
+          this.router.navigateByUrl('/admin/login');
+          return false
         }
+
+        return true
       })
     );
   }

@@ -26,7 +26,7 @@ export class CourseGuard
     private authService: AuthService,
     private router: Router,
     private previousRouteService: PreviousRouteService
-  ) {}
+  ) { }
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

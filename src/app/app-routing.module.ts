@@ -1,3 +1,4 @@
+import { CourseGuard } from './service/course.guard';
 import { CartComponent } from './pageUser/cart/cart.component';
 import { UserInfoComponent } from './pageUser/user-info/user-info.component';
 import { NgModule } from '@angular/core';
@@ -37,7 +38,7 @@ export const routes: Routes = [
         // canActivate: [AuthGuard],
       },
       { path: 'user-info', component: UserInfoComponent },
-      { path: 'cart', component: CartComponent },
+      { path: 'cart', component: CartComponent, canActivate: [CourseGuard] },
     ],
   },
 
@@ -49,7 +50,7 @@ export const routes: Routes = [
     path: 'admin',
     loadChildren: () =>
       import('./admin/admin.module').then((m) => m.AdminModule),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
 
   { path: 'network-err', component: ErrorNetworkComponent },
@@ -69,4 +70,4 @@ const routerOptions: ExtraOptions = {
   imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

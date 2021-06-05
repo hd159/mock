@@ -16,8 +16,7 @@
     </div>
   </div>
   <div class="dropdown-user" *ngIf="userDropdown">
-    <a href="">Trang cá nhân</a>
-    <a (click)="onLogout()">Đăng xuất</a>
+    <a style="cursor: pointer" (click)="onLogout()">Đăng xuất</a>
   </div>
 </header>
 <div class="d-flex">
@@ -132,7 +131,7 @@
         </div>
       </div>
 
-      <div
+      <!-- <div
         class="nav-item-dropdown"
         [routerLinkActive]="['active-dropdown']"
         [routerLinkActiveOptions]="{ exact: true }"
@@ -155,7 +154,7 @@
             >Quản lý Payment</a
           >
         </div>
-      </div>
+      </div> -->
 
       <div
         class="nav-item-dropdown"

@@ -48,7 +48,7 @@ export class AuthService {
   userInfo: BehaviorSubject<any> = new BehaviorSubject(null);
   userDetail$: Observable<any>;
 
-  isAdminSubject$ = new BehaviorSubject<User>(null);
+  isAdminSubject$ = new BehaviorSubject<boolean>(null);
   isLoginClient$ = new BehaviorSubject<boolean>(null);
   private authSubject = new BehaviorSubject<AuthState>(initialAuthState);
   authState$: Observable<AuthState> = this.authSubject.asObservable();
@@ -62,6 +62,8 @@ export class AuthService {
       map((val) => this.mapUser(val)),
       shareReplay()
     );
+
+
   }
 
   selectAuthData<T>(prop: string): Observable<T> {
@@ -92,21 +94,37 @@ export class AuthService {
       })
       .pipe(
         map((data: any) => {
+
           if (data._kmd.roles !== undefined) {
             if (this.roleIdAdmin.includes(data._kmd.roles[0].roleId)) {
               localStorage.setItem('typeUser', 'admin');
-              this.isAdminSubject$.next(data);
+              this.isAdminSubject$.next(true);
               this.setUserId(data._id);
             }
-          } else {
-            localStorage.setItem('typeUser', 'user');
-            localStorage.setItem('userInfo', JSON.stringify(data._id));
-            this.setUserId(data._id);
+            else {
+              localStorage.setItem('typeUser', 'user');
+              localStorage.setItem('userInfo', JSON.stringify(data._id));
+              this.isAdminSubject$.next(false);
+
+              this.setUserId(data._id);
+            }
           }
 
           return data;
         })
       );
+  }
+
+  checkUserIsAdmin(user) {
+    if (user._kmd.roles !== undefined) {
+      if (this.roleIdAdmin.includes(user._kmd.roles[0].roleId)) {
+        localStorage.setItem('typeUser', 'admin');
+        this.isAdminSubject$.next(true);
+      } else {
+        this.isAdminSubject$.next(false);
+
+      }
+    }
   }
 
   setUserId(id) {
