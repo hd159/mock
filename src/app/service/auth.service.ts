@@ -60,7 +60,6 @@ export class AuthService {
       filter((val) => !!val),
       switchMap((id) => this.getUser(id)),
       map((val) => this.mapUser(val)),
-      tap(val => console.log(val)),
       shareReplay()
     );
 
@@ -116,11 +115,7 @@ export class AuthService {
       );
   }
 
-
-
   checkUserIsAdmin(user) {
-
-
     if (user._kmd.roles !== undefined) {
       if (this.roleIdAdmin.includes(user._kmd.roles[0].roleId)) {
         localStorage.setItem('typeUser', 'admin');
@@ -130,7 +125,6 @@ export class AuthService {
 
       }
     }
-
   }
 
   setUserId(id) {

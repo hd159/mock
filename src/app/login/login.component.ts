@@ -76,8 +76,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       ([login, prevRoute]) => {
         if (localStorage.getItem('typeUser') === 'admin') {
           this.router.navigateByUrl('/admin');
-          console.log(123);
-
         }
 
         else {
